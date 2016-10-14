@@ -14,7 +14,8 @@ import UIKit
 class UserSetupViewController: UIViewController {
     let usernameEntryField = UITextField()
     let viewTitle = UILabel()
-    
+    let confirmButton =
+        
     override func viewDidLoad() {
         super.viewDidLoad()
         

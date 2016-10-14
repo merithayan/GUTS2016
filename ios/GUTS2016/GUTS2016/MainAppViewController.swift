@@ -9,6 +9,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class MainAppViewController: UIViewController {
 
