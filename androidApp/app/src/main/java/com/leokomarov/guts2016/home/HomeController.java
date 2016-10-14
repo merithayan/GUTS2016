@@ -13,7 +13,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -23,8 +26,14 @@ import com.google.android.gms.location.LocationServices;
 import com.leokomarov.guts2016.R;
 import com.leokomarov.guts2016.controllers.ButterKnifeController;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 public class HomeController extends ButterKnifeController implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
 
@@ -35,6 +44,31 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
     private String mLastUpdateTime;
     private final int PERMISSION_ACCESS_COARSE_LOCATION = 1;
     private final int PERMISSION_ACCESS_FINE_LOCATION = 2;
+
+    @BindView(R.id.edittext1)
+    EditText edittext1;
+
+    @BindView(R.id.latitudeTV)
+    TextView latitudeTV;
+
+    @BindView(R.id.longitudeTV)
+    TextView longitudeTV;
+
+    @OnClick(R.id.submitButton)
+    void submitButtonClicked(){
+        Log.v("submit", "button clicked");
+        //attemptSend();
+    }
+
+    public HomeController(){
+        /*
+        try {
+            mSocket = IO.socket("http://chat.socket.io");
+        } catch (URISyntaxException e) {
+            Log.e("HomeController", e.getMessage());
+        }
+        */
+    }
 
     @Override
     protected View inflateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
@@ -61,23 +95,6 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
 
         mGoogleApiClient.connect();
         Log.v("onViewBound", "connected");
-        //LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
-    }
-
-    public void checkLocationPermissions(){
-        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-
-        if (notGotCoarseLocationPermission) {
-            Log.e("onConnected", "coarse permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-
-        if (notGotFineLocationPermission) {
-            Log.e("onConnected", "fine permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
-            return;
-        }
     }
 
     protected void createLocationRequest() {
@@ -152,6 +169,8 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
     private void updateUI(){
         Log.v("updateUI", "updateUI");
         if (mLastLocation != null) {
+            latitudeTV.setText(String.valueOf(mLastLocation.getLatitude()));
+            longitudeTV.setText(String.valueOf(mLastLocation.getLongitude()));
             Log.v("onLocationChanged", "latitude: " + mLastLocation.getLatitude());
             Log.v("onLocationChanged", "longitude: " + mLastLocation.getLongitude());
         }
@@ -191,25 +210,14 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
         Log.v("onDestroy", "disconnected");
     }
 
-    /*
-    {
-        try {
-            mSocket = IO.socket("http://chat.socket.io");
-        } catch (URISyntaxException e) {
-            Log.e("HomeController", e.getMessage());
-        }
-    }
-    */
-
     private void attemptSend() {
-        String message = "abcdef";
+        String message = edittext1.getText().toString();
         if (TextUtils.isEmpty(message)) {
             return;
         }
-        //mSocket.emit("new message", message);
+        mSocket.emit("new message", message);
     }
 
-    /*
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -229,7 +237,6 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
             });
         }
     };
-    */
 
     private void logMessage(String message){
         Log.v("logMessage", message);

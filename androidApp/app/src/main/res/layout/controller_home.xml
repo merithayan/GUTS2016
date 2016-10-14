@@ -5,9 +5,9 @@
                 android:orientation="vertical">
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/tv1"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:paddingBottom="5dp"
             android:paddingTop="5dp"
@@ -15,5 +15,40 @@
             android:textSize="32sp"
             android:textStyle="bold"
             android:text="@string/app_name"/>
+
+        <EditText
+            android:id="@+id/edittext1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv1"/>
+
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@id/edittext1"/>
+
+    <TextView
+        android:id="@+id/latitudeTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/submitButton"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/longitudeTV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/latitudeTV"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
