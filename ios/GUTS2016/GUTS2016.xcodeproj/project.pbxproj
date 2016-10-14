@@ -1,0 +1,323 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9200BC181DB1634700070AE9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC171DB1634700070AE9 /* AppDelegate.swift */; };
+		9200BC1A1DB1634700070AE9 /* MainAppViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC191DB1634700070AE9 /* MainAppViewController.swift */; };
+		9200BC1D1DB1634700070AE9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9200BC1B1DB1634700070AE9 /* Main.storyboard */; };
+		9200BC1F1DB1634700070AE9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9200BC1E1DB1634700070AE9 /* Assets.xcassets */; };
+		9200BC221DB1634700070AE9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9200BC201DB1634700070AE9 /* LaunchScreen.storyboard */; };
+		9200BC2A1DB1663700070AE9 /* MerithayanUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC291DB1663700070AE9 /* MerithayanUI.swift */; };
+		9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */; };
+		9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */; };
+		9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9200BC141DB1634700070AE9 /* GUTS2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GUTS2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9200BC171DB1634700070AE9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		9200BC191DB1634700070AE9 /* MainAppViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainAppViewController.swift; sourceTree = "<group>"; };
+		9200BC1C1DB1634700070AE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		9200BC1E1DB1634700070AE9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		9200BC211DB1634700070AE9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		9200BC231DB1634700070AE9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9200BC291DB1663700070AE9 /* MerithayanUI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerithayanUI.swift; sourceTree = "<group>"; };
+		9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSetupViewController.swift; sourceTree = "<group>"; };
+		9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsViewController.swift; sourceTree = "<group>"; };
+		9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMechanics.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9200BC111DB1634700070AE9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9200BC0B1DB1634700070AE9 = {
+			isa = PBXGroup;
+			children = (
+				9200BC291DB1663700070AE9 /* MerithayanUI.swift */,
+				9200BC161DB1634700070AE9 /* GUTS2016 */,
+				9200BC151DB1634700070AE9 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9200BC151DB1634700070AE9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9200BC141DB1634700070AE9 /* GUTS2016.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9200BC161DB1634700070AE9 /* GUTS2016 */ = {
+			isa = PBXGroup;
+			children = (
+				9200BC171DB1634700070AE9 /* AppDelegate.swift */,
+				9200BC191DB1634700070AE9 /* MainAppViewController.swift */,
+				9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */,
+				9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */,
+				9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */,
+				9200BC1B1DB1634700070AE9 /* Main.storyboard */,
+				9200BC1E1DB1634700070AE9 /* Assets.xcassets */,
+				9200BC201DB1634700070AE9 /* LaunchScreen.storyboard */,
+				9200BC231DB1634700070AE9 /* Info.plist */,
+			);
+			path = GUTS2016;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9200BC131DB1634700070AE9 /* GUTS2016 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9200BC261DB1634700070AE9 /* Build configuration list for PBXNativeTarget "GUTS2016" */;
+			buildPhases = (
+				9200BC101DB1634700070AE9 /* Sources */,
+				9200BC111DB1634700070AE9 /* Frameworks */,
+				9200BC121DB1634700070AE9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = GUTS2016;
+			productName = GUTS2016;
+			productReference = 9200BC141DB1634700070AE9 /* GUTS2016.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9200BC0C1DB1634700070AE9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0810;
+				LastUpgradeCheck = 0810;
+				ORGANIZATIONNAME = "Tim Hull";
+				TargetAttributes = {
+					9200BC131DB1634700070AE9 = {
+						CreatedOnToolsVersion = 8.1;
+						DevelopmentTeam = 7UZHTCB32F;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 9200BC0F1DB1634700070AE9 /* Build configuration list for PBXProject "GUTS2016" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 9200BC0B1DB1634700070AE9;
+			productRefGroup = 9200BC151DB1634700070AE9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9200BC131DB1634700070AE9 /* GUTS2016 */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9200BC121DB1634700070AE9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9200BC221DB1634700070AE9 /* LaunchScreen.storyboard in Resources */,
+				9200BC1F1DB1634700070AE9 /* Assets.xcassets in Resources */,
+				9200BC1D1DB1634700070AE9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9200BC101DB1634700070AE9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9200BC1A1DB1634700070AE9 /* MainAppViewController.swift in Sources */,
+				9200BC2A1DB1663700070AE9 /* MerithayanUI.swift in Sources */,
+				9200BC181DB1634700070AE9 /* AppDelegate.swift in Sources */,
+				9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */,
+				9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */,
+				9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9200BC1B1DB1634700070AE9 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9200BC1C1DB1634700070AE9 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		9200BC201DB1634700070AE9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9200BC211DB1634700070AE9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9200BC241DB1634700070AE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		9200BC251DB1634700070AE9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVES = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9200BC271DB1634700070AE9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				INFOPLIST_FILE = GUTS2016/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Debug;
+		};
+		9200BC281DB1634700070AE9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				INFOPLIST_FILE = GUTS2016/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9200BC0F1DB1634700070AE9 /* Build configuration list for PBXProject "GUTS2016" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9200BC241DB1634700070AE9 /* Debug */,
+				9200BC251DB1634700070AE9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9200BC261DB1634700070AE9 /* Build configuration list for PBXNativeTarget "GUTS2016" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9200BC271DB1634700070AE9 /* Debug */,
+				9200BC281DB1634700070AE9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9200BC0C1DB1634700070AE9 /* Project object */;
+}
