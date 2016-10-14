@@ -16,6 +16,7 @@
 		9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */; };
 		9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */; };
 		9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */; };
+		9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9200BC321DB172F500070AE9 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSetupViewController.swift; sourceTree = "<group>"; };
 		9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsViewController.swift; sourceTree = "<group>"; };
 		9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMechanics.swift; sourceTree = "<group>"; };
+		9200BC321DB172F500070AE9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -49,6 +52,7 @@
 				9200BC291DB1663700070AE9 /* MerithayanUI.swift */,
 				9200BC161DB1634700070AE9 /* GUTS2016 */,
 				9200BC151DB1634700070AE9 /* Products */,
+				9200BC311DB172F500070AE9 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +78,14 @@
 				9200BC231DB1634700070AE9 /* Info.plist */,
 			);
 			path = GUTS2016;
+			sourceTree = "<group>";
+		};
+		9200BC311DB172F500070AE9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9200BC321DB172F500070AE9 /* MapKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -110,6 +122,11 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 7UZHTCB32F;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+						};
 					};
 				};
 			};
@@ -277,6 +294,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
 				INFOPLIST_FILE = GUTS2016/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -290,6 +308,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
 				INFOPLIST_FILE = GUTS2016/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
