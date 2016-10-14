@@ -22,7 +22,8 @@ class UserSetupViewController: UIViewController {
         let viewColor = MerithayanUI.blueGrey
         view.backgroundColor = viewColor.darken2
         
-        
+        view.addSubview(usernameEntryField)
+        view.addSubview(viewTitle)
         
     }
 }
