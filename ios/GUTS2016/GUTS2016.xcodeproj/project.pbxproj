@@ -18,6 +18,7 @@
 		9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */; };
 		9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9200BC321DB172F500070AE9 /* MapKit.framework */; };
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
+		9200BC391DB19EE100070AE9 /* apikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC381DB19EE100070AE9 /* apikey.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMechanics.swift; sourceTree = "<group>"; };
 		9200BC321DB172F500070AE9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9200BC341DB1997C00070AE9 /* ScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		9200BC381DB19EE100070AE9 /* apikey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = apikey.swift; path = ../apikey.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		9200BC161DB1634700070AE9 /* GUTS2016 */ = {
 			isa = PBXGroup;
 			children = (
+				9200BC381DB19EE100070AE9 /* apikey.swift */,
 				9200BC171DB1634700070AE9 /* AppDelegate.swift */,
 				9200BC191DB1634700070AE9 /* MainAppViewController.swift */,
 				9200BC341DB1997C00070AE9 /* ScannerView.swift */,
@@ -171,6 +174,7 @@
 			files = (
 				9200BC1A1DB1634700070AE9 /* MainAppViewController.swift in Sources */,
 				9200BC2A1DB1663700070AE9 /* MerithayanUI.swift in Sources */,
+				9200BC391DB19EE100070AE9 /* apikey.swift in Sources */,
 				9200BC181DB1634700070AE9 /* AppDelegate.swift in Sources */,
 				9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */,
 				9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */,
