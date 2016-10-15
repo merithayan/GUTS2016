@@ -11,7 +11,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
-import com.github.nkzawa.socketio.client.IO;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.leokomarov.guts2016.Direction;
@@ -21,8 +20,6 @@ import com.leokomarov.guts2016.R;
 import com.leokomarov.guts2016.SocketStuff;
 import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
-
-import java.net.URISyntaxException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -34,11 +31,11 @@ import static com.leokomarov.guts2016.R.id.mapview;
 public class MainScreenController extends ButterKnifeController {
 
     private SocketStuff socketStuff;
-    private MapStuff mapStuff;
+    public MapStuff mapStuff;
     private Position position;
     private Direction direction;
 
-    private String username;
+    public String username;
     public String id;
 
     @BindView(mapview)
@@ -104,11 +101,6 @@ public class MainScreenController extends ButterKnifeController {
 
         if (socketStuff == null) {
             socketStuff = new SocketStuff(this);
-            try {
-                socketStuff.mSocket = IO.socket("http://c9092951.ngrok.io/");
-            } catch (URISyntaxException e) {
-                Log.e("MainScreenController", e.getMessage());
-            }
         }
 
         socketStuff.registerSocket();
@@ -171,7 +163,9 @@ public class MainScreenController extends ButterKnifeController {
         Log.v("updateData", "angle: " + angle);
 
         mapStuff.updateMapPosition();
-        socketStuff.emitUpdate(latitude, longitude, angle, id);
+        if (id != null) {
+            socketStuff.emitUpdate(latitude, longitude, angle, id);
+        }
 
         /*
         final Handler handler = new Handler();
