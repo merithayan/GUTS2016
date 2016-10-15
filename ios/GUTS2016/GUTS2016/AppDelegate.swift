@@ -24,32 +24,43 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("We managed to connect to the sockets!")
         })
         
-        socket.on("update-player-state", callback: {(data, ack) in
-            do {
-                let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
-                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-                player.health = dataArray["health"] as! Int
-                player.exp = dataArray["exp"] as! Int
-                
-                
-            } catch let error {
-                print(error)
-            }
-        })
+//        socket.on("update-player-state", callback: {(data, ack) in
+//            do {
+//                let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
+//                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
+//                player.health = dataArray["health"] as! Int
+//                player.exp = dataArray["exp"] as! Int
+//                
+//                
+//            } catch let error {
+//                print(error)
+//            }
+//        })
         
         socket.on("update", callback: {(data, ack) in
             do {
+                print(data)
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
                 let dataArray: [[String: Any]] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String: Any]]
+                
+                var currentPlayerData: [String: Any] = [:]
+                if let data = dataArray[0][myId] as? [String: Any] {
+                    currentPlayerData = data
+                    player.health = currentPlayerData["health"] as! Int
+                    player.exp = currentPlayerData["experience"] as! Int
+                }
+                
+                if player.health <= 0 {
+                     player.timeOut()
+                }
+                
                 otherPlayerLocations = dataArray[0]
+                
             } catch let error {
                 print(error)
             }
         })
-        
-        socket.on("you-are-dead", callback: {(data, ack) in
-            player.timeOut()
-        })
+
         
         socket.on("logged-in", callback: {(data, ack) in
             myId = data[0] as! String

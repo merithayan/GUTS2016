@@ -72,7 +72,6 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             socket.emit("login", string)
         } catch let error {
             print(error)
-            fatalError()
         }
         
         clmanager.delegate = self
@@ -110,8 +109,6 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         scannerView.scannerMap.setCenter(currentCoords, animated: true)
-        
-
         
     }
 
