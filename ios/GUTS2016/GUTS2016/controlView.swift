@@ -53,6 +53,10 @@ class ControlView: UIView {
         
         super.init(frame: frame)
         
+        fireButton.addTarget(self, action: #selector(fireAction), for: .touchUpInside)
+        
+        
+        
         self.backgroundColor = MerithayanUI.blueGrey.base
         
         // Defining red bar
@@ -115,5 +119,9 @@ class ControlView: UIView {
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func fireAction(){
+        socket.emit("fire", myId)
     }
 }

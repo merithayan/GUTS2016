@@ -6,15 +6,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -31,7 +28,6 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
     public GoogleApiClient mGoogleApiClient;
     public Location mLastLocation;
-    private LocationRequest mLocationRequest;
     private String mLastUpdateTime;
     public static final int PERMISSION_ACCESS_COARSE_LOCATION = 1;
     public static final int PERMISSION_ACCESS_FINE_LOCATION = 2;
@@ -40,29 +36,6 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
     public Position(MainScreenController mainScreenController){
         this.mainScreenController = mainScreenController;
-    }
-
-    public static boolean isLocationEnabled(Context context) {
-        int locationMode = 0;
-        String locationProviders;
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
-            try {
-                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
-
-            } catch (Settings.SettingNotFoundException e) {
-                e.printStackTrace();
-                return false;
-            }
-
-            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
-
-        } else{
-            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
-            return !TextUtils.isEmpty(locationProviders);
-        }
-
-
     }
 
     public void startLocationUpdates() {
@@ -81,9 +54,9 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
             ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
 
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        LocationRequest mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(100000);
+        mLocationRequest.setFastestInterval(100000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         Log.v("startLocationUpdates", "requested LocationUpdates");
@@ -99,18 +72,16 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         if (notGotCoarseLocationPermission) {
             Log.e("onConnected", "coarse permission not granted");
             ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
+            return;
         }
 
         if (notGotFineLocationPermission) {
             Log.e("onConnected", "fine permission not granted");
             ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
+            return;
         }
 
         Log.v("onConnected", "passed");
-
-        if (! isLocationEnabled(mainScreenController.getActivity())) {
-
-        }
 
         LocationManager locationManager = (LocationManager) mainScreenController.getActivity().getSystemService(Context.LOCATION_SERVICE);
         if( ! locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
