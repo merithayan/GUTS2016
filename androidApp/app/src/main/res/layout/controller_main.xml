@@ -31,15 +31,89 @@
         android:layout_weight="1"
         android:background="#676d67" >
 
-        <ImageView
-            android:id="@+id/batteryImage"
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/battery_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_above="@+id/fireButton"
-            android:src="@drawable/battery"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true" />
+            android:background="#676d67"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dip"
+                android:layout_marginTop="5dip"
+                android:src="@drawable/battery"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="30dp"
+                android:src="@drawable/bar_red" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="60dp"
+                android:src="@drawable/bar_red" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="90dp"
+                android:src="@drawable/bar_red" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="120dp"
+                android:src="@drawable/bar_yellow" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="150dp"
+                android:src="@drawable/bar_yellow" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="180dp"
+                android:src="@drawable/bar_yellow" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="210dp"
+                android:src="@drawable/bar_green" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="240dp"
+                android:src="@drawable/bar_green" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="58dp"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="270dp"
+                android:src="@drawable/bar_green" />
+
+
+        </FrameLayout>
 
         <ImageButton
             android:id="@id/fireButton"
@@ -51,6 +125,17 @@
             android:adjustViewBounds="true"
             android:scaleType="centerCrop"
             android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/angleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/fireButton"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:text="abcd"
+            android:textSize="18dp"
+            android:textColor="#ffffff"/>
 
         <ImageButton
             android:id="@+id/powerUpButton"

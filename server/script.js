@@ -1,6 +1,7 @@
 var socket = io();
 var socketId;
 var data = {};
+var players = [];
 
 // Prevent reloading the page
 $("form").submit(function(e) {
@@ -25,21 +26,24 @@ $("#join").click(function() {
 	data.lng = $("#lng").val();
 	data.angle = $("#angle").val();
 	data ? socket.emit("login", data) : console.log("Enter data...");
+
+	console.log(players)
+	players = populatePlayer(socketId, players);
 });
 
 $("#update").click(function() {
 	var data = {
 		id: socketId,
-		lat: parseFloat($("#lat").val()),
-		lng: parseFloat($("#lng").val()),
-		angle: parseFloat($("#angle").val())
+		lat: $("#lat").val(),
+		lng: $("#lng").val(),
+		angle: $("#angle").val()
 	};
 	console.log();
 	socket.emit("update-player", data);
 });
 
 $("#fire").click(function() {
-	socket.emit("fire", socketId);
+	socket.emit("fire");
 });
 
 // Receiving from the server
@@ -58,13 +62,12 @@ socket.on("update", function(data) {
 		console.log(data[socketId].health, data[socketId].deadFor);
 	
 	$("#players").html(" ");
-	for (var p in data) {
-
-		// Draw players on map
+	
+	for (var p in data) {	
 		p = data[p];
-
 		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 	}
+	players = drawPlayers(data, players);
 
 });
 
@@ -75,7 +78,6 @@ socket.on("fire", function() {
 socket.on("hit", function(name) {
 	console.log("You hit "+name+"!");
 });
-
 
 socket.on("got-shot", function() {
 	console.log("You got shot!");

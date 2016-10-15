@@ -72,7 +72,6 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             socket.emit("login", string)
         } catch let error {
             print(error)
-            fatalError()
         }
         
         clmanager.delegate = self
@@ -110,8 +109,6 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         }
         
         scannerView.scannerMap.setCenter(currentCoords, animated: true)
-        
-
         
     }
 
@@ -179,7 +176,6 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
                 playerLng = data["lng"] as! Double
             }
             
-            
             let playerCoords = CLLocationCoordinate2DMake(playerLat, playerLng)
             let point = MGLPointAnnotation()
             point.coordinate = playerCoords
@@ -201,6 +197,17 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         let heading = newHeading.magneticHeading
         currentAngle = heading
+    }
+    
+    func gameOver(){
+        let rect = CGRect(x: 10, y: 10, width: self.view.bounds.width - 20, height: self.view.bounds.height - 20)
+        let newview = UIView(frame: rect)
+        newview.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
+        newview.tag = 5000
+        view.addSubview(newview)
+        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: {_ in
+            newview.removeFromSuperview()
+        })
     }
 }
 
