@@ -11,34 +11,42 @@ import UIKit
 import Mapbox
 import CoreLocation
 
-class TrackerView: UIView, CLLocationManagerDelegate {
+class TrackerView: UIView, CLLocationManagerDelegate, MGLMapViewDelegate {
     
     var scannerMap: MGLMapView
+    var clmanager: CLLocationManager
     
     override init(frame: CGRect) {
+        
+        // Setup the scanner map
         scannerMap = MGLMapView()
+        clmanager = CLLocationManager()
+        
+        scannerMap.isScrollEnabled = false
+        scannerMap.styleURL = MGLStyle.darkStyleURL(withVersion: 9)
+        scannerMap.translatesAutoresizingMaskIntoConstraints = false
+        scannerMap.setUserTrackingMode(MGLUserTrackingMode.follow, animated: true)
+        scannerMap.zoomLevel = 15
         
         super.init(frame: frame)
         
-        // Get the users location to initially set the map
-        let clmanager = CLLocationManager()
-        clmanager.activityType = .other
-
-        //clmanager.allowDeferredLocationUpdates(untilTraveled: <#T##CLLocationDistance#>, timeout: <#T##TimeInterval#>)
-        clmanager.desiredAccuracy = kCLLocationAccuracyBest
-        clmanager.startMonitoringSignificantLocationChanges()
+        // Set up the CoreLocation Manager
         
+        clmanager.requestWhenInUseAuthorization()
+        clmanager.desiredAccuracy = kCLLocationAccuracyBest
+        clmanager.startUpdatingLocation()
+        clmanager.startUpdatingHeading()
+        clmanager.delegate = self
+        
+        // Get the user's location from CoreLocation
         let currentLocation = clmanager.location
         let currentLocationCoordinates = currentLocation?.coordinate
         
-        scannerMap.styleURL = MGLStyle.darkStyleURL(withVersion: 9)
-        scannerMap.translatesAutoresizingMaskIntoConstraints = false
-        
-        scannerMap.setUserTrackingMode(MGLUserTrackingMode.follow, animated: true)
-        
+        // If there are initial coordinates, center the map on them
         if let coords = currentLocationCoordinates {
             scannerMap.setCenter(coords, animated: true)
         }
+        
         
         self.addSubview(scannerMap)
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[v0]-20-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":scannerMap]))
@@ -54,5 +62,28 @@ class TrackerView: UIView, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coords = locations[0].coordinate
         scannerMap.setCenter(coords, animated: false)
+        scannerMap.latitude = coords.latitude
+        scannerMap.longitude = coords.longitude
+        print("Location Manager Updated Location:")
+        print(coords)
+        scannerMap.zoomLevel = 20
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
+        let heading = newHeading.trueHeading.description
+        print(heading)
+    }
+    
+    func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?) {
+        let coords = userLocation?.coordinate
+        if let coords = coords {
+            scannerMap.setCenter(coords, animated: false)
+            print("Map View Updated Location:")
+            print(coords)
+            scannerMap.latitude = coords.latitude
+            scannerMap.longitude = coords.longitude
+        }
+        
     }
 }
+
