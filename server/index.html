@@ -3,10 +3,13 @@
 <h1>Socket Testing</h1>
 
 <form>
+
 	<input id="name" type="text" name="name" placeholder="Name">
 	Latitude: <input type="number" name="lat" id="lat" min="55.00000" max="56.00000" step="0.00001" value="55.00000">
 	Longitude: <input type="number" name="lng" id="lng" min="-5.00000" max="-4.00000" step="0.00001" value="-5.00000">
 	Health: <input type="number" name="check-health" id="check-health" min="0" max="5" step="1" value="3">
+	Exp: <input type="number" name="check-exp" id="check-exp" min="0" max="200" step="20" value="0">
+
 </form>
 <button id="join">Join Room</button>
 <button id="update">Update Data</button>
@@ -34,6 +37,15 @@
 		$('#check-health').on('change keyup', function() {
 			data.health = $("#check-health").val();
 			socket.emit("update-health", data);
+		}); 
+	});
+	
+	
+	//update experience when value changed
+	$(document).ready(function(){
+		$('#check-exp').on('change keyup', function() {
+			data.experience = $("#check-exp").val();
+			socket.emit("update-exp", data);
 		}); 
 	});
 	

@@ -49,6 +49,14 @@ io.on('connection', function(socket) {
 		game.players[socket.id].health = data.health;
 		
 	});
+	
+	//update experience
+	socket.on('update-exp', function(data){
+		console.log(data);
+		game.players[socket.id].experience = data.experience;
+		
+	});
+	
 	// Update player location & direction
 	socket.on('update-player', function(data) {
 		//console.log(data);
