@@ -18,8 +18,8 @@
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
 		921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; };
 		921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		AC0D74731DB2558F00A5CFBC /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; };
-		AC0D74741DB2558F00A5CFBC /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AC0D749F1DB26EE500A5CFBC /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; };
+		AC0D74A01DB26EE500A5CFBC /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
 /* End PBXBuildFile section */
 
@@ -108,7 +108,7 @@
 			remoteGlobalIDString = 57634A3B1BD9B46D00E19CD7;
 			remoteInfo = "SocketIO-tvOSTests";
 		};
-		AC0D74751DB2558F00A5CFBC /* PBXContainerItemProxy */ = {
+		AC0D74A11DB26EE500A5CFBC /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AC0D745E1DB2558000A5CFBC /* Socket.IO-Client-Swift.xcodeproj */;
 			proxyType = 1;
@@ -125,7 +125,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */,
-				AC0D74741DB2558F00A5CFBC /* SocketIO.framework in Embed Frameworks */,
+				AC0D74A01DB26EE500A5CFBC /* SocketIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -157,7 +157,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */,
-				AC0D74731DB2558F00A5CFBC /* SocketIO.framework in Frameworks */,
+				AC0D749F1DB26EE500A5CFBC /* SocketIO.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,7 +251,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				AC0D74761DB2558F00A5CFBC /* PBXTargetDependency */,
+				AC0D74A21DB26EE500A5CFBC /* PBXTargetDependency */,
 			);
 			name = GUTS2016;
 			productName = GUTS2016;
@@ -425,10 +425,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		AC0D74761DB2558F00A5CFBC /* PBXTargetDependency */ = {
+		AC0D74A21DB26EE500A5CFBC /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = "SocketIO-iOS";
-			targetProxy = AC0D74751DB2558F00A5CFBC /* PBXContainerItemProxy */;
+			targetProxy = AC0D74A11DB26EE500A5CFBC /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
