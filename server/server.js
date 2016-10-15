@@ -19,31 +19,30 @@ io.on('connection', function(socket) {
 
 	// console.log('Connected: ', socket.id);
 
-	// User login
-	socket.on('login', function(name) {
-		console.log(name, 'joined');
+	socket.on('login', function(data) {
+		console.log(data.name, 'joined');
 
-		// Create new player
 		game.players.push(new game.playerFactory(
 			socket.id,
-			name,
+			data.name,
 			game.defaultHealth,
-			0,	// LAT
-			0,	// LNG
+			data.lat,
+			data.lng,
 			game.defaultExperience)
 		);
 
-		io.emit('login', name);
+		// Emit to front-end
+		io.emit('login', data.name);
 		console.log(game.players);
 	});
 
-	socket.on('send-location', function(data) {
-
+	socket.on('update', function(data) {
+		
 	});
 
-	// Fire
 	socket.on('fire', function(data) {
-		
+
+		socket.broadcast.emit("fire");
 	});
 
 	// Sample socket event

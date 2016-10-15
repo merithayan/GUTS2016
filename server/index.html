@@ -5,6 +5,8 @@
 </form>
 <button id="join">Join Room</button>
 
+<button id="fire">Fire</button>
+
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
@@ -20,9 +22,15 @@
 	$("#join").click(function() {
 		var data = {};
 		data.name = $("#name").val();
-		data.lat = ...
-		data.lng = ...
-		name ? socket.emit("login", data) : console.log("Enter a name...");
+		data.name ? socket.emit("login", data) : console.log("Enter a name...");
+	});
+
+	$("#fire").click(function() {
+		socket.emit("fire");
+	});
+
+	socket.on("fire", function() {
+		$("#fire").append("<h1>Shots Fired</h1>");
 	});
 
 </script>
