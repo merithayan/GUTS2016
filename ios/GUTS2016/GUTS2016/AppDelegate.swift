@@ -47,12 +47,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
-
+        socket.on("you-are-dead", callback: {(data, ack) in
+            player.timeOut()
+        })
         
         socket.on("logged-in", callback: {(data, ack) in
-            print(data)
             myId = data[0] as! String
-            print("My ID is: ", myId)
         })
         
         

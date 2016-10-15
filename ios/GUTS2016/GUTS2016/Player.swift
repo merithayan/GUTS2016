@@ -25,4 +25,9 @@ class Player {
         self.health = 3
     }
     
+    func timeOut() {
+        mainView?.gameOver()
+    }
+    
+    
 }
