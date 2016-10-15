@@ -16,11 +16,25 @@
 		9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */; };
 		9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */; };
 		9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */; };
-		9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9200BC321DB172F500070AE9 /* MapKit.framework */; };
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
-		9200BC391DB19EE100070AE9 /* apikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC381DB19EE100070AE9 /* apikey.swift */; };
+		921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; };
+		921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		921E4EE01DB1B4B70005BEBF /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9200BC141DB1634700070AE9 /* GUTS2016.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GUTS2016.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -34,9 +48,8 @@
 		9200BC2B1DB1684E00070AE9 /* UserSetupViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSetupViewController.swift; sourceTree = "<group>"; };
 		9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsViewController.swift; sourceTree = "<group>"; };
 		9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMechanics.swift; sourceTree = "<group>"; };
-		9200BC321DB172F500070AE9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9200BC341DB1997C00070AE9 /* ScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
-		9200BC381DB19EE100070AE9 /* apikey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = apikey.swift; path = ../apikey.swift; sourceTree = "<group>"; };
+		921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = controlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -45,7 +58,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */,
+				921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -55,6 +68,7 @@
 		9200BC0B1DB1634700070AE9 = {
 			isa = PBXGroup;
 			children = (
+				921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */,
 				9200BC291DB1663700070AE9 /* MerithayanUI.swift */,
 				9200BC161DB1634700070AE9 /* GUTS2016 */,
 				9200BC151DB1634700070AE9 /* Products */,
@@ -73,7 +87,6 @@
 		9200BC161DB1634700070AE9 /* GUTS2016 */ = {
 			isa = PBXGroup;
 			children = (
-				9200BC381DB19EE100070AE9 /* apikey.swift */,
 				ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */,
 				9200BC171DB1634700070AE9 /* AppDelegate.swift */,
 				9200BC191DB1634700070AE9 /* MainAppViewController.swift */,
@@ -92,7 +105,6 @@
 		9200BC311DB172F500070AE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				9200BC321DB172F500070AE9 /* MapKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -107,6 +119,7 @@
 				9200BC101DB1634700070AE9 /* Sources */,
 				9200BC111DB1634700070AE9 /* Frameworks */,
 				9200BC121DB1634700070AE9 /* Resources */,
+				921E4EE01DB1B4B70005BEBF /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -177,7 +190,6 @@
 			files = (
 				9200BC1A1DB1634700070AE9 /* MainAppViewController.swift in Sources */,
 				9200BC2A1DB1663700070AE9 /* MerithayanUI.swift in Sources */,
-				9200BC391DB19EE100070AE9 /* apikey.swift in Sources */,
 				9200BC181DB1634700070AE9 /* AppDelegate.swift in Sources */,
 				9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */,
 				ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */,
@@ -305,9 +317,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GUTS2016/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mapbox.framework",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
@@ -319,9 +339,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				INFOPLIST_FILE = GUTS2016/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Mapbox.framework",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = uk.co.merithayan.GUTS2016;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 3.0;
