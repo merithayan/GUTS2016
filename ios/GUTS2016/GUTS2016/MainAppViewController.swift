@@ -76,7 +76,7 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         
         // Setup the timer for the server updates
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateServer), userInfo: nil, repeats: true)
-        timer2 = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(radarUpdate), userInfo: nil, repeats: true)
+        timer2 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(radarUpdate), userInfo: nil, repeats: true)
         
         controlView.translatesAutoresizingMaskIntoConstraints = false
         scannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -149,9 +149,14 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             //    lng
             // }
             let id = player.key
+            if id == myId {
+                continue
+            }
             let data = player.value as! [String: Any]
-            let playerLat = data["lat"] as! Double
-            let playerLng = data["lng"] as! Double
+            print(data)
+            let playerLat = Double(data["lat"] as! String)!
+            
+            let playerLng = Double(data["lng"] as! String)!
             
             let playerCoords = CLLocationCoordinate2DMake(playerLat, playerLng)
             let point = MGLPointAnnotation()
