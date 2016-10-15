@@ -9,6 +9,7 @@ import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
 import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
 import com.leokomarov.guts2016.controllers.HomeController;
+import com.mapbox.mapboxsdk.MapboxAccountManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -16,6 +17,9 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private Router router;
+    private final String API_KEY = "pk.eyJ1IjoibmQ5NjAwIiwiYSI6ImNpdWI2MnVrbTAwMGcydHBpb3drc2JxZzMifQ.kLhkRE4MLh55VYT_I1xiBA";
+
+    public static Bundle bundle;
 
     @BindView(R.id.controller_container)
     ViewGroup container;
@@ -26,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        bundle = savedInstanceState;
+        MapboxAccountManager.start(this, API_KEY);
 
         router = Conductor.attachRouter(this, container, savedInstanceState);
 

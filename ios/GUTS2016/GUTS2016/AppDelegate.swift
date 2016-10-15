@@ -13,7 +13,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -29,22 +28,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
                 let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-                health = dataArray["health"] as! Int
-                exp = dataArray["exp"] as! Int
+                player.health = dataArray["health"] as! Int
+                player.exp = dataArray["exp"] as! Int
+                
+                
             } catch let error {
                 print(error)
             }
         })
         
-        socket.on("player-locations", callback: {(data, ack) in
+        socket.on("update", callback: {(data, ack) in
             do {
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
-                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-                otherPlayerLocations = dataArray
+                let dataArray: [[String: Any]] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String: Any]]
+                otherPlayerLocations = dataArray[0]
             } catch let error {
                 print(error)
             }
         })
+        
+
+        
+        socket.on("logged-in", callback: {(data, ack) in
+            print(data)
+            myId = data[0] as! String
+            print("My ID is: ", myId)
+        })
+        
+        
+    
         
         socket.connect()
         
