@@ -19,6 +19,7 @@ let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, c
 
 // Player variables
 var health = 3
+
 var exp = 0
 var myId = ""
 
@@ -50,6 +51,8 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        player.mainView = self
         
         // Login the user when the view loads
         do {

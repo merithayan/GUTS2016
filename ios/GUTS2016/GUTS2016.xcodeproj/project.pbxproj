@@ -18,6 +18,7 @@
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
 		921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; };
 		921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		927C8E391DB284940051B150 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C8E381DB284940051B150 /* Player.swift */; };
 		AC0D749F1DB26EE500A5CFBC /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; };
 		AC0D74A01DB26EE500A5CFBC /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
@@ -147,6 +148,7 @@
 		920B2CE61DB20D4B00738118 /* socket.io-client-swift-8.0.2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "socket.io-client-swift-8.0.2"; sourceTree = "<group>"; };
 		920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Socket.IO-Client-Swift.xcodeproj"; path = "socket.io-client-swift-8.0.2/Socket.IO-Client-Swift.xcodeproj"; sourceTree = "<group>"; };
 		921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
+		927C8E381DB284940051B150 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		AC0D745E1DB2558000A5CFBC /* Socket.IO-Client-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Socket.IO-Client-Swift.xcodeproj"; path = "../../../../../Volumes/U/socket.io-client-swift-8.0.2/Socket.IO-Client-Swift.xcodeproj"; sourceTree = "<group>"; };
 		ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = controlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +192,7 @@
 			children = (
 				ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */,
 				9200BC171DB1634700070AE9 /* AppDelegate.swift */,
+				927C8E381DB284940051B150 /* Player.swift */,
 				9200BC191DB1634700070AE9 /* MainAppViewController.swift */,
 				9200BC341DB1997C00070AE9 /* ScannerView.swift */,
 				9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */,
@@ -419,6 +422,7 @@
 				ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */,
 				9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */,
 				9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */,
+				927C8E391DB284940051B150 /* Player.swift in Sources */,
 				9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
