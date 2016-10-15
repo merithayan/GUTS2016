@@ -32,7 +32,6 @@ app.get('/script', function(req, res) {
 setInterval(function() {
 	// console.log("Trigger update: ", players);
 	var clone = _.extend({}, players);
-
 	io.emit('update', clone);
 }, 500);
 
@@ -41,7 +40,7 @@ io.on('connection', function(socket) {
 	// console.log('Connected: ', socket.id);
 
 	socket.on('login', function(rawdata) {
-		console.log(rawdata);
+		console.log("login rawdata:", rawdata);
 
 		if    (typeof rawdata == 'object') data = rawdata;
 		else  data = JSON.parse(rawdata);
@@ -55,42 +54,43 @@ io.on('connection', function(socket) {
 			experience: defaultExperience
 		};
 
-		// Send socket ID to front-end
+		// Send socket ID to sender
 		socket.emit('logged-in', socket.id);
-		console.log(players);
+		// console.log(players);
 	});
-	
-	socket.on('update-health', function(data){
-		console.log(data);
-		players[socket.id].health = data.health;
-		
-	});
-	
-	//update experience
 	
 	// Update player property
-	socket.on('update-player', function(data) {
+	socket.on('update-player', function(rawdata) {
+
+		var data;
+		if (typeof rawdata == 'object') {
+			data = rawdata;
+		} else {
+			data = JSON.parse(rawdata);
+		}
 
 		_.assign(players[socket.id], data);
-		
-		/*players[socket.id].lat = data.lat;
-		players[socket.id].lng = data.lng;
-		players[socket.id].health = data.health;
-		players[socket.id].experience = data.experience;*/
-
-		console.log("updating player ", socket.id+":", data);
-		
+		// console.log("updating player ", socket.id+":", data);
 	});
 
 	socket.on('fire', function(data) {
 
-		socket.broadcast.emit("fire");
-	});
+		var self = players[data.id]
+		var otherPlayers = _.cloneDeep(players);
+		delete otherPlayers[data.id]
 
-	// Sample socket event
-	socket.on('example', function(msg) {
-		console.log('example ' + msg);
-		io.emit('example', msg);
+		// Find angle between other players
+		for (var id in otherPlayers) {
+			var p = otherPlayers[id];
+			console.log(p.lat);
+			console.log(self.lat);
+			var x = Math.abs(parseFloat(p.lat) - parseFloat(self.lat));
+			var y = Math.abs(parseFloat(p.lng) - parseFloat(self.lng));
+			var bearing = Math.atan2(x, y)*180/Math.PI;
+			console.log(bearing);
+		}
+
+		socket.broadcast.emit("fire");
 	});
 
 	socket.on('disconnect', function() {
@@ -98,8 +98,6 @@ io.on('connection', function(socket) {
 		
 		// Remove from players array
 		delete players[socket.id];
-		
-		console.log(players[socket.id]);
 	});
 	
 	//to send socket to specific person

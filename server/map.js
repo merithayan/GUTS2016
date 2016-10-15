@@ -24,6 +24,17 @@ map.on('load', function () {
                         "title": "Player",
                         "icon": "circle"
                     }
+                },
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-4.288550, 55.871500]
+                    },
+                    "properties": {
+                        "title": "Player2",
+                        "icon": "circle"
+                    }
                 }
             ]
         }

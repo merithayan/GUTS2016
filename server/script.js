@@ -31,16 +31,18 @@ $("#join").click(function() {
 $("#update").click(function() {
 	var data = {
 		id: socketId,
-		lat: $("#lat").val(),
-		lng: $("#lng").val(),
-		angle: $("#angle").val()
+		lat: parseFloat($("#lat").val()),
+		lng: parseFloat($("#lng").val()),
+		angle: parseFloat($("#angle").val())
 	};
 	console.log();
 	socket.emit("update-player", data);
 });
 
 $("#fire").click(function() {
-	socket.emit("fire");
+	socket.emit("fire", {
+		id: socketId
+	});
 });
 
 // Receiving from the server
@@ -50,13 +52,12 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("update", function(data) {
-	console.log(data);
+	// console.log(data);
 	$("#players").html(" ");
 	for (var p in data) {
 
 		// Draw players on map
 
-		
 		p = data[p];
 		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 	}
