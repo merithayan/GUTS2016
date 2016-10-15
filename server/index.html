@@ -1,13 +1,17 @@
 <h1>Socket Testing</h1>
 
 <form>
-	<input id="name" type="name" name="name">
+	<input id="name" type="text" name="name" placeholder="Name">
+	<input id="lat" type="text" name="lng" value="50.00000">
+	<input id="lng" type="text" name="lng" value="-4.00000">
 </form>
 <button id="join">Join Room</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
+
+	var socket = io();
 
 	// Prevent reloading the page
 	$("form").submit(function(e) {
@@ -16,10 +20,11 @@
 	});
 
 	$("#join").click(function() {
-
-		var socket;
-		(!!$("#name").val()) ? socket = io() : console.log("Enter a name...");
-
+		var data = {};
+		data.name = $("#name").val();
+		data.lat = $("#lat").val();
+		data.lng = $("#lng").val();
+		data ? socket.emit("login", data) : console.log("Enter data...");
 	});
 
 </script>
