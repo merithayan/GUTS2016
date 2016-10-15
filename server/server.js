@@ -1,7 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var _ = require('underscore');
+var _ = require('lodash');
 var game = require('./game');
 
 /** Server needs to support:
@@ -16,12 +16,20 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/map', function(req, res) {
+	res.sendFile(__dirname + '/map.js');
+});
+
+app.get('/script', function(req, res) {
+	res.sendFile(__dirname + '/script.js');
+});
+
 // Broadcast all player locations
 setInterval(function() {
 	console.log("Trigger update: ", game.players);
 	var clone = _.extend({}, game.players);
 	io.emit('update', clone);
-}, 3000);
+}, 500);
 
 io.on('connection', function(socket) {
 
@@ -43,7 +51,6 @@ io.on('connection', function(socket) {
 		console.log(game.players);
 	});
 	
-	//update health
 	socket.on('update-health', function(data){
 		console.log(data);
 		game.players[socket.id].health = data.health;
@@ -51,21 +58,25 @@ io.on('connection', function(socket) {
 	});
 	
 	//update experience
-	socket.on('update-exp', function(data){
-		console.log(data);
-		game.players[socket.id].experience = data.experience;
-		
-	});
 	
-	// Update player location & direction
+	// Update player property
 	socket.on('update-player', function(data) {
 		//console.log(data);
-        
-		player_locations = [];
+
+		_.assign(game.players[socket.id], data);
 		
-		game.players[socket.id].lat = data.lat;
+		/*game.players[socket.id].lat = data.lat;
 		game.players[socket.id].lng = data.lng;
 		game.players[socket.id].health = data.health;
+		game.players[socket.id].experience = data.experience;*/
+
+		console.log("updated player:");
+		console.log(game.players[socket.id]);
+		
+	});
+
+	socket.on('update-exp', function(data){
+		console.log(data);
 		game.players[socket.id].experience = data.experience;
 		
 	});
