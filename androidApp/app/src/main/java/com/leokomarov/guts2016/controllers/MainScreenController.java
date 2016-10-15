@@ -204,7 +204,7 @@ public class MainScreenController extends ButterKnifeController {
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroyView(View view){
         socketStuff.unregisterSocket();
         LocationServices.FusedLocationApi.removeLocationUpdates(position.mGoogleApiClient, position);
         position.mGoogleApiClient.disconnect();
