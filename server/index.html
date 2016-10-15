@@ -1,7 +1,9 @@
 <h1>Socket Testing</h1>
 
 <form>
-	<input id="name" type="name" name="name" placeholder="Name">
+	<input id="name" type="text" name="name" placeholder="Name">
+	<input id="lat" type="text" name="lng" value="50.00000">
+	<input id="lng" type="text" name="lng" value="-4.00000">
 </form>
 <button id="join">Join Room</button>
 
@@ -20,9 +22,9 @@
 	$("#join").click(function() {
 		var data = {};
 		data.name = $("#name").val();
-		data.lat = ...
-		data.lng = ...
-		name ? socket.emit("login", data) : console.log("Enter a name...");
+		data.lat = $("#lat").val();
+		data.lng = $("#lng").val();
+		data ? socket.emit("login", data) : console.log("Enter data...");
 	});
 
 </script>
