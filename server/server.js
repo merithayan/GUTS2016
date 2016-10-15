@@ -42,13 +42,24 @@ io.on('connection', function(socket) {
 		socket.emit('logged-in', socket.id);
 		console.log(game.players);
 	});
-
+	
+	//update health
+	socket.on('update-health', function(data){
+		console.log(data);
+		game.players[socket.id].health = data.health;
+		
+	});
 	// Update player location & direction
 	socket.on('update-player', function(data) {
-		console.log(data);
-
-		game.players[data.id].lat = data.lat;
-		game.players[data.id].lng = data.lng;
+		//console.log(data);
+        
+		player_locations = [];
+		
+		game.players[socket.id].lat = data.lat;
+		game.players[socket.id].lng = data.lng;
+		game.players[socket.id].health = data.health;
+		game.players[socket.id].experience = data.experience;
+		
 	});
 
 	socket.on('fire', function(data) {
@@ -63,11 +74,16 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('disconnect', function() {
-		// console.log(socket.id, ' disconnected');
-
+		console.log(socket.id, ' disconnected');
+		
 		// Remove from players array
-		delete game.players[socket.id]
+		delete game.players[socket.id];
+		
+		console.log(game.players[socket.id]);
 	});
+	
+	//to send socket to specific person
+	//io.to(socketid).emit('message', 'for your eyes only');
 
 });
 
