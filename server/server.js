@@ -20,6 +20,10 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/test', function(req, res) {
+	res.sendFile(__dirname + '/test.html');
+})
+
 app.get('/map', function(req, res) {
 	res.sendFile(__dirname + '/map.js');
 });
@@ -73,28 +77,43 @@ io.on('connection', function(socket) {
 		// console.log("updating player ", socket.id+":", data);
 	});
 
-	socket.on('fire', function(data) {
-
-		var self = players[data.id]
+	socket.on('fire', function(id) {
+		console.log("FIRING");
+		var self = players[id];
 		var otherPlayers = _.cloneDeep(players);
-		delete otherPlayers[data.id]
+		delete otherPlayers[id];
 
 		// Find angle between other players
 		for (var id in otherPlayers) {
-			var p = otherPlayers[id];
-			console.log(p.lat);
-			console.log(self.lat);
-			var x = Math.abs(parseFloat(p.lat) - parseFloat(self.lat));
-			var y = Math.abs(parseFloat(p.lng) - parseFloat(self.lng));
-			var bearing = Math.atan2(x, y)*180/Math.PI;
-			console.log(bearing);
+			var target = otherPlayers[id];
+			// Don't judge me, it's a hackathon ಠ_ಠ
+			var xdiff = parseFloat(target.lng) - parseFloat(self.lng);
+			var ydiff = parseFloat(target.lat) - parseFloat(self.lat);
+			console.log("xdiff: ", xdiff);
+			console.log("ydiff: ", ydiff);
+			var azimuth = Math.atan2(xdiff, ydiff)*180/Math.PI;
+			if (azimuth < 0) azimuth += 360;
+
+			console.log("Checking if", self.name, "hit", target.name);
+			console.log("angle: ", self.angle, "azimuth: ", azimuth);
+
+			// If the difference is small enough - emit "shot" event to target
+			if (Math.abs(self.angle - azimuth) < 5) {
+				console.log(target.name, "was shot");
+
+				// target.health -= 1;
+
+				// Send event to target
+				socket.to(target.id).emit("got-shot");
+			}
+
 		}
 
-		socket.broadcast.emit("fire");
+		// socket.broadcast.emit("fire");
 	});
 
 	socket.on('disconnect', function() {
-		console.log(socket.id, ' disconnected');
+		console.log( (players[socket.id]) ? players[socket.id].name : socket.id, ' disconnected');
 		
 		// Remove from players array
 		delete players[socket.id];

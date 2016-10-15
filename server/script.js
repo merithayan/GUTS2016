@@ -40,9 +40,7 @@ $("#update").click(function() {
 });
 
 $("#fire").click(function() {
-	socket.emit("fire", {
-		id: socketId
-	});
+	socket.emit("fire", socketId);
 });
 
 // Receiving from the server
@@ -57,13 +55,17 @@ socket.on("update", function(data) {
 	for (var p in data) {
 
 		// Draw players on map
-
 		p = data[p];
+
 		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 	}
 
 });
 
-socket.on("fire", function() {
+/* socket.on("fire", function() {
 	$("#fire").append("<h1>Shots Fired</h1>");
+}); */
+
+socket.on("got-shot", function() {
+	console.log("You got shot!");
 });

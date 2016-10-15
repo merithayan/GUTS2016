@@ -3,40 +3,41 @@ mapboxgl.accessToken = 'pk.eyJ1IjoiZGFyZWFsZG9kbyIsImEiOiJjaXViMnZtMnQwMDBpMzNwc
 var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/mapbox/streets-v9',
-    minZoom: 17,
+    minZoom: 16,
     center: [-4.288500, 55.871500]
 });
 
-// Draw players on map
 map.on('load', function () {
+    var point = {
+        "type": "Point",
+        "coordinates": [-74.50, 40]
+    };
+
     map.addSource("points", {
         "type": "geojson",
         "data": {
             "type": "FeatureCollection",
-            "features": [
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-4.288500, 55.871500]
-                    },
-                    "properties": {
-                        "title": "Player",
-                        "icon": "circle"
-                    }
+            "features": [{
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-4.29, 55.87]
                 },
-                {
-                    "type": "Feature",
-                    "geometry": {
-                        "type": "Point",
-                        "coordinates": [-4.288550, 55.871500]
-                    },
-                    "properties": {
-                        "title": "Player2",
-                        "icon": "circle"
-                    }
+                "properties": {
+                    "title": "Mapbox DC",
+                    "icon": "monument"
                 }
-            ]
+            }, {
+                "type": "Feature",
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [-122.414, 37.776]
+                },
+                "properties": {
+                    "title": "Mapbox SF",
+                    "icon": "harbor"
+                }
+            }]
         }
     });
 
@@ -46,7 +47,7 @@ map.on('load', function () {
         "source": "points",
         "layout": {
             "icon-image": "{icon}-15",
-			"text-field": "{title}",
+            "text-field": "{title}",
             "text-font": ["Open Sans Semibold", "Arial Unicode MS Bold"],
             "text-offset": [0, 0.6],
             "text-anchor": "top"
