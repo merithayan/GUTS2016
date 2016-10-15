@@ -19,6 +19,7 @@
 		9200BC331DB172F500070AE9 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9200BC321DB172F500070AE9 /* MapKit.framework */; };
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
 		9200BC391DB19EE100070AE9 /* apikey.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC381DB19EE100070AE9 /* apikey.swift */; };
+		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		9200BC321DB172F500070AE9 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		9200BC341DB1997C00070AE9 /* ScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
 		9200BC381DB19EE100070AE9 /* apikey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = apikey.swift; path = ../apikey.swift; sourceTree = "<group>"; };
+		ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = controlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +74,7 @@
 			isa = PBXGroup;
 			children = (
 				9200BC381DB19EE100070AE9 /* apikey.swift */,
+				ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */,
 				9200BC171DB1634700070AE9 /* AppDelegate.swift */,
 				9200BC191DB1634700070AE9 /* MainAppViewController.swift */,
 				9200BC341DB1997C00070AE9 /* ScannerView.swift */,
@@ -177,6 +180,7 @@
 				9200BC391DB19EE100070AE9 /* apikey.swift in Sources */,
 				9200BC181DB1634700070AE9 /* AppDelegate.swift in Sources */,
 				9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */,
+				ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */,
 				9200BC2C1DB1684E00070AE9 /* UserSetupViewController.swift in Sources */,
 				9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */,
 				9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */,
@@ -343,6 +347,7 @@
 				9200BC281DB1634700070AE9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
