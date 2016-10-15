@@ -13,17 +13,19 @@ map.on('load', function () {
         "type": "geojson",
         "data": {
             "type": "FeatureCollection",
-            "features": [{
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [-4.288500, 55.871500]
-                },
-                "properties": {
-                    "title": "Player",
-                    "icon": "circle"
+            "features": [
+                {
+                    "type": "Feature",
+                    "geometry": {
+                        "type": "Point",
+                        "coordinates": [-4.288500, 55.871500]
+                    },
+                    "properties": {
+                        "title": "Player",
+                        "icon": "circle"
+                    }
                 }
-            }]
+            ]
         }
     });
 

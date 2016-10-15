@@ -50,13 +50,17 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("update", function(data) {
-	// console.log(data);
+	console.log(data);
 	$("#players").html(" ");
 	for (var p in data) {
+
+		// Draw players on map
+
+		
 		p = data[p];
-		console.log(p);
 		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 	}
+
 });
 
 socket.on("fire", function() {
