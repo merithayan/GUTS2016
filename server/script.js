@@ -2,6 +2,9 @@ var socket = io();
 var socketId;
 var data = {};
 
+
+
+
 // Prevent reloading the page
 $("form").submit(function(e) {
 	$("#join").trigger("click");
@@ -26,6 +29,8 @@ $("#join").click(function() {
 	data.lng = $("#lng").val();
 	data.angle = $("#angle").val();
 	data ? socket.emit("login", data) : console.log("Enter data...");
+
+	
 });
 
 $("#update").click(function() {
@@ -50,8 +55,9 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("update", function(data) {
-	console.log(data[socketId]);
+	// console.log(data[socketId]);
 	
+	// console.log(data);
 	$("#players").html(" ");
 	for (var p in data) {
 
