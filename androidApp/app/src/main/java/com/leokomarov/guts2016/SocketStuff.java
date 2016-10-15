@@ -1,5 +1,7 @@
 package com.leokomarov.guts2016;
 
+import android.content.Context;
+import android.os.Vibrator;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -34,11 +36,13 @@ public class SocketStuff {
     public void registerSocket(){
         mSocket.on("logged-in", onLoggedIn);
         mSocket.on("update", onUpdateFromServer);
+        mSocket.on("got-shot", onGotShot);
         mSocket.connect();
     }
 
     public void unregisterSocket(){
         mSocket.disconnect();
+        mSocket.on("got-shot", onGotShot);
         mSocket.off("logged-in", onLoggedIn);
         mSocket.off("update", onUpdateFromServer);
     }
@@ -107,6 +111,14 @@ public class SocketStuff {
                                         Log.v("onUpdate", name + ": " + position.toString());
 
                                         mainScreenController.mapStuff.addMarker(name, position);
+                                    } else {
+                                        int health = Integer.parseInt((String) person.get("health"));
+                                        mainScreenController.health = health;
+                                        mainScreenController.updateBattery();
+
+                                        if (health <= 0) {
+                                            mainScreenController.timeOut();
+                                        }
                                     }
                                 }
                             }
@@ -135,20 +147,16 @@ public class SocketStuff {
         public void call(final Object... args) {
             String id = (String) args[0];
             Log.v("onLoggedIn", id);
-
-            /*
-            JSONObject data = (JSONObject) args[0];
-            Log.v("onLoggedIn", data.toString());
-
-            try {
-                id = data.getString("id");
-            } catch (JSONException e) {
-                Log.e("onLoggedIn", e.getMessage());
-                return;
-            }
-            */
             mainScreenController.id = id;
             logMessage(id);
+        }
+    };
+
+    private Emitter.Listener onGotShot = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            Vibrator v = (Vibrator) mainScreenController.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
         }
     };
 

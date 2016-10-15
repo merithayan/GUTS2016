@@ -61,7 +61,7 @@ public class MainScreenController extends ButterKnifeController {
     void fireImageButtonClicked(){
         fireImageButton.setImageResource(R.drawable.fire_button_active);
 
-        socketStuff.mSocket.emit("fire");
+        socketStuff.mSocket.emit("fire", id);
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -142,7 +142,20 @@ public class MainScreenController extends ButterKnifeController {
         updateBattery();
     }
 
-    private void updateBattery(){
+    public void timeOut(){
+        fireImageButton.setVisibility(View.INVISIBLE);
+        powerUpImageButton.setVisibility(View.INVISIBLE);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fireImageButton.setVisibility(View.VISIBLE);
+                powerUpImageButton.setVisibility(View.VISIBLE);
+            }
+        }, 10000);
+    }
+
+    public void updateBattery(){
         int totalNumberOfBars = frameLayout.getChildCount();
         int barsPerHealth = totalNumberOfBars / maxHealth;
         int actualNumberOfBars = health * barsPerHealth;
@@ -194,16 +207,6 @@ public class MainScreenController extends ButterKnifeController {
         if (id != null) {
             socketStuff.emitUpdate(latitude, longitude, angle, id);
         }
-
-        /*
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateData();
-            }
-        }, 2000);
-        */
     }
 
     @Override
