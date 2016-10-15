@@ -54,6 +54,7 @@ setInterval(function() {
 io.on('connection', function(socket) {
 
 	// console.log('Connected: ', socket.id);
+	socket.emit('initial-draw', players);
 
 	socket.on('login', function(rawdata) {
 		console.log("login rawdata:", rawdata);
@@ -73,7 +74,11 @@ io.on('connection', function(socket) {
 
 		// Send socket ID to sender
 		socket.emit('logged-in', socket.id);
-		// console.log(players);
+		socket.emit('initial-draw', players);
+		var p = players[socket.id];
+		p.id = socket.id;
+		console.log(p);
+		socket.broadcast.emit('additional-draw', p);
 	});
 	
 	// Update player property
@@ -144,6 +149,8 @@ io.on('connection', function(socket) {
 		
 		// Remove from players array
 		delete players[socket.id];
+
+		socket.broadcast.emit('remove-marker', socket.id);
 	});
 	
 	//to send socket to specific person

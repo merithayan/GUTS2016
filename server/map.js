@@ -1,28 +1,32 @@
-function populatePlayer(id, playerList){     
-    console.log("adding player");
-    playerList.push(new L.marker([data.lat, data.lng]).addTo(mapLeaflet));
-    
-    var intervalId = setInterval(function(){
-        // lng-=0.000005; 
-        // lat+=0.000005;
-        // marker.setLatLng(L.latLng(lat, lng));
-    }, 10)
-    setTimeout(function(){
-        clearInterval(intervalId);
-    }, 900);
+var markerList = {};
 
-
+function addInitialMarkers(players) {
+    for (key in players) {
+    	var p = players[key];
+    	console.log(p);
+    	markerList[key] = new L.marker([p.lat, p.lng]).addTo(mapLeaflet);
+    }    
     mapLeaflet.scrollWheelZoom.disable();
-
-    return playerList;
 }
 
-function drawPlayers(data, playerList){
-    console.log(data);
-    console.log(playerList);
-    for (m in data){
-        //m.setLatLng(L.latLng(data.lat, data.lng));
-    }  
-    return playerList
+function addAdditionalMarker(player) {
+	console.log("Adding newly joined player");
+	console.log(player.id);
+	if (markerList[player.id]) return;
+	markerList[player.id] = new L.marker([player.lat, player.lng]).addTo(mapLeaflet);
+}
 
+function updateMarkers(players) {
+    for (key in players) {
+    	if (!markerList[key]) {
+    		console.log(key, "hasn't been added to the map - skipping...");
+    		continue;
+    	};
+    	var p = players[key];
+        markerList[key].setLatLng(L.latLng(p.lat, p.lng));
+    }
+}
+
+function removeMarker(id) {
+	mapLeaflet.removeLayer(markerList[id]);
 }

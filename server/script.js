@@ -1,7 +1,6 @@
 var socket = io();
 var socketId;
 var data = {};
-var players = [];
 
 // Prevent reloading the page
 $("form").submit(function(e) {
@@ -27,8 +26,7 @@ $("#join").click(function() {
 	data.angle = $("#angle").val();
 	data ? socket.emit("login", data) : console.log("Enter data...");
 
-	console.log(players)
-	players = populatePlayer(socketId, players);
+	// playerMarkers = populatePlayer(socketId, playerMarkers);
 });
 
 $("#update").click(function() {
@@ -46,29 +44,42 @@ $("#fire").click(function() {
 	socket.emit("fire");
 });
 
-// Receiving from the server
+// When this user has logged in
 socket.on("logged-in", function(id) {
 	socketId = id;
 	$("#display").append("<h4>Joined as ID "+id+"</h4>");
 });
 
-socket.on("player-joined", function(players) {
-
+socket.on("initial-draw", function(players) {
+	console.log("initial drawe");
+	addInitialMarkers(players);
 });
 
-socket.on("update", function(data) {
+socket.on("additional-draw", function(player) {
+	addAdditionalMarker(player);
+});
+
+socket.on("remove-marker", function(id) {
+	console.log("remove marker socket");
+	removeMarker(id);
+})
+
+socket.on("update", function(players) {
 	// console.log(data);
-	if (data[socketId])
-		console.log(data[socketId].health, data[socketId].deadFor);
+	if (players[socketId])
+		console.log(players[socketId].health, players[socketId].deadFor);
 	
 	$("#players").html(" ");
 	
-	for (var p in data) {	
-		p = data[p];
-		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
-	}
-	players = drawPlayers(data, players);
+	for (var key in players) {
+		var p = players[key];
 
+		// Show the player info in Godmode
+		$("#players").append("<li>"+p.name+" "+key+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
+
+		updateMarkers(players);
+	}
+	
 });
 
 socket.on("fire", function() {
