@@ -49,6 +49,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
+        socket.on("fire", callback: {(data, ack) in
+            print("Fire!")
+        })
+        
         socket.connect()
         
         return true

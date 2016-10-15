@@ -11,7 +11,6 @@
 import UIKit
 import CoreLocation
 import SocketIO
-import SwiftyJSON
 
 // The socket global variable
 // c9092951
