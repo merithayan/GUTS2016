@@ -28,8 +28,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
                 let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-                health = dataArray["health"] as! Int
-                exp = dataArray["exp"] as! Int
+                player.health = dataArray["health"] as! Int
+                player.exp = dataArray["exp"] as! Int
+                
+                
             } catch let error {
                 print(error)
             }
