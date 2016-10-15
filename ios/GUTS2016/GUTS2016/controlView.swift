@@ -69,7 +69,7 @@ class ControlView: UIView {
         // Adding fireView to the controlView
         addSubview(fireButton)
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]-10-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":batteryView, "v1":fireButton]))
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-22.5-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":fireButton]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[v0]-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":fireButton]))
 
     }
     
