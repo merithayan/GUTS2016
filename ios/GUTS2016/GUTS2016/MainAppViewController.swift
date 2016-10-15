@@ -152,11 +152,30 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             if id == myId {
                 continue
             }
+            
             let data = player.value as! [String: Any]
             print(data)
-            let playerLat = Double(data["lat"] as! String)!
             
-            let playerLng = Double(data["lng"] as! String)!
+            var playerLat: Double
+            var playerLng: Double
+            
+            print("--------------------")
+            print(data["name"])
+            print(type(of: data["lat"]))
+            print(type(of: data["lng"]))
+            print("-------------------")
+            
+            let stringlat = data["lat"] as? String
+            let stringlng = data["lng"] as? String
+            
+            if let stringlat = stringlat, let stringlng = stringlng {
+                playerLat = Double(stringlat)!
+                playerLng = Double(stringlng)!
+            } else {
+                playerLat = data["lat"] as! Double
+                playerLng = data["lng"] as! Double
+            }
+            
             
             let playerCoords = CLLocationCoordinate2DMake(playerLat, playerLng)
             let point = MGLPointAnnotation()

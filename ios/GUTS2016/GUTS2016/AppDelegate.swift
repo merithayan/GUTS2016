@@ -53,8 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("My ID is: ", myId)
         })
         
-        socket.emit("fire", myId)
         
+    
         
         socket.connect()
         
