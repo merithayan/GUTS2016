@@ -20,7 +20,6 @@ $('.updates').on('input', function() {
 
 // Sending to the server
 $("#join").click(function() {
-	
 	data.name = $("#name").val();
 	data.lat = $("#lat").val();
 	data.lng = $("#lng").val();
@@ -49,8 +48,14 @@ socket.on("logged-in", function(id) {
 	$("#display").append("<h4>Joined as ID "+id+"</h4>");
 });
 
+socket.on("player-joined", function(players) {
+
+});
+
 socket.on("update", function(data) {
-	console.log(data[socketId]);
+	// console.log(data);
+	if (data[socketId])
+		console.log(data[socketId].health, data[socketId].deadFor);
 	
 	$("#players").html(" ");
 	for (var p in data) {
@@ -66,6 +71,11 @@ socket.on("update", function(data) {
 socket.on("fire", function() {
 	$("#fire").append("<h1>Shots Fired</h1>");
 });
+
+socket.on("hit", function(name) {
+	console.log("You hit "+name+"!");
+});
+
 
 socket.on("got-shot", function() {
 	console.log("You got shot!");

@@ -35,9 +35,21 @@ app.get('/script', function(req, res) {
 // Broadcast all player locations
 setInterval(function() {
 	// console.log("Trigger update: ", players);
+	
 	var clone = _.extend({}, players);
 	io.emit('update', clone);
+
 }, 500);
+
+// Check for revival
+setInterval(function() {
+	for (var p in players) {
+		p = players[p];
+		if (p.deadFor > 0) p.deadFor--;
+		if (p.health==0 && p.deadFor==0) p.health = defaultHealth;
+	}
+}, 1000);
+
 
 io.on('connection', function(socket) {
 
@@ -55,7 +67,8 @@ io.on('connection', function(socket) {
 			lng: data.lng,
 			angle: data.angle,
 			health: defaultHealth,
-			experience: defaultExperience
+			experience: defaultExperience,
+			deadFor: 0
 		};
 
 		// Send socket ID to sender
@@ -78,36 +91,47 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('fire', function(id) {
-		console.log("FIRING");
+		//console.log("FIRING");
 		var self = players[socket.id];
 
-		// Find angle between other players
+		// Loop through all players
 		for (var id in players) {
 			if (id == socket.id) {
-				console.log("Found you, skipping...");
+				// console.log("Found you, skipping...");
 				continue;
 			}
 
 			var target = players[id];
+
+			// If player is dead - skip
+			if (target.health < 1) continue;			
+
+			// Find angle between other players
 			// Don't judge me, it's a hackathon ಠ_ಠ
 			var xdiff = parseFloat(target.lng) - parseFloat(self.lng);
 			var ydiff = parseFloat(target.lat) - parseFloat(self.lat);
-			console.log("xdiff: ", xdiff);
-			console.log("ydiff: ", ydiff);
+			//console.log("xdiff: ", xdiff);
+			//console.log("ydiff: ", ydiff);
 			var azimuth = Math.atan2(xdiff, ydiff)*180/Math.PI;
 			if (azimuth < 0) azimuth += 360;
 
-			console.log("Checking if", self.name, "hit", target.name);
-			console.log("angle: ", self.angle, "azimuth: ", azimuth);
+			//console.log("Checking if", self.name, "hit", target.name);
+			// console.log("angle: ", self.angle, "azimuth: ", azimuth);
 
 			// If the difference is small enough - emit "shot" event to target
 			if (Math.abs(self.angle - azimuth) < 5) {
 				console.log(target.name, "was shot");
 
 				target.health -= 1;
+				if (target.health < 1) {
+					target.deadFor = 10;
+				}
 
 				// Send event to target
 				socket.to(target.id).emit("got-shot");
+
+				// Send event to marksman
+				socket.to(self.id).emit("hit");
 			}
 
 		}
