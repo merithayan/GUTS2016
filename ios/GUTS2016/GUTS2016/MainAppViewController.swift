@@ -15,7 +15,7 @@ import Mapbox
 
 // The socket global variable
 // c9092951
-let socket = SocketIOClient(socketURL: URL(string: "https://c9092951.ngrok.io")!, config: [])
+let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [])
 
 // Player variables
 var health = 3
