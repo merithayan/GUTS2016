@@ -8,44 +8,59 @@ var game = require('./game');
 	- Latitude: [55.871200, 55.871800]
 	- Longitude: [-4.289500, -4.287500]
 - Direction - same slider
-- Health
-- Experience
 - Bonus: Powerups (emp, mines, nukes)
 */
 
-
-app.get('/', function(req, res){
+app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket){
+io.on('connection', function(socket) {
 
-	console.log('Connected: ', socket.id);
+	// console.log('Connected: ', socket.id);
 
 	// User login
 	socket.on('login', function(name) {
 		console.log(name, 'joined');
-		game.players.push(name);
+
+		// Create new player
+		game.players.push(new game.playerFactory(
+			socket.id,
+			name, 
+			game.defaultHealth,
+			game.defaultExperience)
+		);
+
 		io.emit('login', name);
 		console.log(game.players);
 	});
 
-	socket.on('chat message', function(msg){
-		console.log('message: ' + msg);
-		io.emit('chat message', msg);
+	socket.on('send-location', function(data) {
+
 	});
 
-	socket.on('disconnect', function(){
-		console.log('user disconnected');
+	// Fire
+	socket.on('fire', function(data) {
+		
 	});
 
-	// Emit an event for the front-end
-	socket.on('typing', function(bool) {
-		socket.broadcast.emit('typing', bool);
-	})
+	// Sample socket event
+	socket.on('example', function(msg) {
+		console.log('example ' + msg);
+		io.emit('example', msg);
+	});
+
+	socket.on('disconnect', function() {
+		console.log(socket.id, ' disconnected');
+
+		// Remove from players array
+		game.players = game.players.filter(function(player) {
+		    return player.id != socket.id;
+		});
+	});
 
 });
 
-http.listen(3000, function(){
+http.listen(3000, function() {
 	console.log('listening on *:3000');
 });

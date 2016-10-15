@@ -10,28 +10,32 @@ console.log('game.js loaded');
 module.exports = {
 	
 	players: [],
+	defaultHealth: 3,
+	defaultExperience: 0,
 	
-	playerFactory: function(name, health, experience){
+	playerFactory: function(id, name, health, experience) {
 	
 		var temp = {};
 	
+		temp.id = id;
 		temp.name = name;
 		temp.health = health;
 		temp.experience = experience;
 	    
-		temp.display = function(){
-					   
+		temp.display = function(){	   
 		    console.log(this.name+ " , has " + this.health + " and " + this.experience + " experience.");
-	    
 		};
 		
 		return {
+			id: temp.id,
 			name: temp.name, 
 			health: temp.health,
 			experience: temp.experience,
 			display: temp.display
-		};
-	};
+		}
+
+	}
+
 }
 
 

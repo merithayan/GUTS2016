@@ -9,6 +9,8 @@
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 
+	var socket = io();
+
 	// Prevent reloading the page
 	$("form").submit(function(e) {
 		$("#join").trigger("click");
@@ -16,10 +18,8 @@
 	});
 
 	$("#join").click(function() {
-
-		var socket;
-		(!!$("#name").val()) ? socket = io() : console.log("Enter a name...");
-
+		var name = $("#name").val()
+		name ? socket.emit("login", name) : console.log("Enter a name...");
 	});
 
 </script>
