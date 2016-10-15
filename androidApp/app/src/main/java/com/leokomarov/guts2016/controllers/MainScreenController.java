@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
@@ -33,7 +34,7 @@ public class MainScreenController extends ButterKnifeController {
     private SocketStuff socketStuff;
     public MapStuff mapStuff;
     private Position position;
-    private Direction direction;
+    public Direction direction;
 
     public String username;
     public String id;
@@ -49,6 +50,9 @@ public class MainScreenController extends ButterKnifeController {
 
     @BindView(R.id.fireButton)
     ImageButton fireImageButton;
+
+    @BindView(R.id.angleTV)
+    TextView angleTextview;
 
     @BindView(R.id.powerUpButton)
     ImageButton powerUpImageButton;
@@ -170,7 +174,6 @@ public class MainScreenController extends ButterKnifeController {
     public void updateData(){
         Log.v("updateData", "updateData");
         direction.updateOrientationAngles();
-        direction.updateOrientationAngles();
         String latitude = "";
         String longitude = "";
         String angle = "";
@@ -180,6 +183,8 @@ public class MainScreenController extends ButterKnifeController {
             longitude = Double.toString(position.mLastLocation.getLongitude());
         }
         angle = Float.toString(direction.angle);
+        String angleString = Integer.toString((int) direction.angle);
+        angleTextview.setText(angleString);
 
         Log.v("updateData", "latitude: " + latitude);
         Log.v("updateData", "longitude: " + longitude);

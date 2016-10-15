@@ -89,6 +89,7 @@ public class MapStuff {
         actualMap.setCameraPosition(new CameraPosition.Builder()
                 .target(currentPosition)
                 .zoom(16)
+                .bearing(mainScreenController.direction.angle)
                 .build());
     }
 }

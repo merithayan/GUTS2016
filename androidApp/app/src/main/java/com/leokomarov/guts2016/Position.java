@@ -55,8 +55,8 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         }
 
         LocationRequest mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(100000);
-        mLocationRequest.setFastestInterval(100000);
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         Log.v("startLocationUpdates", "requested LocationUpdates");
