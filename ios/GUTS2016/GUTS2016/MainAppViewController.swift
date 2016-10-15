@@ -10,14 +10,16 @@
 
 import UIKit
 import CoreLocation
+import SocketIO
+import SwiftyJSON
+
+// The socket global variable
+let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [.log(true)])
 
 class MainAppViewController: UIViewController, CLLocationManagerDelegate {
-
     
-    // The last time the server was updated
-    var lastServerUpdate = Date()
-    // How long the server wants between updates
-    var timeIntervalToUpdateServer = TimeInterval(exactly: 1.0)
+    // Setup a timer to fire server calls
+    var timer = Timer()
     
     // Create a location manager to work with the various views, and a class to act as it's delegate
     let clmanager: CLLocationManager = {
@@ -29,13 +31,7 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     }()
 
     // The current coordinates of t
-    var currentCoords: CLLocationCoordinate2D = CLLocationCoordinate2D() {
-        didSet {
-            if lastServerUpdate.timeIntervalSinceNow >= timeIntervalToUpdateServer! {
-                updateServer()
-            }
-        }
-    }
+    var currentCoords: CLLocationCoordinate2D = CLLocationCoordinate2D()
     
     // The two subviews
     let controlView = ControlView()
@@ -44,10 +40,30 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        // Login the user when the view loads
+        do {
+            let coords = clmanager.location?.coordinate
+            let jsondata: [String: String] = [
+                "name" : username,
+                "lat" : String(format: "%f", coords!.latitude),
+                "lng" : String(format: "%f", coords!.longitude)
+            ]
+            
+            let testString = "{\"name\":" + username + ", \"lat\":" + String(format: "%f", coords!.latitude) + ", \"lng\":" + String(format: "%f", coords!.longitude) + "}"
+            
+            let jsonifiedUsername = try JSONSerialization.data(withJSONObject: jsondata, options: .prettyPrinted)
+            
+            print(String(data: jsonifiedUsername, encoding: String.Encoding.utf8)!)
+            socket.emit("login", testString)
+        } catch let error as Error {
+            print(error)
+            fatalError()
+        }
+        
         clmanager.delegate = self
         
-        // Do any additional setup after loading the view, typically from a nib.
-
+        // Setup the timer for the server updates
+        timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateServer), userInfo: nil, repeats: true)
         
         controlView.translatesAutoresizingMaskIntoConstraints = false
         scannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -73,20 +89,36 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             currentCoords = coords
         }
         scannerView.scannerMap.setCenter(currentCoords, animated: true)
+        
+
+        
     }
 
     // When it's time to update the server run this
     func updateServer() {
-        lastServerUpdate = Date()
-        print("Send this stuff to server")
-        print("Latitude:", currentCoords.latitude)
-        print("Longitude:", currentCoords.longitude)
+        let dataDictionary = [
+            "lat": currentCoords.latitude,
+            "lng": currentCoords.longitude
+        ]
+        
+        do {
+            let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: .prettyPrinted)
+            print("OUTGOING DATA *******************")
+            try print(JSONSerialization.jsonObject(with: jsonifiedData, options: .mutableContainers) as! [String: Any])
+            print("*********************************")
+            //socket.connect()
+            socket.emit("update-player", jsonifiedData)
+        } catch let error as Error {
+            print(error)
+        }
+        
     }
     
     // Function called when a new location is detected
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coords = locations[0].coordinate
         scannerView.scannerMap.setCenter(coords, animated: false)
+        currentCoords = coords
     }
     
     // Function called when a new heading is located

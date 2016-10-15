@@ -17,8 +17,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         window = UIWindow(frame: UIScreen.main.bounds)
-        window?.rootViewController = MainAppViewController()
+        window?.rootViewController = UserSetupViewController()
         window?.makeKeyAndVisible()
+        
+        // Set up the SocketIO things
+        socket.on("connect", callback: { (data, ack) in
+            print("We managed to connect to the sockets!")
+        })
+        
+        socket.connect()
+        
         return true
     }
 
