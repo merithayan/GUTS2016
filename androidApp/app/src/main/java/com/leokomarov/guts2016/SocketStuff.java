@@ -7,7 +7,6 @@ import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.Socket;
 import com.leokomarov.guts2016.controllers.MainScreenController;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 public class SocketStuff {
@@ -20,27 +19,27 @@ public class SocketStuff {
     }
 
     public void registerSocket(){
-        mSocket.on("new message", onNewMessage);
         mSocket.on("update", onSocketUpdate);
         mSocket.connect();
     }
 
     public void unregisterSocket(){
         mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
         mSocket.off("update", onSocketUpdate);
     }
 
-    public void emitLogin(String username) {
+    public void emitLogin(String username, String latitude, String longitude) {
+        Log.v("emitLogin", " ");
         if (TextUtils.isEmpty(username)) {
+            Log.e("emitLogin", "empty");
             return;
         }
 
         JSONObject jo = new JSONObject();
         try {
             jo.put("name", username);
-            jo.put("lat", String.valueOf(mainScreenController.position.mLastLocation.getLatitude()));
-            jo.put("lng", String.valueOf(mainScreenController.position.mLastLocation.getLongitude()));
+            jo.put("lat", String.valueOf(latitude));
+            jo.put("lng", String.valueOf(longitude));
         } catch(Exception e) {
             Log.e("emitLogin", e.getMessage());
         }
@@ -49,26 +48,6 @@ public class SocketStuff {
         mSocket.emit("login", jo);
     }
 
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            mainScreenController.getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String message;
-                    try {
-                        message = data.getString("message");
-                    } catch (JSONException e) {
-                        Log.e("Home-onNewMessage", e.getMessage());
-                        return;
-                    }
-                    logMessage(message);
-                }
-            });
-        }
-    };
-
     private Emitter.Listener onSocketUpdate = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
@@ -76,7 +55,7 @@ public class SocketStuff {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
-                    Log.v("onUpdate", data.toString());
+                    //Log.v("onUpdate", data.toString());
                     String message ="abc";
                     /*
                     try {
@@ -86,7 +65,7 @@ public class SocketStuff {
                         return;
                     }
                     */
-                    logMessage(message);
+                    //logMessage(message);
                 }
             });
         }

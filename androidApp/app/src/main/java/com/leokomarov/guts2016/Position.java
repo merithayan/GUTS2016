@@ -1,12 +1,20 @@
 package com.leokomarov.guts2016;
 
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -34,15 +42,31 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         this.mainScreenController = mainScreenController;
     }
 
-    private void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+                return false;
+            }
+
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+
+        } else{
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
+
+
     }
 
     public void startLocationUpdates() {
-        Log.e("startLocationUpdates", "startLocationUpdates");
+        Log.v("startLocationUpdates", "startLocationUpdates");
 
         boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
@@ -57,8 +81,12 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
             ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
 
-        createLocationRequest();
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(1000);
+        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
+        Log.v("startLocationUpdates", "requested LocationUpdates");
     }
 
     @Override
@@ -80,10 +108,31 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
         Log.v("onConnected", "passed");
 
+        if (! isLocationEnabled(mainScreenController.getActivity())) {
+
+        }
+
+        LocationManager locationManager = (LocationManager) mainScreenController.getActivity().getSystemService(Context.LOCATION_SERVICE);
+        if( ! locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(mainScreenController.getActivity());
+            builder.setTitle("GPS not found");  // GPS not found
+            builder.setMessage("Would you like to turn it on?"); // Want to enable?
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mainScreenController.startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                }
+            });
+            builder.setNegativeButton("No", null);
+            builder.create().show();
+            return;
+        }
+
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
+
         startLocationUpdates();
         mainScreenController.updateData();
+        mainScreenController.login();
     }
 
     @Override
