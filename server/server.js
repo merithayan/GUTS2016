@@ -26,7 +26,7 @@ app.get('/script', function(req, res) {
 
 // Broadcast all player locations
 setInterval(function() {
-	console.log("Trigger update: ", game.players);
+	// console.log("Trigger update: ", game.players);
 	var clone = _.extend({}, game.players);
 	io.emit('update', clone);
 }, 500);
@@ -35,13 +35,17 @@ io.on('connection', function(socket) {
 
 	// console.log('Connected: ', socket.id);
 
-	socket.on('login', function(data) {
-		console.log(data.name, 'joined');
+	socket.on('login', function(rawdata) {
+		console.log(rawdata);
+
+		if    (typeof rawdata == 'object') data = rawdata;
+		else  data = JSON.parse(rawdata);
 
 		game.players[socket.id] = {
 			name: data.name,
 			lat: data.lat,
 			lng: data.lng,
+			angle: data.angle,
 			health: game.defaultHealth,
 			experience: game.defaultExperience
 		};
@@ -61,7 +65,6 @@ io.on('connection', function(socket) {
 	
 	// Update player property
 	socket.on('update-player', function(data) {
-		//console.log(data);
 
 		_.assign(game.players[socket.id], data);
 		
@@ -70,14 +73,7 @@ io.on('connection', function(socket) {
 		game.players[socket.id].health = data.health;
 		game.players[socket.id].experience = data.experience;*/
 
-		console.log("updated player:");
-		console.log(game.players[socket.id]);
-		
-	});
-
-	socket.on('update-exp', function(data){
-		console.log(data);
-		game.players[socket.id].experience = data.experience;
+		console.log("updating player ", socket.id+":", data);
 		
 	});
 
