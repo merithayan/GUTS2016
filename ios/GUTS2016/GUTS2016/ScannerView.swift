@@ -11,10 +11,9 @@ import UIKit
 
 class TrackerView: UIView {
     
-    let map = MKMapView()
-    
-    override init() {
-        
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.backgroundColor = MerithayanUI.amber.base
     }
     
     required init?(coder aDecoder: NSCoder) {
