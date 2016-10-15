@@ -25,6 +25,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("We managed to connect to the sockets!")
         })
         
+        socket.on("update-player-state", callback: {(data, ack) in
+            do {
+                let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
+                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
+                health = dataArray["health"] as! Int
+                exp = dataArray["exp"] as! Int
+            } catch let error {
+                print(error)
+            }
+        })
+        
+        socket.on("player-locations", callback: {(data, ack) in
+            do {
+                let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
+                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
+                otherPlayerLocations = dataArray
+            } catch let error {
+                print(error)
+            }
+        })
+        
         socket.connect()
         
         return true
