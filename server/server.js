@@ -79,13 +79,16 @@ io.on('connection', function(socket) {
 
 	socket.on('fire', function(id) {
 		console.log("FIRING");
-		var self = players[id];
-		var otherPlayers = _.cloneDeep(players);
-		delete otherPlayers[id];
+		var self = players[socket.id];
 
 		// Find angle between other players
-		for (var id in otherPlayers) {
-			var target = otherPlayers[id];
+		for (var id in players) {
+			if (id == socket.id) {
+				console.log("Found you, skipping...");
+				continue;
+			}
+
+			var target = players[id];
 			// Don't judge me, it's a hackathon ಠ_ಠ
 			var xdiff = parseFloat(target.lng) - parseFloat(self.lng);
 			var ydiff = parseFloat(target.lat) - parseFloat(self.lat);
@@ -101,7 +104,7 @@ io.on('connection', function(socket) {
 			if (Math.abs(self.angle - azimuth) < 5) {
 				console.log(target.name, "was shot");
 
-				// target.health -= 1;
+				target.health -= 1;
 
 				// Send event to target
 				socket.to(target.id).emit("got-shot");

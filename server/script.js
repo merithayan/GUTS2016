@@ -50,7 +50,8 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("update", function(data) {
-	// console.log(data);
+	console.log(data[socketId]);
+	
 	$("#players").html(" ");
 	for (var p in data) {
 
@@ -62,9 +63,9 @@ socket.on("update", function(data) {
 
 });
 
-/* socket.on("fire", function() {
+socket.on("fire", function() {
 	$("#fire").append("<h1>Shots Fired</h1>");
-}); */
+});
 
 socket.on("got-shot", function() {
 	console.log("You got shot!");
