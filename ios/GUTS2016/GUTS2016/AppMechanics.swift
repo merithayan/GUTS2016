@@ -9,3 +9,17 @@
 //
 
 import Foundation
+import SocketIO
+import CoreLocation
+
+// Create a socket instance for the rest of the app to use
+let url = URL(string: "http://guts.merithayan.com")
+let socket = SocketIOClient(socketURL: url!)
+
+
+
+// Move the following line to the fire button code, so heading isn't constantly taken when not needed.
+// clmanager.startUpdatingHeading()
+// do stuff
+// clmanager.stopUpdatingHeading()
+

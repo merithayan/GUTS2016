@@ -10,43 +10,30 @@ import Foundation
 import UIKit
 import Mapbox
 import CoreLocation
+import SocketIO
 
-class TrackerView: UIView, CLLocationManagerDelegate, MGLMapViewDelegate {
+class TrackerView: UIView, MGLMapViewDelegate {
     
+    // Parent view, used to access single location manager instance
+    var parentView: MainAppViewController? = nil
+    // The map to be used as the scanner
     var scannerMap: MGLMapView
-    var clmanager: CLLocationManager
+    
     
     override init(frame: CGRect) {
         
         // Setup the scanner map
         scannerMap = MGLMapView()
-        clmanager = CLLocationManager()
+        
+        parentView?.currentCoords = CLLocationCoordinate2D(latitude: 0, longitude: 0)
         
         scannerMap.isScrollEnabled = false
         scannerMap.styleURL = MGLStyle.darkStyleURL(withVersion: 9)
         scannerMap.translatesAutoresizingMaskIntoConstraints = false
         scannerMap.setUserTrackingMode(MGLUserTrackingMode.follow, animated: true)
-        scannerMap.zoomLevel = 15
+        scannerMap.zoomLevel = 17
         
         super.init(frame: frame)
-        
-        // Set up the CoreLocation Manager
-        
-        clmanager.requestWhenInUseAuthorization()
-        clmanager.desiredAccuracy = kCLLocationAccuracyBest
-        clmanager.startUpdatingLocation()
-        clmanager.startUpdatingHeading()
-        clmanager.delegate = self
-        
-        // Get the user's location from CoreLocation
-        let currentLocation = clmanager.location
-        let currentLocationCoordinates = currentLocation?.coordinate
-        
-        // If there are initial coordinates, center the map on them
-        if let coords = currentLocationCoordinates {
-            scannerMap.setCenter(coords, animated: true)
-        }
-        
         
         self.addSubview(scannerMap)
         self.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[v0]-20-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":scannerMap]))
@@ -59,31 +46,30 @@ class TrackerView: UIView, CLLocationManagerDelegate, MGLMapViewDelegate {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        let coords = locations[0].coordinate
-        scannerMap.setCenter(coords, animated: false)
-        scannerMap.latitude = coords.latitude
-        scannerMap.longitude = coords.longitude
-        print("Location Manager Updated Location:")
-        print(coords)
-        scannerMap.zoomLevel = 20
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
-        let heading = newHeading.trueHeading.description
-        print(heading)
-    }
-    
-    func mapView(_ mapView: MGLMapView, didUpdate userLocation: MGLUserLocation?) {
-        let coords = userLocation?.coordinate
-        if let coords = coords {
-            scannerMap.setCenter(coords, animated: false)
-            print("Map View Updated Location:")
-            print(coords)
-            scannerMap.latitude = coords.latitude
-            scannerMap.longitude = coords.longitude
-        }
-        
-    }
 }
 
+// Class for the Radar view
+class TrackerRadarAnnotation: MGLAnnotationView {
+    init(reuseIdentifier: String, size: CGFloat) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        
+        // This property prevents the annotation from changing size when the map is tilted.
+        scalesWithViewingDistance = false
+        
+        // Begin setting up the view.
+        frame = CGRect(x: 0, y: 0, width: size, height: size)
+        
+        backgroundColor = MerithayanUI.blueGrey.lighten5
+        
+        // Use CALayer’s corner radius to turn this view into a circle.
+        layer.cornerRadius = size / 2
+        layer.borderWidth = 1
+        layer.borderColor = UIColor.white.cgColor
+        layer.shadowColor = UIColor.black.cgColor
+        layer.shadowOpacity = 0.1
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}

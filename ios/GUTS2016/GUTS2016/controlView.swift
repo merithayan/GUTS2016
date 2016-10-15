@@ -34,6 +34,9 @@ class GreenBarView: UIImageView {
 
 
 class ControlView: UIView {
+    
+    var parentView: MainAppViewController? = nil
+    
     var imageView: UIImageView
     var redBarView: UIImageView
     override init(frame: CGRect) {

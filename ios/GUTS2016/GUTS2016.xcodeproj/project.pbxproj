@@ -17,10 +17,64 @@
 		9200BC2E1DB1693E00070AE9 /* AchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */; };
 		9200BC301DB16D2200070AE9 /* AppMechanics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */; };
 		9200BC351DB1997C00070AE9 /* ScannerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9200BC341DB1997C00070AE9 /* ScannerView.swift */; };
+		920B2CFE1DB20F3000738118 /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 920B2CF21DB20D6F00738118 /* SocketIO.framework */; };
+		920B2CFF1DB20F3000738118 /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 920B2CF21DB20D6F00738118 /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; };
 		921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		920B2CF11DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572EF2191B51F16C00EEBB58;
+			remoteInfo = "SocketIO-iOS";
+		};
+		920B2CF31DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572EF2241B51F16C00EEBB58;
+			remoteInfo = "SocketIO-iOSTests";
+		};
+		920B2CF51DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572EF2381B51F18A00EEBB58;
+			remoteInfo = "SocketIO-Mac";
+		};
+		920B2CF71DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 572EF2421B51F18A00EEBB58;
+			remoteInfo = "SocketIO-MacTests";
+		};
+		920B2CF91DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57634A161BD9B46A00E19CD7;
+			remoteInfo = "SocketIO-tvOS";
+		};
+		920B2CFB1DB20D6F00738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57634A3B1BD9B46D00E19CD7;
+			remoteInfo = "SocketIO-tvOSTests";
+		};
+		920B2D001DB20F3000738118 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 572EF2181B51F16C00EEBB58;
+			remoteInfo = "SocketIO-iOS";
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		921E4EE01DB1B4B70005BEBF /* Embed Frameworks */ = {
@@ -30,6 +84,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				921E4EDF1DB1B4B70005BEBF /* Mapbox.framework in Embed Frameworks */,
+				920B2CFF1DB20F3000738118 /* SocketIO.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -49,6 +104,8 @@
 		9200BC2D1DB1693E00070AE9 /* AchievementsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AchievementsViewController.swift; sourceTree = "<group>"; };
 		9200BC2F1DB16D2200070AE9 /* AppMechanics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppMechanics.swift; sourceTree = "<group>"; };
 		9200BC341DB1997C00070AE9 /* ScannerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScannerView.swift; sourceTree = "<group>"; };
+		920B2CE61DB20D4B00738118 /* socket.io-client-swift-8.0.2 */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "socket.io-client-swift-8.0.2"; sourceTree = "<group>"; };
+		920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Socket.IO-Client-Swift.xcodeproj"; path = "socket.io-client-swift-8.0.2/Socket.IO-Client-Swift.xcodeproj"; sourceTree = "<group>"; };
 		921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = controlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,6 +115,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				920B2CFE1DB20F3000738118 /* SocketIO.framework in Frameworks */,
 				921E4EDE1DB1B4B70005BEBF /* Mapbox.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +126,7 @@
 		9200BC0B1DB1634700070AE9 = {
 			isa = PBXGroup;
 			children = (
+				920B2CE61DB20D4B00738118 /* socket.io-client-swift-8.0.2 */,
 				921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */,
 				9200BC291DB1663700070AE9 /* MerithayanUI.swift */,
 				9200BC161DB1634700070AE9 /* GUTS2016 */,
@@ -105,8 +164,22 @@
 		9200BC311DB172F500070AE9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		920B2CE91DB20D6F00738118 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				920B2CF21DB20D6F00738118 /* SocketIO.framework */,
+				920B2CF41DB20D6F00738118 /* SocketIO-iOSTests.xctest */,
+				920B2CF61DB20D6F00738118 /* SocketIO.framework */,
+				920B2CF81DB20D6F00738118 /* SocketIO-MacTests.xctest */,
+				920B2CFA1DB20D6F00738118 /* SocketIO.framework */,
+				920B2CFC1DB20D6F00738118 /* SocketIO-tvOSTests.xctest */,
+			);
+			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -124,6 +197,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				920B2D011DB20F3000738118 /* PBXTargetDependency */,
 			);
 			name = GUTS2016;
 			productName = GUTS2016;
@@ -163,12 +237,63 @@
 			mainGroup = 9200BC0B1DB1634700070AE9;
 			productRefGroup = 9200BC151DB1634700070AE9 /* Products */;
 			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 920B2CE91DB20D6F00738118 /* Products */;
+					ProjectRef = 920B2CE81DB20D6F00738118 /* Socket.IO-Client-Swift.xcodeproj */;
+				},
+			);
 			projectRoot = "";
 			targets = (
 				9200BC131DB1634700070AE9 /* GUTS2016 */,
 			);
 		};
 /* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		920B2CF21DB20D6F00738118 /* SocketIO.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketIO.framework;
+			remoteRef = 920B2CF11DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920B2CF41DB20D6F00738118 /* SocketIO-iOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SocketIO-iOSTests.xctest";
+			remoteRef = 920B2CF31DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920B2CF61DB20D6F00738118 /* SocketIO.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketIO.framework;
+			remoteRef = 920B2CF51DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920B2CF81DB20D6F00738118 /* SocketIO-MacTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SocketIO-MacTests.xctest";
+			remoteRef = 920B2CF71DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920B2CFA1DB20D6F00738118 /* SocketIO.framework */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.framework;
+			path = SocketIO.framework;
+			remoteRef = 920B2CF91DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		920B2CFC1DB20D6F00738118 /* SocketIO-tvOSTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = "SocketIO-tvOSTests.xctest";
+			remoteRef = 920B2CFB1DB20D6F00738118 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9200BC121DB1634700070AE9 /* Resources */ = {
@@ -200,6 +325,14 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		920B2D011DB20F3000738118 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "SocketIO-iOS";
+			targetProxy = 920B2D001DB20F3000738118 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9200BC1B1DB1634700070AE9 /* Main.storyboard */ = {
@@ -315,6 +448,7 @@
 		9200BC271DB1634700070AE9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -337,6 +471,7 @@
 		9200BC281DB1634700070AE9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 7UZHTCB32F;
 				FRAMEWORK_SEARCH_PATHS = (
