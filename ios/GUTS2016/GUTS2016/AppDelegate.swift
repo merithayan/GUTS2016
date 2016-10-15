@@ -46,11 +46,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
+
+        
         socket.on("logged-in", callback: {(data, ack) in
             print(data)
             myId = data[0] as! String
             print("My ID is: ", myId)
         })
+        
+        socket.on("fire", callback: {(data, ack) in
+            print("Fire!")
+        })
+        
         
         socket.connect()
         
