@@ -1,9 +1,9 @@
-package com.leokomarov.guts2016.home;
+package com.leokomarov.guts2016.controllers;
 
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,19 +13,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.nkzawa.emitter.Emitter;
 import com.github.nkzawa.socketio.client.IO;
-import com.github.nkzawa.socketio.client.Socket;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.leokomarov.guts2016.Direction;
 import com.leokomarov.guts2016.Position;
 import com.leokomarov.guts2016.R;
-import com.leokomarov.guts2016.controllers.ButterKnifeController;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.leokomarov.guts2016.SocketStuff;
 
 import java.net.URISyntaxException;
 
@@ -35,14 +29,15 @@ import butterknife.OnClick;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_COARSE_LOCATION;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
 
-public class HomeController extends ButterKnifeController {
+public class MainScreenController extends ButterKnifeController {
 
-    private Socket mSocket;
-    private Position position;
-    private Direction direction;
+    private SocketStuff socketStuff;
+    public Position position;
+    public Direction direction;
+    private String username;
 
     @BindView(R.id.edittext1)
-    EditText edittext1;
+    public EditText edittext1;
 
     @BindView(R.id.latitudeTV)
     TextView latitudeTV;
@@ -51,7 +46,7 @@ public class HomeController extends ButterKnifeController {
     TextView longitudeTV;
 
     @BindView(R.id.batteryImage)
-    ImageView batterImageView;
+    ImageView batteryImageView;
 
     @BindView(R.id.fireButton)
     ImageButton fireImageButton;
@@ -63,7 +58,7 @@ public class HomeController extends ButterKnifeController {
     void fireImageButtonClicked(){
         fireImageButton.setImageResource(R.drawable.fire_button_active);
 
-        mSocket.emit("fire");
+        socketStuff.mSocket.emit("fire");
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -91,20 +86,26 @@ public class HomeController extends ButterKnifeController {
     @OnClick(R.id.submitButton)
     void submitButtonClicked(){
         Log.v("submit", "button clicked");
-        attemptSend();
+        socketStuff.emitLogin(username);
     }
 
-    public HomeController(){
+    public MainScreenController(Bundle args){
+        super(args);
+    }
+
+    public MainScreenController(String username){
+        this.username = username;
+        socketStuff = new SocketStuff(this);
         try {
-            mSocket = IO.socket("http://c9092951.ngrok.io/");
+            socketStuff.mSocket = IO.socket("http://c9092951.ngrok.io/");
         } catch (URISyntaxException e) {
-            Log.e("HomeController", e.getMessage());
+            Log.e("MainScreenController", e.getMessage());
         }
     }
 
     @Override
     protected View inflateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {
-        return inflater.inflate(R.layout.controller_home, container, false);
+        return inflater.inflate(R.layout.controller_main, container, false);
     }
 
     @Override
@@ -115,13 +116,11 @@ public class HomeController extends ButterKnifeController {
 
         Log.v("onViewBound", "onViewBound");
 
-        mSocket.on("new message", onNewMessage);
-        mSocket.on("update", onSocketUpdate);
-        mSocket.connect();
+        socketStuff.registerSocket();
 
         if (position == null) {
             position = new Position(this);
-            Log.v("HomeController", "Making new position");
+            Log.v("MainScreenController", "Making new position");
 
         }
 
@@ -134,11 +133,10 @@ public class HomeController extends ButterKnifeController {
         }
 
         position.mGoogleApiClient.connect();
-        //position.startLocationUpdates();
 
         if (direction == null) {
             direction = new Direction(this);
-            Log.v("HomeController", "Making new direction");
+            Log.v("MainScreenController", "Making new direction");
         }
 
         direction.registerListeners();
@@ -194,77 +192,10 @@ public class HomeController extends ButterKnifeController {
 
     @Override
     protected void onDestroy(){
-        mSocket.disconnect();
-        mSocket.off("new message", onNewMessage);
-        mSocket.off("update", onSocketUpdate);
+        socketStuff.unregisterSocket();
         LocationServices.FusedLocationApi.removeLocationUpdates(position.mGoogleApiClient, position);
         position.mGoogleApiClient.disconnect();
         direction.mSensorManager.unregisterListener(direction);
         Log.v("onDestroy", "disconnected");
-    }
-
-    private void attemptSend() {
-        String message = edittext1.getText().toString();
-        if (TextUtils.isEmpty(message)) {
-            return;
-        }
-
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("name", message);
-            jo.put("lat", String.valueOf(position.mLastLocation.getLatitude()));
-            jo.put("lng", String.valueOf(position.mLastLocation.getLongitude()));
-        } catch(Exception e) {
-            Log.e("attemptSend", e.getMessage());
-        }
-
-        mSocket.emit("login", jo);
-    }
-
-    private Emitter.Listener onNewMessage = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONObject data = (JSONObject) args[0];
-                    String message;
-                    try {
-                        message = data.getString("message");
-                    } catch (JSONException e) {
-                        Log.e("Home-onNewMessage", e.getMessage());
-                        return;
-                    }
-                    logMessage(message);
-                }
-            });
-        }
-    };
-
-    private Emitter.Listener onSocketUpdate = new Emitter.Listener() {
-        @Override
-        public void call(final Object... args) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    JSONArray data = (JSONArray) args[0];
-                    Log.v("onUpdate", data.toString());
-                    String message ="abc";
-                    /*
-                    try {
-                        message = "abc";//data.getString("message");
-                    } catch (JSONException e) {
-                        Log.e("Home-onNewMessage", e.getMessage());
-                        return;
-                    }
-                    */
-                    logMessage(message);
-                }
-            });
-        }
-    };
-
-    private void logMessage(String message){
-        Log.v("logMessage", message);
     }
 }

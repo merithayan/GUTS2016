@@ -14,7 +14,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.leokomarov.guts2016.home.HomeController;
+import com.leokomarov.guts2016.controllers.MainScreenController;
 
 import java.text.DateFormat;
 import java.util.Date;
@@ -28,10 +28,10 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     public static final int PERMISSION_ACCESS_COARSE_LOCATION = 1;
     public static final int PERMISSION_ACCESS_FINE_LOCATION = 2;
 
-    private HomeController homeController;
+    private MainScreenController mainScreenController;
 
-    public Position(HomeController homeController){
-        this.homeController = homeController;
+    public Position(MainScreenController mainScreenController){
+        this.mainScreenController = mainScreenController;
     }
 
     private void createLocationRequest() {
@@ -44,17 +44,17 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     public void startLocationUpdates() {
         Log.e("startLocationUpdates", "startLocationUpdates");
 
-        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
 
         if (notGotCoarseLocationPermission) {
             Log.e("startLocationUpdates", "coarse permission not granted");
-            ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
+            ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
         }
 
         if (notGotFineLocationPermission) {
             Log.e("startLocationUpdates", "fine permission not granted");
-            ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
 
         createLocationRequest();
@@ -65,17 +65,17 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     public void onConnected(@Nullable Bundle bundle) {
         Log.v("onConnected", "onConnected");
 
-        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
+        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
 
         if (notGotCoarseLocationPermission) {
             Log.e("onConnected", "coarse permission not granted");
-            ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
+            ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
         }
 
         if (notGotFineLocationPermission) {
             Log.e("onConnected", "fine permission not granted");
-            ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
+            ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
 
         Log.v("onConnected", "passed");
@@ -83,7 +83,7 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
         startLocationUpdates();
-        homeController.updateData();
+        mainScreenController.updateData();
     }
 
     @Override
@@ -100,7 +100,7 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        homeController.updateData();
+        mainScreenController.updateData();
         Log.v("onLocationChanged", mLastUpdateTime);
     }
 }
