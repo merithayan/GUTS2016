@@ -22,6 +22,11 @@ var health = 3
 var exp = 0
 
 var otherPlayerLocations: [String:Any] = [:]
+// ids {
+//    name
+//    lat
+//    lng
+// }
 
 class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -57,7 +62,9 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
                 "lng" : String(format: "%f", coords!.longitude)
             ]
             
-            let jsonifiedUsername = try JSONSerialization.data(withJSONObject: jsondata, options: .prettyPrinted)
+            let writingOptions = JSONSerialization.WritingOptions.init(rawValue: 0)
+            
+            let jsonifiedUsername = try JSONSerialization.data(withJSONObject: jsondata, options: writingOptions)
             let string = String(data: jsonifiedUsername, encoding: String.Encoding.utf8)!
             
             socket.emit("login", string)
@@ -108,7 +115,8 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         ]
         
         do {
-            let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: .prettyPrinted)
+            let writingOptions = JSONSerialization.WritingOptions.init(rawValue: 0)
+            let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: writingOptions)
             let string = String(data: jsonifiedData, encoding: String.Encoding.utf8)!
             socket.emit("update-player", string)
         } catch let error {

@@ -1,7 +1,6 @@
 package com.leokomarov.guts2016.controllers;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,7 @@ import butterknife.OnClick;
 public class HomeController extends ButterKnifeController {
 
     @BindView(R.id.edittext1)
-    public EditText edittext1;
+    EditText edittext1;
 
     @OnClick(R.id.submitButton)
     void submitButtonClicked(){
@@ -36,9 +35,6 @@ public class HomeController extends ButterKnifeController {
     @Override
     protected void onViewBound(@NonNull View view) {
         super.onViewBound(view);
-
         setRetainViewMode(RetainViewMode.RELEASE_DETACH);
-
-        Log.v("onViewBound", "connected");
     }
 }

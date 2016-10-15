@@ -8,18 +8,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.github.nkzawa.socketio.client.IO;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.leokomarov.guts2016.Direction;
+import com.leokomarov.guts2016.MainActivity;
 import com.leokomarov.guts2016.Position;
 import com.leokomarov.guts2016.R;
 import com.leokomarov.guts2016.SocketStuff;
+import com.mapbox.mapboxsdk.maps.MapView;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import java.net.URISyntaxException;
 
@@ -28,22 +30,17 @@ import butterknife.OnClick;
 
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_COARSE_LOCATION;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
+import static com.leokomarov.guts2016.R.id.mapview;
 
 public class MainScreenController extends ButterKnifeController {
 
-    private SocketStuff socketStuff;
+    public SocketStuff socketStuff;
     public Position position;
     public Direction direction;
     private String username;
 
-    @BindView(R.id.edittext1)
-    public EditText edittext1;
-
-    @BindView(R.id.latitudeTV)
-    TextView latitudeTV;
-
-    @BindView(R.id.longitudeTV)
-    TextView longitudeTV;
+    @BindView(mapview)
+    MapView mapView;
 
     @BindView(R.id.batteryImage)
     ImageView batteryImageView;
@@ -82,25 +79,12 @@ public class MainScreenController extends ButterKnifeController {
         }, 500);
     }
 
-
-    @OnClick(R.id.submitButton)
-    void submitButtonClicked(){
-        Log.v("submit", "button clicked");
-        socketStuff.emitLogin(username);
-    }
-
     public MainScreenController(Bundle args){
         super(args);
     }
 
     public MainScreenController(String username){
         this.username = username;
-        socketStuff = new SocketStuff(this);
-        try {
-            socketStuff.mSocket = IO.socket("http://c9092951.ngrok.io/");
-        } catch (URISyntaxException e) {
-            Log.e("MainScreenController", e.getMessage());
-        }
     }
 
     @Override
@@ -115,6 +99,15 @@ public class MainScreenController extends ButterKnifeController {
         setRetainViewMode(RetainViewMode.RETAIN_DETACH);
 
         Log.v("onViewBound", "onViewBound");
+
+        if (socketStuff == null) {
+            socketStuff = new SocketStuff(this);
+            try {
+                socketStuff.mSocket = IO.socket("http://c9092951.ngrok.io/");
+            } catch (URISyntaxException e) {
+                Log.e("MainScreenController", e.getMessage());
+            }
+        }
 
         socketStuff.registerSocket();
 
@@ -141,21 +134,38 @@ public class MainScreenController extends ButterKnifeController {
 
         direction.registerListeners();
 
+        mapView.onCreate(MainActivity.bundle);
+        mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(MapboxMap mapboxMap) {
+
+                // Interact with the map using mapboxMap here
+
+            }
+        });
+
+
+
         Log.v("onViewBound", "connected");
+    }
+
+    public void login(){
+        String latitude = Double.toString(position.mLastLocation.getLatitude());
+        String longitude = Double.toString(position.mLastLocation.getLongitude());
+        socketStuff.emitLogin(username, latitude, longitude);
     }
 
     public void updateData(){
         Log.v("updateData", "updateData");
         if (position.mLastLocation != null) {
-            latitudeTV.setText(String.valueOf(position.mLastLocation.getLatitude()));
-            longitudeTV.setText(String.valueOf(position.mLastLocation.getLongitude()));
             Log.v("updateData", "latitude: " + position.mLastLocation.getLatitude());
             Log.v("updateData", "longitude: " + position.mLastLocation.getLongitude());
         }
 
         direction.updateOrientationAngles();
-        Log.v("updateData", "rotation: " + Float.toString(direction.rotation));
+        //Log.v("updateData", "rotation: " + Float.toString(direction.rotation));
 
+        /*
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
             @Override
@@ -163,6 +173,7 @@ public class MainScreenController extends ButterKnifeController {
                 updateData();
             }
         }, 2000);
+        */
     }
 
     @Override
