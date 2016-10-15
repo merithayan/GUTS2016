@@ -42,10 +42,49 @@ class TrackerView: UIView, MGLMapViewDelegate {
         self.backgroundColor = MerithayanUI.green.base
     }
     
+    func mapView(_ mapView: MGLMapView, viewFor annotation: MGLAnnotation) -> MGLAnnotationView? {
+        // This example is only concerned with point annotations.
+        guard annotation is MGLPointAnnotation else {
+            return nil
+        }
+        
+        // Use the point annotation’s longitude value (as a string) as the reuse identifier for its view.
+        let reuseIdentifier = "\(annotation.coordinate.longitude)"
+        
+        // For better performance, always try to reuse existing annotations.
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: reuseIdentifier)
+        
+        // If there’s no reusable annotation view available, initialize a new one.
+        if annotationView == nil {
+            annotationView = CustomAnnotationView(reuseIdentifier: reuseIdentifier)
+            annotationView!.frame = CGRect(x:0, y:0, width:30.0, height:30.0)
+            
+            
+            // Set the annotation view’s background color to a value determined by its longitude.
+            annotationView!.backgroundColor = MerithayanUI.green.lighten3
+        }
+        
+        return annotationView
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+}
+
+class CustomAnnotationView: MGLAnnotationView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        // Force the annotation view to maintain a constant size when the map is tilted.
+        scalesWithViewingDistance = false
+        
+        // Use CALayer’s corner radius to turn this view into a circle.
+        layer.cornerRadius = frame.width / 2
+        layer.borderWidth = 2
+        layer.borderColor = UIColor.white.cgColor
+    }
 }
 
 // Class for the Radar view

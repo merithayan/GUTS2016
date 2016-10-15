@@ -39,14 +39,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         socket.on("update", callback: {(data, ack) in
             do {
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
-              
-                
-                
                 let dataArray: [[String: Any]] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String: Any]]
                 otherPlayerLocations = dataArray[0]
             } catch let error {
                 print(error)
             }
+        })
+        
+        socket.on("logged-in", callback: {(data, ack) in
+            print(data)
+            myId = data[0] as! String
+            print("My ID is: ", myId)
         })
         
         socket.connect()
