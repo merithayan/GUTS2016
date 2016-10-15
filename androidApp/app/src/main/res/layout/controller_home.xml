@@ -1,104 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-    android:weightSum="2">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:background="#676d67"
-        android:layout_marginBottom="10dp">
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#676d67"
+    android:layout_marginBottom="10dp"
+    android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tv1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textColor="#000000"
-            android:textSize="32sp"
-            android:textStyle="bold"
-            android:text="dmont"/>
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="15dp"
+        android:textColor="#000000"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:text="DMONT"/>
 
-        <EditText
-            android:id="@+id/edittext1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv1"/>
+    <TextView
+        android:id="@+id/tv2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/tv1"
+        android:padding="5dp"
+        android:layout_marginTop="50dp"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:text="Enter a username"/>
 
-        <Button
-            android:id="@+id/submitButton"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Submit"
-            android:layout_below="@id/edittext1"/>
-
-        <TextView
-            android:id="@+id/latitudeTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/submitButton"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textColor="#000000"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/longitudeTV"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/latitudeTV"
-            android:paddingBottom="5dp"
-            android:paddingTop="5dp"
-            android:textColor="#000000"
-            android:textSize="32sp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
+    <EditText
+        android:id="@+id/edittext1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_weight="1"
-        android:background="#676d67" >
+        android:layout_below="@id/tv2"/>
 
-        <ImageView
-            android:id="@+id/batteryImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/fireButton"
-            android:src="@drawable/battery"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true" />
+    <Button
+        android:id="@+id/submitButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_below="@id/edittext1"/>
 
-        <ImageButton
-            android:id="@id/fireButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/powerUpButton"
-            android:padding="5dp"
-            android:src="@drawable/fire_button"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true" />
-
-        <ImageButton
-            android:id="@+id/powerUpButton"
-            android:layout_width="200dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:padding="5dp"
-            android:src="@drawable/power_up_button"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:layout_centerHorizontal="true" />
-
-    </RelativeLayout>
-</LinearLayout>
+</RelativeLayout>

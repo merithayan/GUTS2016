@@ -7,7 +7,8 @@ import android.view.ViewGroup;
 import com.bluelinelabs.conductor.Conductor;
 import com.bluelinelabs.conductor.Router;
 import com.bluelinelabs.conductor.RouterTransaction;
-import com.leokomarov.guts2016.home.HomeController;
+import com.bluelinelabs.conductor.changehandler.FadeChangeHandler;
+import com.leokomarov.guts2016.controllers.HomeController;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,7 +32,9 @@ public class MainActivity extends AppCompatActivity {
         //sets the root controller if it doesn't already exist
         //.with() returns a new RouterTransaction
         if (! router.hasRootController()){
-            router.setRoot(RouterTransaction.with(new HomeController()));
+            router.setRoot(RouterTransaction.with(new HomeController())
+                    .pushChangeHandler(new FadeChangeHandler())
+                    .popChangeHandler(new FadeChangeHandler()));
         }
     }
 

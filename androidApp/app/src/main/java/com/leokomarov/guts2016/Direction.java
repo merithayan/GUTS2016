@@ -5,7 +5,7 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
-import com.leokomarov.guts2016.home.HomeController;
+import com.leokomarov.guts2016.controllers.MainScreenController;
 
 import static android.content.Context.SENSOR_SERVICE;
 
@@ -21,8 +21,8 @@ public class Direction implements SensorEventListener {
     public float rotation;
 
 
-    public Direction(HomeController homeController) {
-        mSensorManager = (SensorManager) homeController.getActivity().getSystemService(SENSOR_SERVICE);
+    public Direction(MainScreenController mainScreenController) {
+        mSensorManager = (SensorManager) mainScreenController.getActivity().getSystemService(SENSOR_SERVICE);
     }
 
     public void registerListeners(){
