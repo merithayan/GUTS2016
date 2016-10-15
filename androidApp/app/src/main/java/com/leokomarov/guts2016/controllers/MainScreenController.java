@@ -15,13 +15,12 @@ import com.github.nkzawa.socketio.client.IO;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.leokomarov.guts2016.Direction;
-import com.leokomarov.guts2016.MainActivity;
+import com.leokomarov.guts2016.MapStuff;
 import com.leokomarov.guts2016.Position;
 import com.leokomarov.guts2016.R;
 import com.leokomarov.guts2016.SocketStuff;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapView;
-import com.mapbox.mapboxsdk.maps.MapboxMap;
-import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 
 import java.net.URISyntaxException;
 
@@ -34,13 +33,16 @@ import static com.leokomarov.guts2016.R.id.mapview;
 
 public class MainScreenController extends ButterKnifeController {
 
-    public SocketStuff socketStuff;
-    public Position position;
-    public Direction direction;
+    private SocketStuff socketStuff;
+    private MapStuff mapStuff;
+    private Position position;
+    private Direction direction;
+
     private String username;
+    public String id;
 
     @BindView(mapview)
-    MapView mapView;
+    public MapView mapView;
 
     @BindView(R.id.batteryImage)
     ImageView batteryImageView;
@@ -83,7 +85,7 @@ public class MainScreenController extends ButterKnifeController {
         super(args);
     }
 
-    public MainScreenController(String username){
+    MainScreenController(String username){
         this.username = username;
     }
 
@@ -134,36 +136,42 @@ public class MainScreenController extends ButterKnifeController {
 
         direction.registerListeners();
 
-        mapView.onCreate(MainActivity.bundle);
-        mapView.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(MapboxMap mapboxMap) {
-
-                // Interact with the map using mapboxMap here
-
-            }
-        });
-
-
+        mapStuff = new MapStuff(this);
 
         Log.v("onViewBound", "connected");
+    }
+
+    public LatLng getPosition(){
+        return new LatLng(position.mLastLocation.getLatitude(), position.mLastLocation.getLongitude());
     }
 
     public void login(){
         String latitude = Double.toString(position.mLastLocation.getLatitude());
         String longitude = Double.toString(position.mLastLocation.getLongitude());
-        socketStuff.emitLogin(username, latitude, longitude);
+        String angle = Float.toString(direction.angle);
+        socketStuff.emitLogin(username, latitude, longitude, angle);
     }
 
     public void updateData(){
         Log.v("updateData", "updateData");
-        if (position.mLastLocation != null) {
-            Log.v("updateData", "latitude: " + position.mLastLocation.getLatitude());
-            Log.v("updateData", "longitude: " + position.mLastLocation.getLongitude());
-        }
-
         direction.updateOrientationAngles();
-        //Log.v("updateData", "rotation: " + Float.toString(direction.rotation));
+        direction.updateOrientationAngles();
+        String latitude = "";
+        String longitude = "";
+        String angle = "";
+
+        if (position.mLastLocation != null) {
+            latitude = Double.toString(position.mLastLocation.getLatitude());
+            longitude = Double.toString(position.mLastLocation.getLongitude());
+        }
+        angle = Float.toString(direction.angle);
+
+        Log.v("updateData", "latitude: " + latitude);
+        Log.v("updateData", "longitude: " + longitude);
+        Log.v("updateData", "angle: " + angle);
+
+        mapStuff.updateMapPosition();
+        socketStuff.emitUpdate(latitude, longitude, angle, id);
 
         /*
         final Handler handler = new Handler();

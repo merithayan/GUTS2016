@@ -18,7 +18,7 @@ public class Direction implements SensorEventListener {
 
     private final float[] mRotationMatrix = new float[9];
     public final float[] mOrientationAngles = new float[3];
-    public float rotation;
+    public float angle;
 
 
     public Direction(MainScreenController mainScreenController) {
@@ -48,9 +48,9 @@ public class Direction implements SensorEventListener {
                 mAccelerometerReading, mMagnetometerReading);
         SensorManager.getOrientation(mRotationMatrix, mOrientationAngles);
 
-        rotation = (float) Math.toDegrees(mOrientationAngles[0]);
-        if (rotation < 0.0f) {
-            rotation += 360.0f;
+        angle = (float) Math.toDegrees(mOrientationAngles[0]);
+        if (angle < 0.0f) {
+            angle += 360.0f;
         }
     }
 
