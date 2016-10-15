@@ -42,6 +42,8 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     }
 
     public void startLocationUpdates() {
+        Log.e("startLocationUpdates", "startLocationUpdates");
+
         boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
 
@@ -67,12 +69,12 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
         boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(homeController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
 
         if (notGotCoarseLocationPermission) {
-            Log.e("startLocationUpdates", "coarse permission not granted");
+            Log.e("onConnected", "coarse permission not granted");
             ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
         }
 
         if (notGotFineLocationPermission) {
-            Log.e("startLocationUpdates", "fine permission not granted");
+            Log.e("onConnected", "fine permission not granted");
             ActivityCompat.requestPermissions(homeController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
 
@@ -80,9 +82,8 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
 
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        homeController.updateUI();
         startLocationUpdates();
-
+        homeController.updateData();
     }
 
     @Override
@@ -99,7 +100,7 @@ public class Position implements GoogleApiClient.ConnectionCallbacks, GoogleApiC
     public void onLocationChanged(Location location) {
         mLastLocation = location;
         mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        homeController.updateUI();
+        homeController.updateData();
         Log.v("onLocationChanged", mLastUpdateTime);
     }
 }

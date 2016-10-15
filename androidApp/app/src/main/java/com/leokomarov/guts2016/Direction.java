@@ -4,51 +4,54 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.util.Log;
+
+import com.leokomarov.guts2016.home.HomeController;
+
+import static android.content.Context.SENSOR_SERVICE;
 
 public class Direction implements SensorEventListener {
 
     public SensorManager mSensorManager;
-    public Sensor accelerometer;
-    public Sensor magnetometer;
 
-    private float[] mGravity;
-    private float[] mGeomagnetic;
-    private Float azimuth;
+    private final float[] mAccelerometerReading = new float[3];
+    private final float[] mMagnetometerReading = new float[3];
+
+    private final float[] mRotationMatrix = new float[9];
+    public final float[] mOrientationAngles = new float[3];
+    public float rotation;
+
+
+    public Direction(HomeController homeController) {
+        mSensorManager = (SensorManager) homeController.getActivity().getSystemService(SENSOR_SERVICE);
+    }
+
+    public void registerListeners(){
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL );
+        mSensorManager.registerListener(this, mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD), SensorManager.SENSOR_DELAY_NORMAL );
+    }
 
     public void onSensorChanged(SensorEvent event) {
-
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            mGravity = event.values;
+            System.arraycopy(event.values, 0, mAccelerometerReading,
+                    0, mAccelerometerReading.length);
         }
-
-        if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
-            mGeomagnetic = event.values;
+        else if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) {
+            System.arraycopy(event.values, 0, mMagnetometerReading,
+                    0, mMagnetometerReading.length);
         }
+    }
 
-        Log.v("onSensorChanged", "1");
-        Log.v("onSensorChanged", event.toString());
+    // Compute the three orientation angles based on the most recent readings from
+    // the device's accelerometer and magnetometer.
+    public void updateOrientationAngles() {
+        SensorManager.getRotationMatrix(mRotationMatrix, null,
+                mAccelerometerReading, mMagnetometerReading);
+        SensorManager.getOrientation(mRotationMatrix, mOrientationAngles);
 
-        if (mGravity != null && mGeomagnetic != null) {
-            float R[] = new float[9];
-            float I[] = new float[9];
-
-            Log.v("onSensorChanged", "1");
-
-            if (SensorManager.getRotationMatrix(R, I, mGravity, mGeomagnetic)) {
-
-                Log.v("onSensorChanged", "2");
-
-                // orientation contains azimuth, pitch and roll
-                float orientation[] = new float[3];
-                SensorManager.getOrientation(R, orientation);
-
-                azimuth = orientation[0];
-            }
+        rotation = (float) Math.toDegrees(mOrientationAngles[0]);
+        if (rotation < 0.0f) {
+            rotation += 360.0f;
         }
-        float rotation = -azimuth * 360 / (2 * 3.14159f);
-        Log.v("onSensorChanged", Float.toString(rotation));
-        Log.v("onSensorChanged", Float.toString(azimuth));
     }
 
     @Override
