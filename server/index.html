@@ -1,7 +1,7 @@
 <h1>Socket Testing</h1>
 
 <form>
-	<input id="name" type="name" name="name">
+	<input id="name" type="name" name="name" placeholder="Name">
 </form>
 <button id="join">Join Room</button>
 
@@ -18,8 +18,11 @@
 	});
 
 	$("#join").click(function() {
-		var name = $("#name").val()
-		name ? socket.emit("login", name) : console.log("Enter a name...");
+		var data = {};
+		data.name = $("#name").val();
+		data.lat = ...
+		data.lng = ...
+		name ? socket.emit("login", data) : console.log("Enter a name...");
 	});
 
 </script>

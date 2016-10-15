@@ -26,8 +26,10 @@ io.on('connection', function(socket) {
 		// Create new player
 		game.players.push(new game.playerFactory(
 			socket.id,
-			name, 
+			name,
 			game.defaultHealth,
+			0,	// LAT
+			0,	// LNG
 			game.defaultExperience)
 		);
 
