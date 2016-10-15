@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
@@ -53,6 +56,42 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
 
     @BindView(R.id.longitudeTV)
     TextView longitudeTV;
+
+    @BindView(R.id.batteryImage)
+    ImageView batterImageView;
+
+    @BindView(R.id.fireButton)
+    ImageButton fireImageButton;
+
+    @BindView(R.id.powerUpButton)
+    ImageButton powerUpImageButton;
+
+    @OnClick(R.id.fireButton)
+    void fireImageButtonClicked(){
+        fireImageButton.setImageResource(R.drawable.fire_button_active);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fireImageButton.setImageResource(R.drawable.fire_button);
+            }
+        }, 500);
+    }
+
+    @OnClick(R.id.powerUpButton)
+    void powerUpImageButtonClicked(){
+        powerUpImageButton.setImageResource(R.drawable.power_up_button_active);
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                powerUpImageButton.setImageResource(R.drawable.power_up_button);
+            }
+        }, 500);
+    }
+
 
     @OnClick(R.id.submitButton)
     void submitButtonClicked(){
