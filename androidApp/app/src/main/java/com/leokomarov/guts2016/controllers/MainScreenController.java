@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 
@@ -26,7 +27,6 @@ import butterknife.OnClick;
 
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_COARSE_LOCATION;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
-import static com.leokomarov.guts2016.R.id.mapview;
 
 public class MainScreenController extends ButterKnifeController {
 
@@ -38,11 +38,14 @@ public class MainScreenController extends ButterKnifeController {
     public String username;
     public String id;
 
-    @BindView(mapview)
+    private int maxHealth = 3;
+    public int health;
+
+    @BindView(R.id.mapview)
     public MapView mapView;
 
-    @BindView(R.id.batteryImage)
-    ImageView batteryImageView;
+    @BindView(R.id.battery_frame)
+    FrameLayout frameLayout;
 
     @BindView(R.id.fireButton)
     ImageButton fireImageButton;
@@ -84,6 +87,7 @@ public class MainScreenController extends ButterKnifeController {
 
     MainScreenController(String username){
         this.username = username;
+        health = maxHealth;
     }
 
     @Override
@@ -131,6 +135,25 @@ public class MainScreenController extends ButterKnifeController {
         mapStuff = new MapStuff(this);
 
         Log.v("onViewBound", "connected");
+        updateBattery();
+    }
+
+    private void updateBattery(){
+        int totalNumberOfBars = frameLayout.getChildCount();
+        int barsPerHealth = totalNumberOfBars / maxHealth;
+        int actualNumberOfBars = health * barsPerHealth;
+
+        Log.v("updateBattery", "totalNumberOfBars: " + totalNumberOfBars);
+
+        //9 bars
+        //3 health
+        //1 health = 3 bars
+
+        for (int i = (totalNumberOfBars - 1); i > actualNumberOfBars; i--) {
+            ImageView iv = (ImageView) frameLayout.getChildAt(i);
+
+            iv.setVisibility(View.INVISIBLE);
+        }
     }
 
     public LatLng getPosition(){
@@ -205,10 +228,12 @@ public class MainScreenController extends ButterKnifeController {
 
     @Override
     protected void onDestroyView(View view){
+        /*
         socketStuff.unregisterSocket();
         LocationServices.FusedLocationApi.removeLocationUpdates(position.mGoogleApiClient, position);
         position.mGoogleApiClient.disconnect();
         direction.mSensorManager.unregisterListener(direction);
+        */
         Log.v("onDestroy", "disconnected");
     }
 }
