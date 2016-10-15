@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
 
     private Router router;
+    public AppCompatActivity thisActivity;
 
     @BindView(R.id.controller_container)
     ViewGroup container;

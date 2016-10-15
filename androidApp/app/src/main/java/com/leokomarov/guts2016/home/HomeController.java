@@ -1,14 +1,10 @@
 package com.leokomarov.guts2016.home;
 
-import android.Manifest;
 import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Bundle;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,33 +16,33 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.github.nkzawa.emitter.Emitter;
+import com.github.nkzawa.socketio.client.IO;
 import com.github.nkzawa.socketio.client.Socket;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.leokomarov.guts2016.Direction;
+import com.leokomarov.guts2016.Position;
 import com.leokomarov.guts2016.R;
 import com.leokomarov.guts2016.controllers.ButterKnifeController;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.DateFormat;
-import java.util.Date;
+import java.net.URISyntaxException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
 
-public class HomeController extends ButterKnifeController implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+import static android.content.Context.SENSOR_SERVICE;
+import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_COARSE_LOCATION;
+import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
+
+public class HomeController extends ButterKnifeController {
 
     private Socket mSocket;
-    private GoogleApiClient mGoogleApiClient;
-    private Location mLastLocation;
-    private LocationRequest mLocationRequest;
-    private String mLastUpdateTime;
-    private final int PERMISSION_ACCESS_COARSE_LOCATION = 1;
-    private final int PERMISSION_ACCESS_FINE_LOCATION = 2;
+    private Position position;
+    private Direction direction;
 
     @BindView(R.id.edittext1)
     EditText edittext1;
@@ -69,6 +65,19 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
     @OnClick(R.id.fireButton)
     void fireImageButtonClicked(){
         fireImageButton.setImageResource(R.drawable.fire_button_active);
+
+        /*
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("name", message);
+            jo.put("lat", String.valueOf(mLastLocation.getLatitude()));
+            jo.put("lng", String.valueOf(mLastLocation.getLongitude()));
+        } catch(Exception e) {
+            Log.e("attemptSend", e.getMessage());
+        }
+        */
+
+        mSocket.emit("fire");
 
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -96,17 +105,15 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
     @OnClick(R.id.submitButton)
     void submitButtonClicked(){
         Log.v("submit", "button clicked");
-        //attemptSend();
+        attemptSend();
     }
 
     public HomeController(){
-        /*
         try {
-            mSocket = IO.socket("http://chat.socket.io");
+            mSocket = IO.socket("http://c9092951.ngrok.io/");
         } catch (URISyntaxException e) {
             Log.e("HomeController", e.getMessage());
         }
-        */
     }
 
     @Override
@@ -115,103 +122,59 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
     }
 
     @Override
+    public void onAttach(View view){
+        position = new Position(this);
+        direction = new Direction();
+        direction.mSensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+        direction.accelerometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        direction.magnetometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+
+        Log.v("onAttach", "onAttach");
+    }
+
+    @Override
     protected void onViewBound(@NonNull View view) {
         super.onViewBound(view);
 
         setRetainViewMode(RetainViewMode.RETAIN_DETACH);
 
-        //mSocket.on("new message", onNewMessage);
-        //mSocket.connect();
+        mSocket.on("new message", onNewMessage);
+        mSocket.on("update", onSocketUpdate);
+        mSocket.connect();
 
-        if (mGoogleApiClient == null) {
-            //Log.e("blah", "blah");
-            mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                    .addConnectionCallbacks(this)
-                    .addOnConnectionFailedListener(this)
+        if (position == null) {
+            position = new Position(this);
+        }
+
+        if (direction == null) {
+            direction = new Direction();
+            direction.mSensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
+            direction.accelerometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+            direction.magnetometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        }
+
+        if (position.mGoogleApiClient == null) {
+            position.mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+                    .addConnectionCallbacks(position)
+                    .addOnConnectionFailedListener(position)
                     .addApi(LocationServices.API)
                     .build();
         }
 
-        mGoogleApiClient.connect();
+        position.mGoogleApiClient.connect();
+
+        direction.mSensorManager.registerListener(direction, direction.accelerometer, SensorManager.SENSOR_DELAY_UI);
+
         Log.v("onViewBound", "connected");
     }
 
-    protected void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    protected void startLocationUpdates() {
-        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-
-        if (notGotCoarseLocationPermission) {
-            Log.e("startLocationUpdates", "coarse permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-
-        if (notGotFineLocationPermission) {
-            Log.e("startLocationUpdates", "fine permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
-        }
-
-        createLocationRequest();
-        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
-    }
-
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        Log.v("onConnected", "onConnected");
-
-        boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-        boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
-
-        if (notGotCoarseLocationPermission) {
-            Log.e("startLocationUpdates", "coarse permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, PERMISSION_ACCESS_COARSE_LOCATION);
-        }
-
-        if (notGotFineLocationPermission) {
-            Log.e("startLocationUpdates", "fine permission not granted");
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
-        }
-
-        Log.v("onConnected", "passed");
-
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
-        startLocationUpdates();
-
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-        Log.e("onConnectionSuspended", "onConnectionSuspended");
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.e("onConnectionFailed", connectionResult.getErrorMessage());
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation = location;
-        mLastUpdateTime = DateFormat.getTimeInstance().format(new Date());
-        updateUI();
-        Log.v("onLocationChanged", mLastUpdateTime);
-    }
-
-    private void updateUI(){
+    public void updateUI(){
         Log.v("updateUI", "updateUI");
-        if (mLastLocation != null) {
-            latitudeTV.setText(String.valueOf(mLastLocation.getLatitude()));
-            longitudeTV.setText(String.valueOf(mLastLocation.getLongitude()));
-            Log.v("onLocationChanged", "latitude: " + mLastLocation.getLatitude());
-            Log.v("onLocationChanged", "longitude: " + mLastLocation.getLongitude());
+        if (position.mLastLocation != null) {
+            latitudeTV.setText(String.valueOf(position.mLastLocation.getLatitude()));
+            longitudeTV.setText(String.valueOf(position.mLastLocation.getLongitude()));
+            Log.v("onLocationChanged", "latitude: " + position.mLastLocation.getLatitude());
+            Log.v("onLocationChanged", "longitude: " + position.mLastLocation.getLongitude());
         }
     }
 
@@ -222,7 +185,7 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Log.v("onReqPerm", "got coarse permission");
-                    startLocationUpdates();
+                    position.startLocationUpdates();
                 } else {
                     Log.e("onReqPerm", "not got coarse permission");
                 }
@@ -232,7 +195,7 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
                 // If request is cancelled, the result arrays are empty.
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
                     Log.v("onReqPerm", "got coarse permission");
-                    startLocationUpdates();
+                    position.startLocationUpdates();
                 } else {
                     Log.e("onReqPerm", "not got fine permission");
                 }
@@ -242,10 +205,12 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
 
     @Override
     protected void onDestroy(){
-        //mSocket.disconnect();
-        //mSocket.off("new message", onNewMessage);
-        LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
-        mGoogleApiClient.disconnect();
+        mSocket.disconnect();
+        mSocket.off("new message", onNewMessage);
+        mSocket.off("update", onSocketUpdate);
+        LocationServices.FusedLocationApi.removeLocationUpdates(position.mGoogleApiClient, position);
+        position.mGoogleApiClient.disconnect();
+        direction.mSensorManager.unregisterListener(direction);
         Log.v("onDestroy", "disconnected");
     }
 
@@ -254,7 +219,17 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
         if (TextUtils.isEmpty(message)) {
             return;
         }
-        mSocket.emit("new message", message);
+
+        JSONObject jo = new JSONObject();
+        try {
+            jo.put("name", message);
+            jo.put("lat", String.valueOf(position.mLastLocation.getLatitude()));
+            jo.put("lng", String.valueOf(position.mLastLocation.getLongitude()));
+        } catch(Exception e) {
+            Log.e("attemptSend", e.getMessage());
+        }
+
+        mSocket.emit("login", jo);
     }
 
     private Emitter.Listener onNewMessage = new Emitter.Listener() {
@@ -271,6 +246,29 @@ public class HomeController extends ButterKnifeController implements GoogleApiCl
                         Log.e("Home-onNewMessage", e.getMessage());
                         return;
                     }
+                    logMessage(message);
+                }
+            });
+        }
+    };
+
+    private Emitter.Listener onSocketUpdate = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    JSONArray data = (JSONArray) args[0];
+                    Log.v("onUpdate", data.toString());
+                    String message ="abc";
+                    /*
+                    try {
+                        message = "abc";//data.getString("message");
+                    } catch (JSONException e) {
+                        Log.e("Home-onNewMessage", e.getMessage());
+                        return;
+                    }
+                    */
                     logMessage(message);
                 }
             });
