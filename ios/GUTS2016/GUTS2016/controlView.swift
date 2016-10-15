@@ -17,7 +17,6 @@ class ControlView: UIView {
     let image = UIImage(named: "battery")
     var imageView: UIImageView
     let viewTitle = UILabel()
-    let confirmButton = UIButton()
     
     override init(frame: CGRect) {
         imageView = UIImageView(image: image)

@@ -12,24 +12,16 @@ module.exports = {
 	players: [],
 	
 	playerFactory: function(name, health, experience){
-	
-		var temp = {};
-	
-		temp.name = name;
-		temp.health = health;
-		temp.experience = experience;
-	    
-		temp.display = function(){
-					   
-		    console.log(this.name+ " , has " + this.health + " and " + this.experience + " experience.");
-	    
-		};
 		
 		return {
-			name: temp.name, 
-			health: temp.health,
-			experience: temp.experience,
-			display: temp.display
+			name: name, 
+			health: health,
+			experience: experience,
+			display: function(){
+					   
+				console.log(this.name+ " , has " + this.health + " and " + this.experience + " experience.");
+	    
+		    };
 		};
 	};
 }
