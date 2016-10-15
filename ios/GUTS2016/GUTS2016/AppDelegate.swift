@@ -36,11 +36,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             }
         })
         
-        socket.on("player-locations", callback: {(data, ack) in
+        socket.on("update", callback: {(data, ack) in
             do {
                 let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
-                let dataArray: [String: Any] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [String: Any]
-                otherPlayerLocations = dataArray
+              
+                
+                
+                let dataArray: [[String: Any]] = try JSONSerialization.jsonObject(with: stuff, options: JSONSerialization.ReadingOptions.mutableContainers) as! [[String: Any]]
+                otherPlayerLocations = dataArray[0]
             } catch let error {
                 print(error)
             }
