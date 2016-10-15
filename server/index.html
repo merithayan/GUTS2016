@@ -1,17 +1,23 @@
 <h1>Socket Testing</h1>
 
 <form>
-	<input id="name" type="name" name="name" placeholder="Name">
+	<input id="name" type="text" name="name" placeholder="Name">
+	<input id="lat" type="text" name="lng" value="55.871200">
+	<input id="lng" type="text" name="lng" value="-4.289500">
 </form>
 <button id="join">Join Room</button>
-
+<button id="update">Update Data</button>
 <button id="fire">Fire</button>
+
+<p id="display"></p>
+<ul id="players"></ul>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script>
 
 	var socket = io();
+	var socketId;
 
 	// Prevent reloading the page
 	$("form").submit(function(e) {
@@ -19,14 +25,42 @@
 		return false;
 	});
 
+	// Sending to the server
 	$("#join").click(function() {
 		var data = {};
 		data.name = $("#name").val();
-		data.name ? socket.emit("login", data) : console.log("Enter a name...");
+		data.lat = $("#lat").val();
+		data.lng = $("#lng").val();
+		data ? socket.emit("login", data) : console.log("Enter data...");
+	});
+
+	$("#update").click(function() {
+		var data = {
+			id: socketId,
+			lat: $("#lat").val(),
+			lng: $("#lng").val()
+		};
+		socket.emit("update-player", data);
 	});
 
 	$("#fire").click(function() {
 		socket.emit("fire");
+	});
+
+	// Receiving from the server
+	socket.on("logged-in", function(id) {
+		socketId = id;
+		$("#display").append("<h4>Joined as ID "+id+"</h4>");
+	});
+
+	socket.on("update", function(data) {
+		console.log(data);
+		$("#players").html(" ");
+		for (var p in data) {
+			p = data[p];
+			console.log(p);
+			$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+"</li>");
+		}
 	});
 
 	socket.on("fire", function() {
@@ -34,3 +68,6 @@
 	});
 
 </script>
+
+
+	

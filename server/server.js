@@ -1,6 +1,7 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var _ = require('underscore');
 var game = require('./game');
 
 /** Server needs to support:
@@ -15,6 +16,13 @@ app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
 
+// Broadcast all player locations
+setInterval(function() {
+	console.log("Trigger update: ", game.players);
+	var clone = _.extend({}, game.players);
+	io.emit('update', clone);
+}, 3000);
+
 io.on('connection', function(socket) {
 
 	// console.log('Connected: ', socket.id);
@@ -22,22 +30,25 @@ io.on('connection', function(socket) {
 	socket.on('login', function(data) {
 		console.log(data.name, 'joined');
 
-		game.players.push(new game.playerFactory(
-			socket.id,
-			data.name,
-			game.defaultHealth,
-			data.lat,
-			data.lng,
-			game.defaultExperience)
-		);
+		game.players[socket.id] = {
+			name: data.name,
+			lat: data.lat,
+			lng: data.lng,
+			health: game.defaultHealth,
+			experience: game.defaultExperience
+		};
 
-		// Emit to front-end
-		io.emit('login', data.name);
+		// Send socket ID to front-end
+		socket.emit('logged-in', socket.id);
 		console.log(game.players);
 	});
 
-	socket.on('update', function(data) {
-		
+	// Update player location & direction
+	socket.on('update-player', function(data) {
+		console.log(data);
+
+		game.players[data.id].lat = data.lat;
+		game.players[data.id].lng = data.lng;
 	});
 
 	socket.on('fire', function(data) {
@@ -52,12 +63,10 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('disconnect', function() {
-		console.log(socket.id, ' disconnected');
+		// console.log(socket.id, ' disconnected');
 
 		// Remove from players array
-		game.players = game.players.filter(function(player) {
-		    return player.id != socket.id;
-		});
+		delete game.players[socket.id]
 	});
 
 });
