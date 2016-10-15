@@ -11,6 +11,8 @@
 import Foundation
 import UIKit
 
+var username: String = ""
+
 class UserSetupViewController: UIViewController {
     
     let usernameEntryField = UITextField()
@@ -60,5 +62,7 @@ class UserSetupViewController: UIViewController {
     
     func confirmAction(){
         // The action fired when the confirm button is pressed.
+        username = usernameEntryField.text!
+        present(MainAppViewController(), animated: true, completion: nil)
     }
 }

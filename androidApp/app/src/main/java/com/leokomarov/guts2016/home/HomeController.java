@@ -1,8 +1,6 @@
 package com.leokomarov.guts2016.home;
 
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorManager;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
@@ -34,7 +32,6 @@ import java.net.URISyntaxException;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static android.content.Context.SENSOR_SERVICE;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_COARSE_LOCATION;
 import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
 
@@ -65,17 +62,6 @@ public class HomeController extends ButterKnifeController {
     @OnClick(R.id.fireButton)
     void fireImageButtonClicked(){
         fireImageButton.setImageResource(R.drawable.fire_button_active);
-
-        /*
-        JSONObject jo = new JSONObject();
-        try {
-            jo.put("name", message);
-            jo.put("lat", String.valueOf(mLastLocation.getLatitude()));
-            jo.put("lng", String.valueOf(mLastLocation.getLongitude()));
-        } catch(Exception e) {
-            Log.e("attemptSend", e.getMessage());
-        }
-        */
 
         mSocket.emit("fire");
 
@@ -122,21 +108,12 @@ public class HomeController extends ButterKnifeController {
     }
 
     @Override
-    public void onAttach(View view){
-        position = new Position(this);
-        direction = new Direction();
-        direction.mSensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
-        direction.accelerometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        direction.magnetometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-        Log.v("onAttach", "onAttach");
-    }
-
-    @Override
     protected void onViewBound(@NonNull View view) {
         super.onViewBound(view);
 
         setRetainViewMode(RetainViewMode.RETAIN_DETACH);
+
+        Log.v("onViewBound", "onViewBound");
 
         mSocket.on("new message", onNewMessage);
         mSocket.on("update", onSocketUpdate);
@@ -144,13 +121,8 @@ public class HomeController extends ButterKnifeController {
 
         if (position == null) {
             position = new Position(this);
-        }
+            Log.v("HomeController", "Making new position");
 
-        if (direction == null) {
-            direction = new Direction();
-            direction.mSensorManager = (SensorManager) getActivity().getSystemService(SENSOR_SERVICE);
-            direction.accelerometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-            direction.magnetometer = direction.mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         }
 
         if (position.mGoogleApiClient == null) {
@@ -162,20 +134,37 @@ public class HomeController extends ButterKnifeController {
         }
 
         position.mGoogleApiClient.connect();
+        //position.startLocationUpdates();
 
-        direction.mSensorManager.registerListener(direction, direction.accelerometer, SensorManager.SENSOR_DELAY_UI);
+        if (direction == null) {
+            direction = new Direction(this);
+            Log.v("HomeController", "Making new direction");
+        }
+
+        direction.registerListeners();
 
         Log.v("onViewBound", "connected");
     }
 
-    public void updateUI(){
-        Log.v("updateUI", "updateUI");
+    public void updateData(){
+        Log.v("updateData", "updateData");
         if (position.mLastLocation != null) {
             latitudeTV.setText(String.valueOf(position.mLastLocation.getLatitude()));
             longitudeTV.setText(String.valueOf(position.mLastLocation.getLongitude()));
-            Log.v("onLocationChanged", "latitude: " + position.mLastLocation.getLatitude());
-            Log.v("onLocationChanged", "longitude: " + position.mLastLocation.getLongitude());
+            Log.v("updateData", "latitude: " + position.mLastLocation.getLatitude());
+            Log.v("updateData", "longitude: " + position.mLastLocation.getLongitude());
         }
+
+        direction.updateOrientationAngles();
+        Log.v("updateData", "rotation: " + Float.toString(direction.rotation));
+
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateData();
+            }
+        }, 2000);
     }
 
     @Override
