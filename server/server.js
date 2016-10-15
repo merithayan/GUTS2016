@@ -2,7 +2,11 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var _ = require('lodash');
-var game = require('./game');
+
+// Game variables
+var players = {};
+var defaultHealth = 3;
+var defaultExperience = 0;
 
 /** Server needs to support:
 - Location - add sliders for:
@@ -26,8 +30,9 @@ app.get('/script', function(req, res) {
 
 // Broadcast all player locations
 setInterval(function() {
-	console.log("Trigger update: ", game.players);
-	var clone = _.extend({}, game.players);
+	// console.log("Trigger update: ", players);
+	var clone = _.extend({}, players);
+
 	io.emit('update', clone);
 }, 500);
 
@@ -35,25 +40,29 @@ io.on('connection', function(socket) {
 
 	// console.log('Connected: ', socket.id);
 
-	socket.on('login', function(data) {
-		console.log(data.name, 'joined');
+	socket.on('login', function(rawdata) {
+		console.log(rawdata);
 
-		game.players[socket.id] = {
+		if    (typeof rawdata == 'object') data = rawdata;
+		else  data = JSON.parse(rawdata);
+
+		players[socket.id] = {
 			name: data.name,
 			lat: data.lat,
 			lng: data.lng,
-			health: game.defaultHealth,
-			experience: game.defaultExperience
+			angle: data.angle,
+			health: defaultHealth,
+			experience: defaultExperience
 		};
 
 		// Send socket ID to front-end
 		socket.emit('logged-in', socket.id);
-		console.log(game.players);
+		console.log(players);
 	});
 	
 	socket.on('update-health', function(data){
 		console.log(data);
-		game.players[socket.id].health = data.health;
+		players[socket.id].health = data.health;
 		
 	});
 	
@@ -61,23 +70,15 @@ io.on('connection', function(socket) {
 	
 	// Update player property
 	socket.on('update-player', function(data) {
-		//console.log(data);
 
-		_.assign(game.players[socket.id], data);
+		_.assign(players[socket.id], data);
 		
-		/*game.players[socket.id].lat = data.lat;
-		game.players[socket.id].lng = data.lng;
-		game.players[socket.id].health = data.health;
-		game.players[socket.id].experience = data.experience;*/
+		/*players[socket.id].lat = data.lat;
+		players[socket.id].lng = data.lng;
+		players[socket.id].health = data.health;
+		players[socket.id].experience = data.experience;*/
 
-		console.log("updated player:");
-		console.log(game.players[socket.id]);
-		
-	});
-
-	socket.on('update-exp', function(data){
-		console.log(data);
-		game.players[socket.id].experience = data.experience;
+		console.log("updating player ", socket.id+":", data);
 		
 	});
 
@@ -96,9 +97,9 @@ io.on('connection', function(socket) {
 		console.log(socket.id, ' disconnected');
 		
 		// Remove from players array
-		delete game.players[socket.id];
+		delete players[socket.id];
 		
-		console.log(game.players[socket.id]);
+		console.log(players[socket.id]);
 	});
 	
 	//to send socket to specific person

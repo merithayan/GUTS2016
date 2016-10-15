@@ -24,6 +24,7 @@ $("#join").click(function() {
 	data.name = $("#name").val();
 	data.lat = $("#lat").val();
 	data.lng = $("#lng").val();
+	data.angle = $("#angle").val();
 	data ? socket.emit("login", data) : console.log("Enter data...");
 });
 
@@ -31,8 +32,10 @@ $("#update").click(function() {
 	var data = {
 		id: socketId,
 		lat: $("#lat").val(),
-		lng: $("#lng").val()
+		lng: $("#lng").val(),
+		angle: $("#angle").val()
 	};
+	console.log();
 	socket.emit("update-player", data);
 });
 
@@ -47,13 +50,17 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("update", function(data) {
-	// console.log(data);
+	console.log(data);
 	$("#players").html(" ");
 	for (var p in data) {
+
+		// Draw players on map
+
+		
 		p = data[p];
-		console.log(p);
-		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+"</li>");
+		$("#players").append("<li>"+p.name+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 	}
+
 });
 
 socket.on("fire", function() {

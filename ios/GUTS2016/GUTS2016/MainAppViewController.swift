@@ -14,7 +14,19 @@ import SocketIO
 import SwiftyJSON
 
 // The socket global variable
-let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [.log(true)])
+// c9092951
+let socket = SocketIOClient(socketURL: URL(string: "https://c9092951.ngrok.io")!, config: [])
+
+// Player variables
+var health = 3
+var exp = 0
+
+var otherPlayerLocations: [String:Any] = [:]
+// ids {
+//    name
+//    lat
+//    lng
+// }
 
 class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     
@@ -43,19 +55,20 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         // Login the user when the view loads
         do {
             let coords = clmanager.location?.coordinate
+            
             let jsondata: [String: String] = [
                 "name" : username,
                 "lat" : String(format: "%f", coords!.latitude),
                 "lng" : String(format: "%f", coords!.longitude)
             ]
             
-            let testString = "{\"name\":" + username + ", \"lat\":" + String(format: "%f", coords!.latitude) + ", \"lng\":" + String(format: "%f", coords!.longitude) + "}"
+            let writingOptions = JSONSerialization.WritingOptions.init(rawValue: 0)
             
-            let jsonifiedUsername = try JSONSerialization.data(withJSONObject: jsondata, options: .prettyPrinted)
+            let jsonifiedUsername = try JSONSerialization.data(withJSONObject: jsondata, options: writingOptions)
+            let string = String(data: jsonifiedUsername, encoding: String.Encoding.utf8)!
             
-            print(String(data: jsonifiedUsername, encoding: String.Encoding.utf8)!)
-            socket.emit("login", testString)
-        } catch let error as Error {
+            socket.emit("login", string)
+        } catch let error {
             print(error)
             fatalError()
         }
@@ -102,13 +115,11 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         ]
         
         do {
-            let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: .prettyPrinted)
-            print("OUTGOING DATA *******************")
-            try print(JSONSerialization.jsonObject(with: jsonifiedData, options: .mutableContainers) as! [String: Any])
-            print("*********************************")
-            //socket.connect()
-            socket.emit("update-player", jsonifiedData)
-        } catch let error as Error {
+            let writingOptions = JSONSerialization.WritingOptions.init(rawValue: 0)
+            let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: writingOptions)
+            let string = String(data: jsonifiedData, encoding: String.Encoding.utf8)!
+            socket.emit("update-player", string)
+        } catch let error {
             print(error)
         }
         
