@@ -79,7 +79,7 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         
         // Setup the timer for the server updates
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(updateServer), userInfo: nil, repeats: true)
-        timer2 = Timer.scheduledTimer(timeInterval: 3, target: self, selector: #selector(radarUpdate), userInfo: nil, repeats: true)
+        timer2 = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(radarUpdate), userInfo: nil, repeats: true)
         
         controlView.translatesAutoresizingMaskIntoConstraints = false
         scannerView.translatesAutoresizingMaskIntoConstraints = false
@@ -117,6 +117,7 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     func updateServer() {
         var dataDictionary:[String : Any]
         if player.isEmpd {
+            print("I am in nairobi")
             dataDictionary = [
                 "lat": "1.2921",
                 "lng": "36.8219",
@@ -124,6 +125,7 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
                 "id": myId
             ] as [String : Any]
         } else {
+            print("I am in the hackathon")
             dataDictionary = [
                 "lat": currentCoords.latitude,
                 "lng": currentCoords.longitude,
@@ -162,20 +164,15 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
             // }
             let id = player.key
             if id == myId {
+                print("My ID is", myId)
                 continue
             }
             
             let data = player.value as! [String: Any]
-            print(data)
             
             var playerLat: Double
             var playerLng: Double
             
-            print("--------------------")
-            print(data["name"])
-            print(type(of: data["lat"]))
-            print(type(of: data["lng"]))
-            print("-------------------")
             
             let stringlat = data["lat"] as? String
             let stringlng = data["lng"] as? String
@@ -199,16 +196,17 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
     // Function called when a new location is detected
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let coords = locations[0].coordinate
+        print(coords, "These are the coords we are using for the map. ******")
         scannerView.scannerMap.setCenter(coords, animated: false)
         currentCoords = coords
-        
-        
+  
     }
     
     // Function called when a new heading is located
     func locationManager(_ manager: CLLocationManager, didUpdateHeading newHeading: CLHeading) {
         let heading = newHeading.magneticHeading
         currentAngle = heading
+        scannerView.scannerMap.direction = heading
     }
     
     func gameOver(){
