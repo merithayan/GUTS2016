@@ -14,6 +14,17 @@ let player = Player()
 class Player {
     var mainView: MainAppViewController?
     var exp: Int
+    var hasEmp = true {
+        didSet {
+            if hasEmp {
+                mainView?.controlView.reactivateEmp()
+            }
+    
+        }
+    }
+
+    var isEmpd = false
+
     var health: Int {
         didSet {
             mainView?.controlView.reloadBatteryView()

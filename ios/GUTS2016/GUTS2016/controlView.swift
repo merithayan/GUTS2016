@@ -100,11 +100,19 @@ class ControlView: UIView {
     }
     
     func powerUpAction(){
-        powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButton"), for: UIControlState.normal)
-        socket.emit("powerUp",myId)
+        if player.hasEmp {
+            powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButton"), for: UIControlState.normal)
+            socket.emit("emp")
+            player.hasEmp = false
+        }
+
     }
     
-    
+    func reactivateEmp() {
+        
+        powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButtonActive"), for: UIControlState.normal)
+        
+    }
     
     func reloadBatteryView() {
         

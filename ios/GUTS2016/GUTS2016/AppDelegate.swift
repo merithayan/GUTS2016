@@ -53,6 +53,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     currentPlayerData = data
                     player.health = currentPlayerData["health"] as! Int
                     player.exp = currentPlayerData["experience"] as! Int
+                    player.hasEmp = currentPlayerData["hasEmp"] as! Bool
+                    player.isEmpd = currentPlayerData["empd"] as! Bool
                 }
                 
                 if player.health <= 0 {
