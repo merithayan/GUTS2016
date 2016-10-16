@@ -2,12 +2,15 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var _ = require('lodash');
+// var L = require('leaflet');
+// var r = require('leaflet-rotatedmarker');
 
 // Game variables
 var players = {};
 var defaultHealth = 9;
 var defaultExperience = 0;
 var empdFor = 0;
+var empDuration = 10;
 
 // ngrok.exe http -subdomain=montd 3000
 
@@ -21,7 +24,7 @@ app.get('/test', function(req, res) {
 
 app.get('/map', function(req, res) {
 	res.sendFile(__dirname + '/map.js');
-});
+})
 
 app.get('/script', function(req, res) {
 	res.sendFile(__dirname + '/script.js');
@@ -145,11 +148,14 @@ io.on('connection', function(socket) {
 				self.experience += 5;
 
 				// Send event to target
-				socket.to(target.id).emit("got-shot", target.name);
+				socket.to(target.id).emit("got-shot", self.name);
 
 				// Send event to marksman
 				// socket.to(socket.id).emit("hit");
 				io.sockets.connected[socket.id].emit('hit', target.name);
+
+				// Send marker info to everyone
+				io.emit('mark-as-shot', id);
 			}
 
 		}
@@ -166,7 +172,7 @@ io.on('connection', function(socket) {
 
 		players[socket.id].hasEmp = false;
 
-		empdFor = 10;
+		empdFor = empDuration;
 		for (var key in players) {
 			var p = players[key];
 			p.empd = true;
@@ -192,3 +198,10 @@ io.on('connection', function(socket) {
 http.listen(3000, function() {
 	console.log('listening on *:3000');
 });
+
+app.get('/blue', function(req, res) { res.sendFile(__dirname + '/blue.png'); });
+app.get('/bluedir', function(req, res) { res.sendFile(__dirname + '/bluedir.png'); });
+app.get('/red',  function(req, res) { res.sendFile(__dirname + '/red.png'); });
+app.get('/gray', function(req, res) { res.sendFile(__dirname + '/gray.png'); });
+
+app.get('/rotate', function(req, res) { res.sendFile(__dirname + '/node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js'); });

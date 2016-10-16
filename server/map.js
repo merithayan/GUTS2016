@@ -1,25 +1,31 @@
 var markerList = {};
 
 var blueIcon = L.icon({
-	iconUrl: 'http://www.omnipush.com/images/blue_dot_icon.png',
-	iconSize: [15, 15],
+	iconUrl: '/blue',
+	iconSize: [16, 16],
+	iconAnchor: [8, 8]
 });
-
-var redIcon = L.icon({
-	iconUrl: 'https://storage.googleapis.com/support-kms-prod/SNP_2752125_en_v0',
-	iconSize: [15, 15]
+var redIcon  = L.icon({
+	iconUrl: '/red',
+	iconSize: [16, 16],
+	iconAnchor: [8, 8]
 });
-
 var grayIcon = L.icon({
-	iconUrl: 'http://www.iconsdb.com/icons/preview/dark-gray/circle-xl.png',
-	iconSize: [15, 15]
+	iconUrl: '/gray',
+	iconSize: [12, 12],
+	iconAnchor: [6, 6]
 });
+
+/* var blueSmallIcon = L.icon({ iconUrl: '/blue', iconSize: [8, 8], });
+var redSmallIcon  = L.icon({ iconUrl: '/red',  iconSize: [8, 8] });
+var graySmallIcon = L.icon({ iconUrl: '/gray', iconSize: [6, 6] }); */
 
 function addInitialMarkers(players) {
 	for (key in players) {
 		var p = players[key];
 		var options = {
-			icon: blueIcon
+			icon: blueIcon,
+			rotationAngle: p.angle
 		};
 		markerList[key] = new L.marker([p.lat, p.lng], options).addTo(mapLeaflet);
 		// markerList[key].setIcon(redIcon);
@@ -29,7 +35,6 @@ function addInitialMarkers(players) {
 }
 
 function addAdditionalMarker(player) {
-	// console.log("Adding newly joined player");
 	// console.log(player.id);
 	if (markerList[player.id]) return;
 	var options = {
@@ -46,6 +51,7 @@ function updateMarkers(players) {
 		};
 		var p = players[key];
 		markerList[key].setLatLng(L.latLng(p.lat, p.lng));
+		markerList[key].setRotationAngle(p.angle);
 
 		if (p.health < 1) {
 			console.log("setting gray icon");
@@ -56,18 +62,19 @@ function updateMarkers(players) {
 	}
 }
 
-function setRedIcon() {
-	// console.log("setting red icon");
-	if (!markerList[socketId]) {
+function setRedIcon(id) {
+	if (!id) id = socketId;
+	if (!markerList[id]) {
 		console.log("cannot set red icon");
 		return;
 	};
-	markerList[socketId].setIcon(redIcon);
+	markerList[id].setIcon(redIcon);
 }
 
-function setBlueIcon() {
-	if (!markerList[socketId]) return;
-	markerList[socketId].setIcon(blueIcon);
+function setBlueIcon(id) {
+	if (!id) id = socketId;
+	if (!markerList[id]) return;
+	markerList[id].setIcon(blueIcon);
 }
 
 function removeMarker(id) {
