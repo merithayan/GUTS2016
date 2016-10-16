@@ -145,7 +145,7 @@ io.on('connection', function(socket) {
 				self.experience += 5;
 
 				// Send event to target
-				socket.to(target.id).emit("got-shot");
+				socket.to(target.id).emit("got-shot", target.name);
 
 				// Send event to marksman
 				// socket.to(socket.id).emit("hit");
