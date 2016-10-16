@@ -5,16 +5,11 @@ var _ = require('lodash');
 
 // Game variables
 var players = {};
-var defaultHealth = 3;
+var defaultHealth = 9;
 var defaultExperience = 0;
+var empdFor = 0;
 
-/** Server needs to support:
-- Location - add sliders for:
-	- Latitude: [55.871200, 55.871800]
-	- Longitude: [-4.289500, -4.287500]
-- Direction - same slider
-- Bonus: Powerups (emp, mines, nukes)
-*/
+// ngrok.exe http -subdomain=montd 3000
 
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
@@ -43,11 +38,24 @@ setInterval(function() {
 
 // Check for revival
 setInterval(function() {
+
 	for (var p in players) {
 		p = players[p];
+
+		// Respawn logic
 		if (p.deadFor > 0) p.deadFor--;
 		if (p.health==0 && p.deadFor==0) p.health = defaultHealth;
+
+		// EMP logic
+		if (empdFor > 0) {
+			empdFor--;
+			p.empd = true;
+			console.log("EMP active for", empdFor);
+		} else {
+			p.empd = false;
+		}
 	}
+
 }, 1000);
 
 
@@ -69,6 +77,8 @@ io.on('connection', function(socket) {
 			angle: data.angle,
 			health: defaultHealth,
 			experience: defaultExperience,
+			hasEmp: true,
+			empd: false,
 			deadFor: 0
 		};
 
@@ -121,9 +131,9 @@ io.on('connection', function(socket) {
 			if (azimuth < 0) azimuth += 360;
 
 			//console.log("Checking if", self.name, "hit", target.name);
-			// console.log("angle: ", self.angle, "azimuth: ", azimuth);
+			console.log("angle: ", self.angle, "azimuth: ", azimuth);
 
-			// If the difference is small enough - emit "shot" event to target
+			// If the difference is small enough - shot!
 			if (Math.abs(self.angle - azimuth) < 5) {
 				console.log(target.name, "was shot");
 
@@ -132,16 +142,37 @@ io.on('connection', function(socket) {
 					target.deadFor = 10;
 				}
 
+				self.experience += 5;
+
 				// Send event to target
 				socket.to(target.id).emit("got-shot");
 
 				// Send event to marksman
-				socket.to(self.id).emit("hit");
+				// socket.to(socket.id).emit("hit");
+				io.sockets.connected[socket.id].emit('hit', target.name);
 			}
 
 		}
 
 		// socket.broadcast.emit("fire");
+	});
+
+	// If someone fires an EMP
+	socket.on('emp', function() {
+		
+		// Safety checks
+		if (!players[socket.id].hasEmp) return;
+		if (empdFor > 0) return;
+
+		players[socket.id].hasEmp = false;
+
+		empdFor = 10;
+		for (var key in players) {
+			var p = players[key];
+			p.empd = true;
+		}
+
+		io.emit('empd');
 	});
 
 	socket.on('disconnect', function() {

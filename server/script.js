@@ -44,6 +44,10 @@ $("#fire").click(function() {
 	socket.emit("fire");
 });
 
+$("#emp").click(function() {
+	socket.emit("emp");
+});
+
 // When this user has logged in
 socket.on("logged-in", function(id) {
 	socketId = id;
@@ -66,8 +70,8 @@ socket.on("remove-marker", function(id) {
 
 socket.on("update", function(players) {
 	// console.log(data);
-	if (players[socketId])
-		console.log(players[socketId].health, players[socketId].deadFor);
+	// if (players[socketId])
+	// 	console.log(players[socketId].health, players[socketId].deadFor);
 	
 	$("#players").html(" ");
 	
@@ -75,7 +79,7 @@ socket.on("update", function(players) {
 		var p = players[key];
 
 		// Show the player info in Godmode
-		$("#players").append("<li>"+p.name+" "+key+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
+		$("#players").append("<li>"+p.name+" "+p.experience+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 
 		updateMarkers(players);
 	}
@@ -92,4 +96,10 @@ socket.on("hit", function(name) {
 
 socket.on("got-shot", function() {
 	console.log("You got shot!");
+	setRedIcon();
+	window.setTimeout(setBlueIcon, 500);
+});
+
+socket.on("empd", function() {
+	console.log("You got EMPd!");
 });
