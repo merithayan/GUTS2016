@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AudioToolbox
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -24,6 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             print("We managed to connect to the sockets!")
         })
         
+        socket.on("hit", callback: {(data, ack) in
+            print("We hit someone!")
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+        })
 //        socket.on("update-player-state", callback: {(data, ack) in
 //            do {
 //                let stuff = try JSONSerialization.data(withJSONObject: data, options: JSONSerialization.WritingOptions.prettyPrinted)
