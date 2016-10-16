@@ -51,10 +51,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 var currentPlayerData: [String: Any] = [:]
                 if let data = dataArray[0][myId] as? [String: Any] {
                     currentPlayerData = data
+                    print("******************")
+                    print(currentPlayerData)
+                    print("******************")
                     player.health = currentPlayerData["health"] as! Int
                     player.exp = currentPlayerData["experience"] as! Int
                     player.hasEmp = currentPlayerData["hasEmp"] as! Bool
                     player.isEmpd = currentPlayerData["empd"] as! Bool
+                    print("Does the player have an emp?", player.hasEmp)
+                    print("Is there an EMP running?", player.isEmpd)
                 }
                 
                 if player.health <= 0 {

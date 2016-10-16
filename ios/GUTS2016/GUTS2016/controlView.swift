@@ -104,17 +104,24 @@ class ControlView: UIView {
             powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButton"), for: UIControlState.normal)
             socket.emit("emp")
             player.hasEmp = false
+            print("I fired an EMP")
         }
-
+        print("I have no emp :( ")
     }
     
     func reactivateEmp() {
-        
         powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButtonActive"), for: UIControlState.normal)
-        
+        print("I now have an emp again :) ")
     }
     
+    func deactivateEmp() {
+        powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButton"), for: .normal)
+    }
     func reloadBatteryView() {
+        
+        if (player.health <= 0) {
+            return
+        }
         
         let subviews = batteryView.subviews
         for view in subviews {

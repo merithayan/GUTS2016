@@ -16,8 +16,12 @@ class Player {
     var exp: Int
     var hasEmp = true {
         didSet {
+            print("The hasEMP player value changed to:", hasEmp)
             if hasEmp {
+                print("The value of hasEmp has been updated to true")
                 mainView?.controlView.reactivateEmp()
+            } else {
+                mainView?.controlView.deactivateEmp()
             }
     
         }

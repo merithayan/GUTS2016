@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>We need your location so you can play this awesome game!</string>
-	<key>MGLMapboxAccessToken</key>
-	<string>sk.eyJ1IjoibWVyaXRoYXlhbiIsImEiOiJjaXVhZGluemEwMDBjMm9ubnkyZmcwZHp4In0.pdm2wYpac2nQ-2wAWiVDGg</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
+	<key>CFBundleDisplayName</key>
+	<string>War.io</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -24,6 +22,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>MGLMapboxAccessToken</key>
+	<string>sk.eyJ1IjoibWVyaXRoYXlhbiIsImEiOiJjaXVhZGluemEwMDBjMm9ubnkyZmcwZHp4In0.pdm2wYpac2nQ-2wAWiVDGg</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location so you can play this awesome game!</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
