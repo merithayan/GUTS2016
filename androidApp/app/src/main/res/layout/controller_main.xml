@@ -131,11 +131,37 @@
             android:id="@+id/angleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/fireButton"
+            android:layout_toEndOf="@+id/fireButton"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
-            android:text="abcd"
-            android:textSize="18dp"
+            android:layout_marginStart="15dp"
+            android:text=""
+            android:textSize="18sp"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/shotByTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@+id/fireButton"
+            android:layout_marginStart="3dp"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textSize="18sp"
+            android:textColor="#ffffff"/>
+
+        <TextView
+            android:id="@+id/shotTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/shotByTV"
+            android:layout_marginStart="3dp"
+            android:layout_marginTop="20dp"
+            android:layout_toStartOf="@id/powerUpButton"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:text=""
+            android:textSize="18sp"
             android:textColor="#ffffff"/>
 
         <ImageButton

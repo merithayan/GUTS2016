@@ -37,11 +37,13 @@ public class SocketStuff {
         mSocket.on("logged-in", onLoggedIn);
         mSocket.on("update", onUpdateFromServer);
         mSocket.on("hit", onHit);
+        mSocket.on("got-shot", onGotShot);
         mSocket.connect();
     }
 
     public void unregisterSocket(){
         mSocket.disconnect();
+        mSocket.on("got-shot", onGotShot);
         mSocket.on("hit", onHit);
         mSocket.off("logged-in", onLoggedIn);
         mSocket.off("update", onUpdateFromServer);
@@ -94,10 +96,10 @@ public class SocketStuff {
     private Emitter.Listener onUpdateFromServer = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
-            mainScreenController.mapStuff.actualMap.removeAnnotations();
             mainScreenController.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+                    //bmainScreenController.mapStuff.removeAllMarkers();
                     JSONObject data = (JSONObject) args[0];
 
                     if (data.length() != 0) {
@@ -110,6 +112,7 @@ public class SocketStuff {
                                 if (data.get(key) instanceof JSONObject) {
                                     JSONObject person = (JSONObject) data.get(key);
                                     String name = (String) person.get("name");
+                                    //Log.v("onUpdate", name);
                                     if (! mainScreenController.username.equals(name)) {
                                         Double latitude;
                                         Double longitude;
@@ -129,9 +132,9 @@ public class SocketStuff {
 
                                         boolean hasEMP;
                                         try {
-                                            hasEMP = Boolean.parseBoolean((String) person.get("hasEMP"));
+                                            hasEMP = Boolean.parseBoolean((String) person.get("hasEmp"));
                                         } catch (ClassCastException e) {
-                                            hasEMP = (Boolean) person.get("hasEMP");
+                                            hasEMP = (Boolean) person.get("hasEmp");
                                         }
                                         mainScreenController.hasEMP = hasEMP;
                                         mainScreenController.changePowerUpButton();
@@ -142,6 +145,7 @@ public class SocketStuff {
                                         } catch (ClassCastException e) {
                                             EMPed = (Boolean) person.get("empd");
                                         }
+                                        Log.v("onUpdate", "EMPed: " + EMPed);
                                         mainScreenController.EMPed = EMPed;
 
                                         int health;
@@ -196,8 +200,31 @@ public class SocketStuff {
     private Emitter.Listener onHit = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            final String target = (String) args[0];
+            Log.v("onHit", target);
+            mainScreenController.getActivity().runOnUiThread(new Runnable() {
+                 @Override
+                 public void run() {
+                    mainScreenController.shotTextview.setText("You shot " + target);
+                 }
+            });
+
             Vibrator v = (Vibrator) mainScreenController.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
             v.vibrate(500);
+        }
+    };
+
+    private Emitter.Listener onGotShot = new Emitter.Listener() {
+        @Override
+        public void call(final Object... args) {
+            final String shooter = (String) args[0];
+            Log.v("onGotShot", shooter);
+            mainScreenController.getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    mainScreenController.shotTextview.setText("You were shot by " + shooter);
+                }
+            });
         }
     };
 

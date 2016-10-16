@@ -57,6 +57,12 @@ public class MainScreenController extends ButterKnifeController {
     @BindView(R.id.angleTV)
     TextView angleTextview;
 
+    @BindView(R.id.shotByTV)
+    public TextView shotByTextview;
+
+    @BindView(R.id.shotTV)
+    public TextView shotTextview;
+
     @BindView(R.id.powerUpButton)
     ImageButton powerUpImageButton;
 

@@ -28,11 +28,13 @@ public class MapStuff {
     public MapboxMap actualMap;
     private List<Marker> markers;
     private ArrayList<String> listOfNames;
+    boolean mapReady;
 
     private Icon enemyIcon;
 
     public MapStuff(MainScreenController mainScreenController){
         this.mainScreenController = mainScreenController;
+        mapReady = false;
 
         boolean notGotFineLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED;
         boolean notGotCoarseLocationPermission = ContextCompat.checkSelfPermission(mainScreenController.getActivity(), android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED;
@@ -51,6 +53,7 @@ public class MapStuff {
         mainScreenController.mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(MapboxMap mapboxMap) {
+                mapReady = true;
                 actualMap = mapboxMap;
                 actualMap.setMyLocationEnabled(true);
                 markers = actualMap.getMarkers();
@@ -62,6 +65,10 @@ public class MapStuff {
         enemyIcon = iconFactory.fromDrawable(enemyIconDrawable);
 
         listOfNames = new ArrayList<>();
+    }
+
+    public void removeAllMarkers(){
+        actualMap.removeAnnotations();
     }
 
     public void addMarker(String name, LatLng markerPosition){
@@ -91,11 +98,13 @@ public class MapStuff {
     }
 
     public void updateMapPosition(){
-        LatLng currentPosition = mainScreenController.getPosition();
-        actualMap.setCameraPosition(new CameraPosition.Builder()
-                .target(currentPosition)
-                .zoom(16)
-                .bearing(mainScreenController.direction.angle)
-                .build());
+        if (mapReady) {
+            LatLng currentPosition = mainScreenController.getPosition();
+            actualMap.setCameraPosition(new CameraPosition.Builder()
+                    .target(currentPosition)
+                    .zoom(16)
+                    .bearing(mainScreenController.direction.angle)
+                    .build());
+        }
     }
 }
