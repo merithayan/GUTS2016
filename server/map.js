@@ -16,16 +16,16 @@ var grayIcon = L.icon({
 });
 
 function addInitialMarkers(players) {
-    for (key in players) {
-    	var p = players[key];
-    	var options = {
-    		icon: blueIcon
-    	};
-    	markerList[key] = new L.marker([p.lat, p.lng], options).addTo(mapLeaflet);
-    	// markerList[key].setIcon(redIcon);
-    	// console.log(markerList[key]);
-    }    
-    mapLeaflet.scrollWheelZoom.disable();
+	for (key in players) {
+		var p = players[key];
+		var options = {
+			icon: blueIcon
+		};
+		markerList[key] = new L.marker([p.lat, p.lng], options).addTo(mapLeaflet);
+		// markerList[key].setIcon(redIcon);
+		// console.log(markerList[key]);
+	}    
+	mapLeaflet.scrollWheelZoom.disable();
 }
 
 function addAdditionalMarker(player) {
@@ -39,22 +39,25 @@ function addAdditionalMarker(player) {
 }
 
 function updateMarkers(players) {
-    for (key in players) {
-    	if (!markerList[key]) {
-    		console.log(key, "hasn't been added to the map - skipping...");
-    		continue;
-    	};
-    	var p = players[key];
-        markerList[key].setLatLng(L.latLng(p.lat, p.lng));
+	for (key in players) {
+		if (!markerList[key]) {
+			console.log(key, "hasn't been added to the map - skipping...");
+			continue;
+		};
+		var p = players[key];
+		markerList[key].setLatLng(L.latLng(p.lat, p.lng));
 
-        if (p.health < 0) {
-			markerList[key].setIcon(grayIcon);
-        }
-    }
+		if (p.health < 1) {
+			console.log("setting gray icon");
+			markerList[key].setIcon(grayIcon)	
+		} else {
+		    markerList[key].setIcon(blueIcon);	
+		}
+	}
 }
 
 function setRedIcon() {
-	console.log("setting red icon");
+	// console.log("setting red icon");
 	if (!markerList[socketId]) {
 		console.log("cannot set red icon");
 		return;

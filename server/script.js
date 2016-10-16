@@ -55,7 +55,6 @@ socket.on("logged-in", function(id) {
 });
 
 socket.on("initial-draw", function(players) {
-	console.log("initial drawe");
 	addInitialMarkers(players);
 });
 
@@ -64,7 +63,6 @@ socket.on("additional-draw", function(player) {
 });
 
 socket.on("remove-marker", function(id) {
-	console.log("remove marker socket");
 	removeMarker(id);
 })
 
@@ -79,7 +77,7 @@ socket.on("update", function(players) {
 		var p = players[key];
 
 		// Show the player info in Godmode
-		$("#players").append("<li>"+p.name+" "+p.experience+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
+		$("#players").append("<li>"+p.name+"&#9;    "+p.experience+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
 
 		updateMarkers(players);
 	}
@@ -94,8 +92,8 @@ socket.on("hit", function(name) {
 	console.log("You hit "+name+"!");
 });
 
-socket.on("got-shot", function() {
-	console.log("You got shot!");
+socket.on("got-shot", function(name) {
+	console.log(name, "shot you!");
 	setRedIcon();
 	window.setTimeout(setBlueIcon, 500);
 });
