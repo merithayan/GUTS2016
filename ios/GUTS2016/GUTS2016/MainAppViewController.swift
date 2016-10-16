@@ -214,6 +214,14 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
         let newview = UIView(frame: rect)
         newview.backgroundColor = UIColor.gray.withAlphaComponent(0.6)
         newview.tag = 5000
+        let label = UILabel()
+        label.textColor = UIColor.white
+        label.textAlignment = .center
+        label.text = "You are dead."
+        newview.addSubview(label)
+        newview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-100-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": label]))
+        newview.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0": label]))
+        
         view.addSubview(newview)
         let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false, block: {_ in
             newview.removeFromSuperview()

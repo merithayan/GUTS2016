@@ -27,7 +27,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         socket.on("hit", callback: {(data, ack) in
             print("We hit someone!")
+            let string = data[0] as! String
+            print("We hit ", string)
+            if let main = player.mainView {
+                main.controlView.youHit = string
+            }
             AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+        })
+        
+        socket.on("got-shot", callback: {(data, ack) in
+            print("We  got hit by someone!")
+            let string = data[0] as! String
+            print("We were hit by ", string)
+            if let main = player.mainView {
+                main.controlView.hitYou = string
+            }
+            let soundId = SystemSoundID(1322)
+            AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+            AudioServicesPlaySystemSound(soundId)
         })
 //        socket.on("update-player-state", callback: {(data, ack) in
 //            do {
