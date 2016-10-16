@@ -39,8 +39,11 @@ public class MainScreenController extends ButterKnifeController {
     public String username;
     public String id;
 
-    private int maxHealth = 3;
+    private int maxHealth = 9;
     public int health;
+
+    public boolean hasEMP;
+    public boolean EMPed;
 
     @BindView(R.id.mapview)
     public MapView mapView;
@@ -59,30 +62,38 @@ public class MainScreenController extends ButterKnifeController {
 
     @OnClick(R.id.fireButton)
     void fireImageButtonClicked(){
-        fireImageButton.setImageResource(R.drawable.fire_button_active);
+        if (! EMPed) {
+            fireImageButton.setImageResource(R.drawable.fire_button_active);
 
-        socketStuff.mSocket.emit("fire");
+            socketStuff.mSocket.emit("fire", id);
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                fireImageButton.setImageResource(R.drawable.fire_button);
-            }
-        }, 500);
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fireImageButton.setImageResource(R.drawable.fire_button);
+                }
+            }, 500);
+        }
     }
 
     @OnClick(R.id.powerUpButton)
     void powerUpImageButtonClicked(){
-        powerUpImageButton.setImageResource(R.drawable.power_up_button_active);
+        Log.v("powerUpClicked", "" + hasEMP);
+        Log.v("powerUpClicked", "" + EMPed);
 
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                powerUpImageButton.setImageResource(R.drawable.power_up_button);
-            }
-        }, 500);
+        if (! EMPed) {
+            socketStuff.mSocket.emit("emp");
+
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    powerUpImageButton.setClickable(false);
+                    powerUpImageButton.setImageResource(R.drawable.power_up_button);
+                }
+            }, 500);
+        }
     }
 
     public MainScreenController(Bundle args){
@@ -142,7 +153,30 @@ public class MainScreenController extends ButterKnifeController {
         updateBattery();
     }
 
-    private void updateBattery(){
+    public void changePowerUpButton(){
+        if (hasEMP) {
+            powerUpImageButton.setClickable(true);
+            powerUpImageButton.setImageResource(R.drawable.power_up_button_active);
+        } else {
+            powerUpImageButton.setClickable(false);
+            powerUpImageButton.setImageResource(R.drawable.power_up_button);
+        }
+    }
+
+    public void timeOut(){
+        fireImageButton.setVisibility(View.INVISIBLE);
+        powerUpImageButton.setVisibility(View.INVISIBLE);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                fireImageButton.setVisibility(View.VISIBLE);
+                powerUpImageButton.setVisibility(View.VISIBLE);
+            }
+        }, 10000);
+    }
+
+    public void updateBattery(){
         int totalNumberOfBars = frameLayout.getChildCount();
         int barsPerHealth = totalNumberOfBars / maxHealth;
         int actualNumberOfBars = health * barsPerHealth;
@@ -157,6 +191,12 @@ public class MainScreenController extends ButterKnifeController {
             ImageView iv = (ImageView) frameLayout.getChildAt(i);
 
             iv.setVisibility(View.INVISIBLE);
+        }
+
+        for (int i = 0; i < actualNumberOfBars; i++) {
+            ImageView iv = (ImageView) frameLayout.getChildAt(i);
+
+            iv.setVisibility(View.VISIBLE);
         }
     }
 
@@ -194,16 +234,6 @@ public class MainScreenController extends ButterKnifeController {
         if (id != null) {
             socketStuff.emitUpdate(latitude, longitude, angle, id);
         }
-
-        /*
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                updateData();
-            }
-        }, 2000);
-        */
     }
 
     @Override
@@ -233,12 +263,10 @@ public class MainScreenController extends ButterKnifeController {
 
     @Override
     protected void onDestroyView(View view){
-        /*
         socketStuff.unregisterSocket();
         LocationServices.FusedLocationApi.removeLocationUpdates(position.mGoogleApiClient, position);
         position.mGoogleApiClient.disconnect();
         direction.mSensorManager.unregisterListener(direction);
-        */
         Log.v("onDestroy", "disconnected");
     }
 }

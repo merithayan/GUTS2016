@@ -18,10 +18,11 @@ import Mapbox
 let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [])
 
 // Player variables
-var health = 3
+var health = 4
 
 var exp = 0
 var myId = ""
+
 
 var otherPlayerLocations: [String:Any] = [:]
 
@@ -114,13 +115,24 @@ class MainAppViewController: UIViewController, CLLocationManagerDelegate {
 
     // When it's time to update the server run this
     func updateServer() {
-        let dataDictionary = [
-            "lat": currentCoords.latitude,
-            "lng": currentCoords.longitude,
-            "angle": currentAngle,
-            "id": myId
-        ] as [String : Any]
-        
+        var dataDictionary:[String : Any]
+        if player.isEmpd {
+            dataDictionary = [
+                "lat": "1.2921",
+                "lng": "36.8219",
+                "angle": currentAngle,
+                "id": myId
+            ] as [String : Any]
+        } else {
+            dataDictionary = [
+                "lat": currentCoords.latitude,
+                "lng": currentCoords.longitude,
+                "angle": currentAngle,
+                "id": myId
+            ] as [String : Any]
+        }
+            
+            
         do {
             let writingOptions = JSONSerialization.WritingOptions.init(rawValue: 0)
             let jsonifiedData = try JSONSerialization.data(withJSONObject: dataDictionary, options: writingOptions)

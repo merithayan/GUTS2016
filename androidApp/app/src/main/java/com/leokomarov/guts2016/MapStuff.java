@@ -25,7 +25,7 @@ import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
 public class MapStuff {
 
     private MainScreenController mainScreenController;
-    private MapboxMap actualMap;
+    public MapboxMap actualMap;
     private List<Marker> markers;
     private ArrayList<String> listOfNames;
 
@@ -46,7 +46,6 @@ public class MapStuff {
             Log.e("startLocationUpdates", "fine permission not granted");
             ActivityCompat.requestPermissions(mainScreenController.getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_ACCESS_FINE_LOCATION);
         }
-
 
         mainScreenController.mapView.onCreate(MainActivity.bundle);
         mainScreenController.mapView.getMapAsync(new OnMapReadyCallback() {
@@ -72,15 +71,22 @@ public class MapStuff {
                 .title(name)
                 .icon(enemyIcon);
 
-        Log.v("addMarker", listOfNames.toString());
+        //Log.v("addMarker", listOfNames.toString());
 
         if (! listOfNames.contains(name)) {
             Log.v("addMarker", "adding marker");
             listOfNames.add(name);
             actualMap.addMarker(marker);
         } else {
-            Log.v("addMarker", "moving marker");
-            actualMap.addMarker(marker).setPosition(markerPosition);
+            //Log.v("addMarker", "moving marker");
+            markers = actualMap.getMarkers();
+            for (Marker currentMarker : markers) {
+                if (name.equals(currentMarker.getTitle())) {
+                    currentMarker.setPosition(markerPosition);
+                    return;
+                }
+            }
+            //actualMap.addMarker(marker).setPosition(markerPosition);
         }
     }
 
