@@ -37,7 +37,7 @@ class Player {
     
     init() {
         self.exp = 0
-        self.health = 4
+        self.health = 9
     }
     
     func timeOut() {

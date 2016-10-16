@@ -84,18 +84,19 @@ socket.on("update", function(players) {
 	
 });
 
-socket.on("fire", function() {
-	$("#fire").append("<h1>Shots Fired</h1>");
-});
-
 socket.on("hit", function(name) {
 	console.log("You hit "+name+"!");
 });
 
 socket.on("got-shot", function(name) {
 	console.log(name, "shot you!");
-	setRedIcon();
+	setRedIcon(socketId);
 	window.setTimeout(setBlueIcon, 500);
+});
+
+socket.on("mark-as-shot", function(id) {
+	setRedIcon(id);
+	// window.setTimeout(setBlueIcon(id), 500);
 });
 
 socket.on("empd", function() {

@@ -40,11 +40,19 @@ class ControlView: UIView {
     var batteryView: UIImageView
     var redBarView: UIImageView
     let powerUpButton = UIButton(type: .custom)
+    
+    var batteryBarContainerView: UIView
+    
     override init(frame: CGRect) {
         batteryView = UIImageView(image: #imageLiteral(resourceName: "battery"))
         batteryView.translatesAutoresizingMaskIntoConstraints = false
         batteryView.contentMode = UIViewContentMode.scaleAspectFit;
         
+        batteryBarContainerView = UIView(frame: CGRect(x: 0, y: 0, width: batteryView.bounds.width*0.5, height: batteryView.bounds.height))
+
+        batteryBarContainerView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let screenWidth = UIScreen.main.bounds.width
 
         redBarView = UIImageView(image: #imageLiteral(resourceName: "redBar"))
         redBarView.translatesAutoresizingMaskIntoConstraints = false
@@ -69,11 +77,31 @@ class ControlView: UIView {
         
         self.backgroundColor = MerithayanUI.blueGrey.base
    
+        batteryView.addSubview(batteryBarContainerView)
+        
+        var margin: Int
+        print("OUR PHONE IS A ", UIDevice.current.name)
+        
+        switch UIDevice.current.name {
+        case "Mario's iPhone 6":
+            margin = 100
+        case "Tim's iPhone":
+            margin = 120
+        default:
+            margin = 100
+        }
+        
+        
+        // BatteryView -> BatteryBarContainer constraints
+        batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":batteryBarContainerView]))
+        batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-(margin)-[v0]-(margin)-|", options: NSLayoutFormatOptions.alignAllCenterX, metrics: ["margin":margin], views: ["v0":batteryBarContainerView]))
+        batteryView.centerXAnchor.constraint(equalTo: batteryBarContainerView.centerXAnchor).isActive = true
+        
         reloadBatteryView()
         
-
         // Adding batteryView to the controlView
         addSubview(batteryView)
+        
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-20-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":batteryView]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[v0]-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":batteryView]))
         
@@ -123,44 +151,44 @@ class ControlView: UIView {
             return
         }
         
-        let subviews = batteryView.subviews
+        let subviews = batteryBarContainerView.subviews
         for view in subviews {
             view.removeFromSuperview()
         }
         if player.health > 0 {
             // Defining red bar
-            batteryView.addSubview(redBarView)
-            batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2.5-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView]))
-            batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-123-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView]))
+            batteryBarContainerView.addSubview(redBarView)
+            batteryBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2.5-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView]))
+            batteryBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView]))
         }
         
         if player.health > 1 {
             // Defining yellow bar
-            for _ in 1...(player.health*2)-3 {
+            for _ in 1...(player.health/2) {
                 let yellowBarView = YellowBarView()
                 yellowBarView.translatesAutoresizingMaskIntoConstraints = false
-                batteryView.addSubview(yellowBarView)
+                batteryBarContainerView.addSubview(yellowBarView)
             }
         }
         
         if player.health > 2 {
             // Defining green bar
-            for _ in (player.health*2)-3...(player.health*2) {
+            for _ in (player.health/2)...(player.health+1) {
                 let greenBarView = GreenBarView()
                 greenBarView.translatesAutoresizingMaskIntoConstraints = false
-                batteryView.addSubview(greenBarView)
+                batteryBarContainerView.addSubview(greenBarView)
             }
         }
-        if player.health > 3 {
-            // Defining green bar
-            for _ in (player.health*2)-2...(player.health*2)+1 {
-                let greenBarView = GreenBarView()
-                greenBarView.translatesAutoresizingMaskIntoConstraints = false
-                batteryView.addSubview(greenBarView)
-            }
-        }
+//        if player.health > 3 {
+//            // Defining green bar
+//            for _ in (player.health)-2...(player.health*2)+1 {
+//                let greenBarView = GreenBarView()
+//                greenBarView.translatesAutoresizingMaskIntoConstraints = false
+//                batteryBarContainerView.addSubview(greenBarView)
+//            }
+//        }
 
-        let viewArray = batteryView.subviews
+        let viewArray = batteryBarContainerView.subviews
 
         
         var counter = 0
@@ -168,13 +196,13 @@ class ControlView: UIView {
         // Adding bar constraints
         for _ in viewArray {
             if counter == 0 {
-                batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0][v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView, "v1":viewArray[counter+1]]))
+                batteryBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0][v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":redBarView, "v1":viewArray[counter+1]]))
             } else {
                 
-                batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0][v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":viewArray[counter-1], "v1":viewArray[counter]]))
+                batteryBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:[v0][v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":viewArray[counter-1], "v1":viewArray[counter]]))
             }
             
-            batteryView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2.5-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":viewArray[counter]]))
+            batteryBarContainerView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-2.5-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":viewArray[counter]]))
             counter += 1
             
         }
