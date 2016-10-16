@@ -36,13 +36,13 @@ public class SocketStuff {
     public void registerSocket(){
         mSocket.on("logged-in", onLoggedIn);
         mSocket.on("update", onUpdateFromServer);
-        mSocket.on("got-shot", onGotShot);
+        mSocket.on("hit", onHit);
         mSocket.connect();
     }
 
     public void unregisterSocket(){
         mSocket.disconnect();
-        mSocket.on("got-shot", onGotShot);
+        mSocket.on("hit", onHit);
         mSocket.off("logged-in", onLoggedIn);
         mSocket.off("update", onUpdateFromServer);
     }
@@ -75,8 +75,13 @@ public class SocketStuff {
         JSONObject jo = new JSONObject();
         try {
             jo.put("id", id);
-            jo.put("lat", latitude);
-            jo.put("lng", longitude);
+            if (mainScreenController.EMPed){
+                jo.put("lat", 1.2921);
+                jo.put("lng", 36.8219);
+            } else {
+                jo.put("lat", latitude);
+                jo.put("lng", longitude);
+            }
             jo.put("angle", angle);
         } catch(Exception e) {
             Log.e("emitUpdate", e.getMessage());
@@ -89,13 +94,14 @@ public class SocketStuff {
     private Emitter.Listener onUpdateFromServer = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
+            mainScreenController.mapStuff.actualMap.removeAnnotations();
             mainScreenController.getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     JSONObject data = (JSONObject) args[0];
 
                     if (data.length() != 0) {
-                        Log.v("onUpdate", data.toString());
+                        //Log.v("onUpdate", data.toString());
 
                         try {
                             Iterator<?> keys = data.keys();
@@ -105,16 +111,51 @@ public class SocketStuff {
                                     JSONObject person = (JSONObject) data.get(key);
                                     String name = (String) person.get("name");
                                     if (! mainScreenController.username.equals(name)) {
-                                        Double latitude = Double.parseDouble((String) person.get("lat"));
-                                        Double longitude = Double.parseDouble((String) person.get("lng"));
+                                        Double latitude;
+                                        Double longitude;
+                                        try {
+                                            latitude = Double.parseDouble((String) person.get("lat"));
+                                            longitude = Double.parseDouble((String) person.get("lng"));
+                                        } catch (ClassCastException e) {
+                                            latitude = (Double) person.get("lat");
+                                            longitude = (Double) person.get("lng");
+                                        }
+
                                         LatLng position = new LatLng(latitude, longitude);
-                                        Log.v("onUpdate", name + ": " + position.toString());
+                                        //Log.v("onUpdate", name + ": " + position.toString());
 
                                         mainScreenController.mapStuff.addMarker(name, position);
                                     } else {
-                                        int health = Integer.parseInt((String) person.get("health"));
-                                        mainScreenController.health = health;
-                                        mainScreenController.updateBattery();
+
+                                        boolean hasEMP;
+                                        try {
+                                            hasEMP = Boolean.parseBoolean((String) person.get("hasEMP"));
+                                        } catch (ClassCastException e) {
+                                            hasEMP = (Boolean) person.get("hasEMP");
+                                        }
+                                        mainScreenController.hasEMP = hasEMP;
+                                        mainScreenController.changePowerUpButton();
+
+                                        boolean EMPed;
+                                        try {
+                                            EMPed = Boolean.parseBoolean((String) person.get("empd"));
+                                        } catch (ClassCastException e) {
+                                            EMPed = (Boolean) person.get("empd");
+                                        }
+                                        mainScreenController.EMPed = EMPed;
+
+                                        int health;
+                                        try {
+                                            health = Integer.parseInt((String) person.get("health"));
+                                        } catch (ClassCastException e) {
+                                            health = (Integer) person.get("health");
+                                        }
+                                        if (mainScreenController.health != health) {
+                                            mainScreenController.health = health;
+                                            mainScreenController.updateBattery();
+                                        }
+
+                                        Log.v("onUpdate", "health: " + health);
 
                                         if (health <= 0) {
                                             mainScreenController.timeOut();
@@ -152,7 +193,7 @@ public class SocketStuff {
         }
     };
 
-    private Emitter.Listener onGotShot = new Emitter.Listener() {
+    private Emitter.Listener onHit = new Emitter.Listener() {
         @Override
         public void call(final Object... args) {
             Vibrator v = (Vibrator) mainScreenController.getActivity().getSystemService(Context.VIBRATOR_SERVICE);

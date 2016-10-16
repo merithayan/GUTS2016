@@ -11,10 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -37,4 +38,5 @@ dependencies {
     compile ('com.mapbox.mapboxsdk:mapbox-android-sdk:4.1.1@aar'){
         transitive=true
     }
+    compile 'com.android.support:multidex:1.0.1'
 }
