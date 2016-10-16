@@ -18,7 +18,7 @@ import Mapbox
 let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [])
 
 // Player variables
-var health = 3
+var health = 4
 
 var exp = 0
 var myId = ""

@@ -21,6 +21,7 @@
 		927C8E391DB284940051B150 /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = 927C8E381DB284940051B150 /* Player.swift */; };
 		AC0D749F1DB26EE500A5CFBC /* SocketIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; };
 		AC0D74A01DB26EE500A5CFBC /* SocketIO.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AC0D74681DB2558000A5CFBC /* SocketIO.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		AC0D74A81DB312A000A5CFBC /* controlView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AC0D74A71DB312A000A5CFBC /* controlView.storyboard */; };
 		ACDE2CB81DB1A8D000BB79F2 /* controlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */; };
 /* End PBXBuildFile section */
 
@@ -150,6 +151,7 @@
 		921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Mapbox.framework; sourceTree = "<group>"; };
 		927C8E381DB284940051B150 /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		AC0D745E1DB2558000A5CFBC /* Socket.IO-Client-Swift.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = "Socket.IO-Client-Swift.xcodeproj"; path = "../../../../../Volumes/U/socket.io-client-swift-8.0.2/Socket.IO-Client-Swift.xcodeproj"; sourceTree = "<group>"; };
+		AC0D74A71DB312A000A5CFBC /* controlView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = controlView.storyboard; sourceTree = "<group>"; };
 		ACDE2CB71DB1A8D000BB79F2 /* controlView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = controlView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -169,6 +171,7 @@
 		9200BC0B1DB1634700070AE9 = {
 			isa = PBXGroup;
 			children = (
+				AC0D74A71DB312A000A5CFBC /* controlView.storyboard */,
 				AC0D745E1DB2558000A5CFBC /* Socket.IO-Client-Swift.xcodeproj */,
 				920B2CE61DB20D4B00738118 /* socket.io-client-swift-8.0.2 */,
 				921E4EDD1DB1B4B70005BEBF /* Mapbox.framework */,
@@ -273,7 +276,6 @@
 				TargetAttributes = {
 					9200BC131DB1634700070AE9 = {
 						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 7UZHTCB32F;
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.Maps.iOS = {
@@ -405,6 +407,7 @@
 			files = (
 				9200BC221DB1634700070AE9 /* LaunchScreen.storyboard in Resources */,
 				9200BC1F1DB1634700070AE9 /* Assets.xcassets in Resources */,
+				AC0D74A81DB312A000A5CFBC /* controlView.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -545,7 +548,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
@@ -568,7 +571,7 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = 7UZHTCB32F;
+				DEVELOPMENT_TEAM = "";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
