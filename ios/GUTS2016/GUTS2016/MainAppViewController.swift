@@ -15,10 +15,10 @@ import Mapbox
 
 // The socket global variable
 // c9092951
-let socket = SocketIOClient(socketURL: URL(string: "https://montd.ngrok.io")!, config: [])
+let socket = SocketIOClient(socketURL: URL(string: "https://dmont.merithayan.com")!, config: [])
 
 // Player variables
-var health = 4
+var health = 9
 
 var exp = 0
 var myId = ""
