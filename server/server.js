@@ -195,8 +195,8 @@ io.on('connection', function(socket) {
 
 });
 
-http.listen(3000, function() {
-	console.log('listening on *:3000');
+http.listen(10000, function() {
+	console.log('listening on *:10000');
 });
 
 app.get('/blue', function(req, res) { res.sendFile(__dirname + '/blue.png'); });
