@@ -27,7 +27,7 @@ public class SocketStuff {
 
         try {
             //mSocket = IO.socket("http://c9092951.ngrok.io/");
-            mSocket = IO.socket("http://dmont.merithayan.com/");
+            mSocket = IO.socket("https://dmont.merithayan.com/");
         } catch (URISyntaxException e) {
             Log.e("MainScreenController", e.getMessage());
         }
