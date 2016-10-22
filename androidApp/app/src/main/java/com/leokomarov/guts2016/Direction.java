@@ -17,9 +17,8 @@ public class Direction implements SensorEventListener {
     private final float[] mMagnetometerReading = new float[3];
 
     private final float[] mRotationMatrix = new float[9];
-    public final float[] mOrientationAngles = new float[3];
+    private final float[] mOrientationAngles = new float[3];
     public float angle;
-
 
     public Direction(MainScreenController mainScreenController) {
         mSensorManager = (SensorManager) mainScreenController.getActivity().getSystemService(SENSOR_SERVICE);

@@ -25,10 +25,10 @@ import static com.leokomarov.guts2016.Position.PERMISSION_ACCESS_FINE_LOCATION;
 public class MapStuff {
 
     private MainScreenController mainScreenController;
-    public MapboxMap actualMap;
+    private MapboxMap actualMap;
     private List<Marker> markers;
     private ArrayList<String> listOfNames;
-    boolean mapReady;
+    private boolean mapReady;
 
     private Icon enemyIcon;
 
@@ -67,12 +67,7 @@ public class MapStuff {
         listOfNames = new ArrayList<>();
     }
 
-    public void removeAllMarkers(){
-        actualMap.removeAnnotations();
-    }
-
-    public void addMarker(String name, LatLng markerPosition){
-
+    void addMarker(String name, LatLng markerPosition){
         MarkerViewOptions marker = new MarkerViewOptions()
                 .position(markerPosition)
                 .title(name)
@@ -93,7 +88,6 @@ public class MapStuff {
                     return;
                 }
             }
-            //actualMap.addMarker(marker).setPosition(markerPosition);
         }
     }
 
@@ -102,7 +96,6 @@ public class MapStuff {
             LatLng currentPosition = mainScreenController.getPosition();
             actualMap.setCameraPosition(new CameraPosition.Builder()
                     .target(currentPosition)
-                    .zoom(16)
                     .bearing(mainScreenController.direction.angle)
                     .build());
         }

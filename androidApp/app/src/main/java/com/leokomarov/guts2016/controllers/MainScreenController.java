@@ -57,6 +57,9 @@ public class MainScreenController extends ButterKnifeController {
     @BindView(R.id.angleTV)
     TextView angleTextview;
 
+    @BindView(R.id.expTV)
+    public TextView expTextview;
+
     @BindView(R.id.shotByTV)
     public TextView shotByTextview;
 
@@ -70,6 +73,7 @@ public class MainScreenController extends ButterKnifeController {
     void fireImageButtonClicked(){
         if (! EMPed) {
             fireImageButton.setImageResource(R.drawable.fire_button_active);
+            fireImageButton.setClickable(false);
 
             socketStuff.mSocket.emit("fire", id);
 
@@ -78,6 +82,7 @@ public class MainScreenController extends ButterKnifeController {
                 @Override
                 public void run() {
                     fireImageButton.setImageResource(R.drawable.fire_button);
+                    fireImageButton.setClickable(true);
                 }
             }, 500);
         }
@@ -230,7 +235,7 @@ public class MainScreenController extends ButterKnifeController {
         }
         angle = Float.toString(direction.angle);
         String angleString = Integer.toString((int) direction.angle);
-        angleTextview.setText(angleString);
+        angleTextview.setText("angle: " + angleString);
 
         Log.v("updateData", "latitude: " + latitude);
         Log.v("updateData", "longitude: " + longitude);

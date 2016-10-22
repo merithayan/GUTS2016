@@ -27,7 +27,7 @@ public class SocketStuff {
 
         try {
             //mSocket = IO.socket("http://c9092951.ngrok.io/");
-            mSocket = IO.socket("http://montd.ngrok.io/");
+            mSocket = IO.socket("http://dmont.merithayan.com/");
         } catch (URISyntaxException e) {
             Log.e("MainScreenController", e.getMessage());
         }
@@ -159,6 +159,22 @@ public class SocketStuff {
                                             mainScreenController.updateBattery();
                                         }
 
+                                        final String experience;
+                                        String experienceTemp;
+                                        try {
+                                            experienceTemp = (String) person.get("experience");
+                                        } catch (ClassCastException e) {
+                                            experienceTemp = ((Integer) person.get("experience")).toString();
+                                        }
+                                        experience = experienceTemp;
+                                        Log.v("onUpdate","experience: " +  experience);
+                                        mainScreenController.getActivity().runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                mainScreenController.expTextview.setText("exp: " + experience);
+                                            }
+                                        });
+
                                         Log.v("onUpdate", "health: " + health);
 
                                         if (health <= 0) {
@@ -173,15 +189,6 @@ public class SocketStuff {
                         }
 
                     }
-                    /*
-                    try {
-                        message = "abc";//data.getString("message");
-                    } catch (JSONException e) {
-                        Log.e("Home-onNewMessage", e.getMessage());
-                        return;
-                    }
-                    */
-                    //logMessage(message);
                 }
             });
         }
@@ -225,6 +232,9 @@ public class SocketStuff {
                     mainScreenController.shotTextview.setText("You were shot by " + shooter);
                 }
             });
+
+            Vibrator v = (Vibrator) mainScreenController.getActivity().getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
         }
     };
 
