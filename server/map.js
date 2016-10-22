@@ -2,18 +2,18 @@ var markerList = {};
 
 var blueIcon = L.icon({
 	iconUrl: '/blue',
-	iconSize: [16, 16],
-	iconAnchor: [8, 8]
+	iconSize: [30, 30],
+	iconAnchor: [15, 15]
 });
 var redIcon  = L.icon({
 	iconUrl: '/red',
-	iconSize: [16, 16],
-	iconAnchor: [8, 8]
+	iconSize: [30, 30],
+	iconAnchor: [15, 15]
 });
 var grayIcon = L.icon({
 	iconUrl: '/gray',
-	iconSize: [12, 12],
-	iconAnchor: [6, 6]
+	iconSize: [30, 30],
+	iconAnchor: [15, 15]
 });
 
 /* var blueSmallIcon = L.icon({ iconUrl: '/blue', iconSize: [8, 8], });
@@ -54,7 +54,6 @@ function updateMarkers(players) {
 		markerList[key].setRotationAngle(p.angle);
 
 		if (p.health < 1) {
-			console.log("setting gray icon");
 			markerList[key].setIcon(grayIcon)	
 		} else {
 		    markerList[key].setIcon(blueIcon);	

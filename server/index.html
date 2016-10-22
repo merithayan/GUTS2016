@@ -13,8 +13,8 @@
     </style>
 </head>
 <body>
-    <div id='map-wrap' style='width: 700px; height: 300px'>
-        <div id='map-leaflet' class='map' style='width: 700px; height: 300px'> </div>
+    <div id='map-wrap' style='width: 1265px; height: 700px'>
+        <div id='map-leaflet' class='map' style='width: 1265px; height: 700px'> </div>
     </div>
     <form>
         <input id="name" type="text" name="name" placeholder="Name" value="Steve">
@@ -31,7 +31,7 @@
     <script>
         L.mapbox.accessToken = 'pk.eyJ1IjoiZGFyZWFsZG9kbyIsImEiOiJjaXViMnZtMnQwMDBpMzNwcmFuajZ2Y3U2In0.YoZtUZYEUoZFjJ5UN8V1IA';
         var mapLeaflet = L.mapbox.map('map-leaflet', 'mapbox.dark')
-          .setView([55.8715, -4.2880], 17);
+          .setView([55.8715, -4.2880], 15);
         console.log(L);
     </script>
     <script src="/rotate"></script>

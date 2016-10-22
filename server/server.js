@@ -137,7 +137,7 @@ io.on('connection', function(socket) {
 			console.log("angle: ", self.angle, "azimuth: ", azimuth);
 
 			// If the difference is small enough - shot!
-			if (Math.abs(self.angle - azimuth) < 5) {
+			if (Math.abs(self.angle - azimuth) < 7) {
 				console.log(target.name, "was shot");
 
 				target.health -= 1;
