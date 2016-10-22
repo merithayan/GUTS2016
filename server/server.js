@@ -195,8 +195,8 @@ io.on('connection', function(socket) {
 
 });
 
-http.listen(3000, function() {
-	console.log('listening on *:3000');
+http.listen(10000, function() {
+	console.log('listening on *:10000');
 });
 
 app.get('/blue', function(req, res) { res.sendFile(__dirname + '/blue.png'); });
@@ -205,3 +205,4 @@ app.get('/red',  function(req, res) { res.sendFile(__dirname + '/red.png'); });
 app.get('/gray', function(req, res) { res.sendFile(__dirname + '/gray.png'); });
 
 app.get('/rotate', function(req, res) { res.sendFile(__dirname + '/node_modules/leaflet-rotatedmarker/leaflet.rotatedMarker.js'); });
+
