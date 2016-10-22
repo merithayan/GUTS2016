@@ -43,6 +43,31 @@ class ControlView: UIView {
     
     var batteryBarContainerView: UIView
     
+    var youHit: String? = nil {
+        didSet {
+            youHitLabel.isHidden = false
+            if let newyouHit = youHit {
+                youHitLabel.text = "You hit: " + newyouHit
+            }
+            
+        }
+    }
+    
+    var hitYou: String? = nil {
+        didSet {
+            hitYouLabel.isHidden = false
+            if let newhityou = hitYou {
+                hitYouLabel.text = newhityou + " hit you!"
+            }
+        }
+    }
+    
+    let nicknameLabel = UILabel()
+    let youHitLabel = UILabel()
+    let hitYouLabel = UILabel()
+    let fireButton  = UIButton(type: .custom)
+    let experienceCounter = UILabel()
+    
     override init(frame: CGRect) {
         batteryView = UIImageView(image: #imageLiteral(resourceName: "battery"))
         batteryView.translatesAutoresizingMaskIntoConstraints = false
@@ -59,18 +84,45 @@ class ControlView: UIView {
         redBarView.contentMode = UIViewContentMode.scaleAspectFit;
         
         
-        let fireButton  = UIButton(type: .custom)
+        
         fireButton.setImage(#imageLiteral(resourceName: "fireButton"), for: UIControlState.normal)
         fireButton.translatesAutoresizingMaskIntoConstraints = false
-        
+        fireButton.isHighlighted = false
         
 
         powerUpButton.setImage(#imageLiteral(resourceName: "powerUpButtonActive"), for: UIControlState.normal)
         powerUpButton.translatesAutoresizingMaskIntoConstraints = false
 
+        // Hit Labels
+        youHitLabel.textColor = MerithayanUI.green.lighten3
+        hitYouLabel.textColor = MerithayanUI.green.lighten3
+        experienceCounter.textColor = MerithayanUI.green.lighten5
+        nicknameLabel.textColor = MerithayanUI.green.lighten5
         
+        youHitLabel.translatesAutoresizingMaskIntoConstraints = false
+        hitYouLabel.translatesAutoresizingMaskIntoConstraints = false
+        experienceCounter.translatesAutoresizingMaskIntoConstraints = false
+        nicknameLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        youHitLabel.isHidden = true
+        hitYouLabel.isHidden = true
+        
+        youHitLabel.textAlignment = .center
+        hitYouLabel.textAlignment = .center
+        experienceCounter.textAlignment = .center
+        nicknameLabel.textAlignment = .center
+        
+        experienceCounter.font = UIFont.boldSystemFont(ofSize: 20)
+        experienceCounter.text = "XP: 0"
+        
+        nicknameLabel.text = "You are: \(username)"
         
         super.init(frame: frame)
+        
+        addSubview(youHitLabel)
+        addSubview(hitYouLabel)
+        addSubview(experienceCounter)
+        addSubview(nicknameLabel)
         
         fireButton.addTarget(self, action: #selector(fireAction), for: .touchUpInside)
         powerUpButton.addTarget(self, action: #selector(powerUpAction), for: .touchUpInside)
@@ -80,7 +132,6 @@ class ControlView: UIView {
         batteryView.addSubview(batteryBarContainerView)
         
         var margin: Int
-        print("OUR PHONE IS A ", UIDevice.current.name)
         
         switch UIDevice.current.name {
         case "Mario's iPhone 6":
@@ -116,7 +167,23 @@ class ControlView: UIView {
         addSubview(powerUpButton)
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0]-10-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":fireButton, "v1":powerUpButton]))
         addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-[v0]-|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":powerUpButton]))
+        
+        
+        
+        // Text constraints
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0]-10-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":powerUpButton, "v1":nicknameLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":nicknameLabel]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0]-10-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":nicknameLabel, "v1":experienceCounter]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":experienceCounter]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v1]-20-[v0]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":hitYouLabel, "v1":experienceCounter]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":hitYouLabel]))
+        
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:[v0]-10-[v1]", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":hitYouLabel, "v1":youHitLabel]))
+        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[v0]|", options: NSLayoutFormatOptions(), metrics: nil, views: ["v0":youHitLabel]))
 
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -164,7 +231,7 @@ class ControlView: UIView {
         
         if player.health > 1 {
             // Defining yellow bar
-            for _ in 1...(player.health/2) {
+            for _ in 1...(player.health/2+2) {
                 let yellowBarView = YellowBarView()
                 yellowBarView.translatesAutoresizingMaskIntoConstraints = false
                 batteryBarContainerView.addSubview(yellowBarView)
@@ -190,6 +257,9 @@ class ControlView: UIView {
 
         let viewArray = batteryBarContainerView.subviews
 
+        if viewArray.count <= 1 {
+            return
+        }
         
         var counter = 0
         

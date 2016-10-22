@@ -13,7 +13,16 @@ let player = Player()
 
 class Player {
     var mainView: MainAppViewController?
-    var exp: Int
+    
+    var exp: Int {
+        didSet {
+            if exp > 0 {
+                mainView?.controlView.experienceCounter.text = "XP: \(exp)"
+            }
+            
+        }
+    }
+    
     var hasEmp = true {
         didSet {
             print("The hasEMP player value changed to:", hasEmp)
@@ -28,7 +37,7 @@ class Player {
     }
 
     var isEmpd = false
-
+    var canIfire = true
     var health: Int {
         didSet {
             mainView?.controlView.reloadBatteryView()

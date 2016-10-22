@@ -77,7 +77,7 @@ socket.on("update", function(players) {
 		var p = players[key];
 
 		// Show the player info in Godmode
-		$("#players").append("<li>"+p.name+"&#9;    "+p.experience+" "+p.lat+" "+p.lng+" "+p.angle+"</li>");
+		$("#players").append("<li>"+p.name+" exp: "+p.experience+"</li>");
 
 		updateMarkers(players);
 	}
@@ -101,4 +101,61 @@ socket.on("mark-as-shot", function(id) {
 
 socket.on("empd", function() {
 	console.log("You got EMPd!");
+});
+
+
+// Keyboard controls
+$(document).keydown(function(e) {
+	var oldValue;
+    switch(e.which) {
+
+        case 37: // left
+        oldValue = parseInt($('#angle').val());
+        var newVal = oldValue -= 1
+        if (newVal < 0) newVal += 360
+        if (newVal > 360) newVal -= 360
+        $('#angle').val(newVal);
+        $('#angle').trigger('input');
+        break;
+
+        case 39: // right
+        oldValue = parseInt($('#angle').val());
+        var newVal = oldValue += 1
+        if (newVal < 0) newVal += 360
+        if (newVal > 360) newVal -= 360
+        $('#angle').val(oldValue += 1);
+        $('#angle').trigger('input');
+        break;
+
+        case 38: // up
+        oldValue = parseFloat($('#lat').val());
+        $('#lat').val(oldValue += 0.00005);
+        $('#lat').trigger('input');
+        break;
+
+        case 40: // down
+        oldValue = parseFloat($('#lat').val());
+        $('#lat').val(oldValue -= 0.00005);
+        $('#lat').trigger('input');
+        break;
+
+        case 65: // 'a' key
+        oldValue = parseFloat($('#lng').val());
+        $('#lng').val(oldValue -= 0.00005);
+        $('#lng').trigger('input');
+        break;
+
+        case 68: // 'd' key
+        oldValue = parseFloat($('#lng').val());
+        $('#lng').val(oldValue += 0.00005);
+        $('#lng').trigger('input');
+        break;
+
+        case 32: // space
+        $('#fire').trigger('click');
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
 });
